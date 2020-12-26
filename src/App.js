@@ -60,7 +60,6 @@ class App extends React.Component {
     let scale = (newScale>state.maxScale)?state.maxScale:newScale;
     img.style.transform = `scaleY(${scale.toFixed(3)})`
     imgContainer.style.height = currentImgHeight+"px"
-
   }
 
 
