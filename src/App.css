@@ -4,24 +4,31 @@
   padding: 0;
 }
 
+
+/* .horizontal_master_container{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+} */
+
 /* Your css unchanged */
-.main_container {
+.main_vertical_container {
   display: block;
   position: fixed;
   width: 100vw;
 }
 
 body {
-  height: 400vh;
+  height: 2394px;
 }
 
-.main_container .main_container_inner {
+.main_vertical_container .main_vertical_container_inner {
   display: inline-flex;
   width: 33.33%;
   flex-direction: column;
 }
 
-.main_container img {
+.main_vertical_container img {
   width: 100%;
   transform-origin: top;
 }
