@@ -23,11 +23,8 @@ class SvgSection extends React.Component {
   }
 
 
-
   handleImageLoaded = () => {
 
-
-    // define the props here;
     let props = this.props;
 
     // get the scrollHeight and viewportHeight;
@@ -59,54 +56,37 @@ class SvgSection extends React.Component {
 
   scrollHandler = () => {
 
-    // define the state and the props here;
     let state = this.state;
     let props = this.props;
 
-    // if it has not been loaded, return;
     if (!state.loaded) {
       return;
     }
 
-    // get the imgContainer and img from the state;
     let imgContainer = state.imgContainer;
     let img = state.img;
-
-    // get the body to calculate the scroll;
     let body = document.body.parentNode;
 
-    // what has been scrolled
     let bodyScroll = (
       body.scrollTop || body.scrollTop)
       / (body.scrollHeight - body.clientHeight
     ) * 100;
 
-    // what need to be scrolled;
     let remainingScroll = 100 - bodyScroll;
 
-    // get the % to operate on the image, descending;
     let translateYPercentDesc = this.definePorcentage(
         remainingScroll, state.originalImageStretch
     );
-
-    // get the % to operate on the image, ascending;
     let translateYPercentAsc = this.definePorcentage(
         bodyScroll, state.originalImageStretch
     );
 
-
     let translateYPercentDescNumbered = Number(translateYPercentDesc);
 
-    if(translateYPercentDescNumbered < 1){
-      return this.props.triggerOppositeDirection;
-    }
-
-      // if the animation if the SvgSection one;
+    
       img.style.transform = `scaleY(${translateYPercentDesc})`;
       let newImgContainerHeight = img.getBoundingClientRect().height;
       imgContainer.style.height = newImgContainerHeight + "px";
-
-
   };
 
    definePorcentage = (percent, total) => {

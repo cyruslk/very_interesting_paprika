@@ -1,5 +1,5 @@
 import React from "react";
-import SvgSection from "./SvgSection";
+import SvgSection from "./SvgSection.js"
 import mock_data from "./mock_data.js";
 import "./App.css";
 
@@ -7,8 +7,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      counter: 0,
-      scrollHeight: null,
+      loaded: false,
+      selected: "first anim decreased",
+      counter: 1,
+      updatedHeightOfPage: null,
       viewportHeight: null,
       svgSectionsToDom: null
     };
@@ -16,61 +18,147 @@ class App extends React.Component {
 
   componentDidMount(){
 
+
+    document.addEventListener("wheel", this.scrollHandler);
+
+    // initial height of page;
     let scrollHeight = document.documentElement.scrollHeight;
+
+    // height of the viewport;
     let viewportHeight = window.innerHeight;
 
+    // 6 here is the number of sections, to be redefined later;
+    let updatedHeightOfPage = viewportHeight*6;
+    // console.log(updatedHeightOfPage, "here");
+
+    document.body.style.height = `${updatedHeightOfPage}px`;
+
     this.setState({
-      scrollHeight,
+      updatedHeightOfPage,
       viewportHeight
     })
-
-    let svgSectionsToDom = mock_data.entries
-    .map((ele, index) => {
-      return (
-        <SvgSection
-          content={ele}
-          index={index}
-          {...this.state}
-        />
-      )
-    })
-
-    this.setState({
-      svgSectionsToDom
-    })
-
   }
+
+
+  handleImageLoaded = () => {
+    this.setState({
+      loaded: true
+    })
+  }
+
+
+  scrollHandler = (event) => {
+
+    if(!this.state.loaded){
+      return null;
+    }
+
+  let body = document.body.parentNode;
+
+  // what has been scrolled
+  let bodyScroll = (
+    body.scrollTop || body.scrollTop)
+    / (body.scrollHeight - body.clientHeight
+  ) * 100;
+
+  let numberOfPixelScrolled = window.scrollY;
+
+  // if it's bigger than the first viewportHeight, then go to the second;
+  // console.log(this.state.viewportHeight, "---");
+
+  let viewportHeight = this.state.viewportHeight;
+
+  if (numberOfPixelScrolled > 0
+    && numberOfPixelScrolled < viewportHeight) {
+    console.log("first anim");
+  }
+
+  if (numberOfPixelScrolled > viewportHeight
+    && numberOfPixelScrolled < viewportHeight*2) {
+    console.log("second anim");
+  }
+
+  if (numberOfPixelScrolled > viewportHeight*2
+    && numberOfPixelScrolled < viewportHeight*3) {
+    console.log("third anim");
+  }
+
+
+  if (numberOfPixelScrolled > viewportHeight*3
+    && numberOfPixelScrolled < viewportHeight*4) {
+    console.log("fourth anim");
+  }
+
+
+  if (numberOfPixelScrolled > viewportHeight*4
+    && numberOfPixelScrolled < viewportHeight*5) {
+    console.log("fifth anim");
+  }
+
+
+  if (numberOfPixelScrolled > viewportHeight*5
+    && numberOfPixelScrolled < viewportHeight*6) {
+    console.log("sixth anim");
+  }
+
+
+
+
+  // calculate what has been scrolled in termms of px;
+  // apply to the calculation of this / what has been scrolled;
+
+  };
 
 
   render() {
 
     let state = this.state;
 
-    if(!state.svgSectionsToDom){
-      return (
-        <div>
-          loading screen here;
-        </div>
-      )
-    }
-
     return (
       <div className="main_vertical_container">
-          <SvgSection
-              triggerOppositeDirection={this.triggerOppositeDirection}
-              index={0}
-              {...this.state}
-            />
-          <SvgSection
-              triggerOppositeDirection={this.triggerOppositeDirection}
-              index={1}
-              {...this.state}
-            />
-          <SvgSection
-              triggerOppositeDirection={this.triggerOppositeDirection}
-              index={2}
-              {...this.state}
-            />
+      <div className="main_vertical_container_inner">
+        <div id="container_div_0">
+          <img
+            onLoad={this.handleImageLoaded}
+            src="https://bit.ly/3nXBlMo"
+            alt="XXI"
+          />
+        </div>
+        <div className="text_container">
+          <h1>SvgSection</h1>
+          <p>fvdfv</p>
+        </div>
+      </div>
+
+      <div className="main_vertical_container_inner">
+      <div id="container_div_1">
+          <img
+            onLoad={this.handleImageLoaded}
+            src="https://bit.ly/3nXBlMo"
+            alt="XXI"
+          />
+        </div>
+        <div className="text_container">
+          <h1>SvgSection</h1>
+          <p>fvdfv</p>
+        </div>
+      </div>
+
+
+
+      <div className="main_vertical_container_inner">
+      <div id="container_div_2">
+          <img
+            onLoad={this.handleImageLoaded}
+            src="https://bit.ly/3nXBlMo"
+            alt="XXI"
+          />
+        </div>
+        <div className="text_container">
+          <h1>SvgSection</h1>
+          <p>fvdfv</p>
+        </div>
+      </div>
       </div>
     );
   }
