@@ -28,7 +28,8 @@ class App extends React.Component {
     let viewportHeight = window.innerHeight;
 
     // 6 here is the number of sections, to be redefined later;
-    let updatedHeightOfPage = viewportHeight*6;
+    // +1 so that it can get the viewport;
+    let updatedHeightOfPage = viewportHeight*7;
     // console.log(updatedHeightOfPage, "here");
 
     document.body.style.height = `${updatedHeightOfPage}px`;
@@ -54,61 +55,57 @@ class App extends React.Component {
     }
 
   let body = document.body.parentNode;
-
-  // what has been scrolled
-  let bodyScroll = (
-    body.scrollTop || body.scrollTop)
-    / (body.scrollHeight - body.clientHeight
-  ) * 100;
-
   let numberOfPixelScrolled = window.scrollY;
-
-  // if it's bigger than the first viewportHeight, then go to the second;
-  // console.log(this.state.viewportHeight, "---");
-
   let viewportHeight = this.state.viewportHeight;
 
   if (numberOfPixelScrolled > 0
     && numberOfPixelScrolled < viewportHeight) {
-    console.log("first anim");
+      let animateDiv = this.definePorcentage(numberOfPixelScrolled, viewportHeight)
+      console.log("first anim: animate div with", animateDiv);
   }
 
   if (numberOfPixelScrolled > viewportHeight
     && numberOfPixelScrolled < viewportHeight*2) {
-    console.log("second anim");
+      let animateDiv = this.definePorcentage(numberOfPixelScrolled-viewportHeight, viewportHeight);
+      console.log("second anim: animate div with", animateDiv);
   }
+
 
   if (numberOfPixelScrolled > viewportHeight*2
     && numberOfPixelScrolled < viewportHeight*3) {
-    console.log("third anim");
+      let animateDiv = this.definePorcentage(numberOfPixelScrolled-viewportHeight*2, viewportHeight);
+      console.log("third anim: animate div with", animateDiv);
   }
 
 
   if (numberOfPixelScrolled > viewportHeight*3
     && numberOfPixelScrolled < viewportHeight*4) {
-    console.log("fourth anim");
+      let animateDiv = this.definePorcentage(numberOfPixelScrolled-viewportHeight*3, viewportHeight);
+      console.log("fourth anim: animate div with", animateDiv);
   }
 
 
   if (numberOfPixelScrolled > viewportHeight*4
     && numberOfPixelScrolled < viewportHeight*5) {
-    console.log("fifth anim");
+      let animateDiv = this.definePorcentage(numberOfPixelScrolled-viewportHeight*4, viewportHeight);
+      console.log("fifth anim: animate div with", animateDiv);
   }
 
 
-  if (numberOfPixelScrolled > viewportHeight*5
-    && numberOfPixelScrolled < viewportHeight*6) {
-    console.log("sixth anim");
-  }
-
-
-
-
-  // calculate what has been scrolled in termms of px;
-  // apply to the calculation of this / what has been scrolled;
+    if (numberOfPixelScrolled > viewportHeight*5
+      && numberOfPixelScrolled < viewportHeight*6) {
+      let animateDiv = this.definePorcentage(numberOfPixelScrolled-viewportHeight*5, viewportHeight);
+      console.log("sixth anim: animate div with", animateDiv);
+    }
 
   };
 
+
+
+  definePorcentage = (percent, total) => {
+      let porcentage = (percent/total)*100;
+      return porcentage
+   }
 
   render() {
 
