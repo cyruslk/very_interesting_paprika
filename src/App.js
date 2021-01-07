@@ -125,6 +125,7 @@ class App extends React.Component {
     if (numberOfPixelScrolled > viewportHeight
       && numberOfPixelScrolled < viewportHeight*2) {
 
+
         this.setState({
           counter: 1,
           selectedDivId: 0
@@ -138,6 +139,9 @@ class App extends React.Component {
 
     if (numberOfPixelScrolled > viewportHeight*2
       && numberOfPixelScrolled < viewportHeight*3) {
+
+         // reseting the height of the first div;
+       this.handleResetPreviousDivHeight(this.state.selectedDivId);
 
         this.setState({
           counter: 2,
@@ -165,6 +169,9 @@ class App extends React.Component {
     if (numberOfPixelScrolled > viewportHeight*4
       && numberOfPixelScrolled < viewportHeight*5) {
 
+        this.handleResetPreviousDivHeight(this.state.selectedDivId);
+
+
         this.setState({
           counter: 4,
           selectedDivId: 2
@@ -190,6 +197,9 @@ class App extends React.Component {
 
     if (numberOfPixelScrolled > viewportHeight*6
       && numberOfPixelScrolled < viewportHeight*7) {
+
+        this.handleResetPreviousDivHeight(this.state.selectedDivId);
+
 
         this.setState({
           counter: 6,
@@ -217,6 +227,9 @@ class App extends React.Component {
     if (numberOfPixelScrolled > viewportHeight*8
       && numberOfPixelScrolled < viewportHeight*9) {
 
+        this.handleResetPreviousDivHeight(this.state.selectedDivId);
+
+
         this.setState({
           counter: 8,
           selectedDivId: 1
@@ -243,6 +256,9 @@ class App extends React.Component {
     if (numberOfPixelScrolled > viewportHeight*10
       && numberOfPixelScrolled < viewportHeight*11) {
 
+        this.handleResetPreviousDivHeight(this.state.selectedDivId);
+
+
         this.setState({
           counter: 10,
           selectedDivId: 2
@@ -255,6 +271,7 @@ class App extends React.Component {
 
     if (numberOfPixelScrolled > viewportHeight*11
       && numberOfPixelScrolled < viewportHeight*12) {
+
 
         this.setState({
           counter: 11,
@@ -269,7 +286,8 @@ class App extends React.Component {
     if (numberOfPixelScrolled > viewportHeight*12
       && numberOfPixelScrolled < viewportHeight*11) {
 
-      return null;
+        this.handleResetPreviousDivHeight(this.state.selectedDivId);
+
     }
   };
 
@@ -300,7 +318,6 @@ class App extends React.Component {
         originalImageStretch
     );
 
-
     if(animDirection === "up"){
 
       img.style.transform = `scaleY(${translateYPorcentageUp})`;
@@ -328,9 +345,27 @@ class App extends React.Component {
       }
     }
 
-
-
   }
+
+
+  handleResetPreviousDivHeight = (id) => {
+
+    console.log("going there for div#", id);
+
+    let previousDivId = id;
+    let divID = `container_div_${previousDivId}`;
+
+    let imgContainer = document.querySelector(`#${divID}`);
+    let img = document.querySelector(`#${divID} img`);
+    let viewportHeight = this.state.viewportHeight;
+    let originalImageStretch = this.state.originalImageStretch;
+    img.style.transform = `scaleY(${originalImageStretch})`;
+    let newImgContainerHeight = img.getBoundingClientRect().height;
+    imgContainer.style.height = newImgContainerHeight + "px";
+
+  };
+
+
 
   definePorcentage = (percent, total) => {
       let porcentage = (percent/total)*100;
