@@ -22,6 +22,8 @@ class App extends React.Component {
   componentDidMount(){
 
     document.addEventListener("wheel", this.scrollHandler);
+
+
     let scrollHeight = document.documentElement.scrollHeight;
     let viewportHeight = window.innerHeight;
 
@@ -93,6 +95,8 @@ class App extends React.Component {
   }
 
 
+
+  // scrollHandler here;
   scrollHandler = (event) => {
 
     if(!this.state.originalImageStretch){
@@ -104,82 +108,169 @@ class App extends React.Component {
 
     let originalImageStretch = this.state.originalImageStretch;
 
-  if (numberOfPixelScrolled > 0
-    && numberOfPixelScrolled < viewportHeight) {
+    if (numberOfPixelScrolled > 0
+      && numberOfPixelScrolled < viewportHeight) {
 
-      this.setState({
-        counter: 0,
-        selectedDivId: 0
-      }, () => {
-        let counter = this.state.counter;
-        let selectedDivId = this.state.selectedDivId;
-        return this.handleAnimation(counter, selectedDivId, "up");
-      })
+        this.setState({
+          counter: 0,
+          selectedDivId: 0
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          return this.handleAnimation(counter, selectedDivId, "up");
+        })
 
-  }
+    }
 
-  if (numberOfPixelScrolled > viewportHeight
-    && numberOfPixelScrolled < viewportHeight*2) {
+    if (numberOfPixelScrolled > viewportHeight
+      && numberOfPixelScrolled < viewportHeight*2) {
 
-      // again, the first div, but ascen;
+        this.setState({
+          counter: 1,
+          selectedDivId: 0
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          return this.handleAnimation(counter, selectedDivId, "down");
+        })
 
-      this.setState({
-        counter: 1,
-        selectedDivId: 1
-      }, () => {
+    }
 
-        // resetting/locking the height of the previous div
+    if (numberOfPixelScrolled > viewportHeight*2
+      && numberOfPixelScrolled < viewportHeight*3) {
 
-        let counter = this.state.counter;
-        let selectedDivId = this.state.selectedDivId;
-        return this.handleAnimation(counter, selectedDivId, "down");
-      })
+        this.setState({
+          counter: 2,
+          selectedDivId: 1
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          return this.handleAnimation(counter, selectedDivId, "up");
+        })
+    }
 
-      // console.log("second anim: animate div with", remainingScroll);
-  }
+    if (numberOfPixelScrolled > viewportHeight*3
+      && numberOfPixelScrolled < viewportHeight*4) {
 
+        this.setState({
+          counter: 3,
+          selectedDivId: 1
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          return this.handleAnimation(counter, selectedDivId, "down");
+        })
+    }
 
-  if (numberOfPixelScrolled > viewportHeight*2
-    && numberOfPixelScrolled < viewportHeight*3) {
+    if (numberOfPixelScrolled > viewportHeight*4
+      && numberOfPixelScrolled < viewportHeight*5) {
 
-      this.setState({
-        counter: 2,
-        selectedDivId: 2
-      }, () => {
-        let counter = this.state.counter;
-        let selectedDivId = this.state.selectedDivId;
-        return this.handleAnimation(counter, selectedDivId, "up");
-      })
-
-
-  }
-
-
-  if (numberOfPixelScrolled > viewportHeight*3
-    && numberOfPixelScrolled < viewportHeight*4) {
-
-
-
-
-
-      let remainingScroll = this.definePorcentage(numberOfPixelScrolled-viewportHeight*3, viewportHeight);
-      // console.log("fourth anim: animate div with", remainingScroll);
-  }
-
-
-  if (numberOfPixelScrolled > viewportHeight*4
-    && numberOfPixelScrolled < viewportHeight*5) {
-      let remainingScroll = this.definePorcentage(numberOfPixelScrolled-viewportHeight*4, viewportHeight);
-      // console.log("fifth anim: animate div with", remainingScroll);
-  }
-
+        this.setState({
+          counter: 4,
+          selectedDivId: 2
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          return this.handleAnimation(counter, selectedDivId, "up");
+        })
+    }
 
     if (numberOfPixelScrolled > viewportHeight*5
       && numberOfPixelScrolled < viewportHeight*6) {
-      let remainingScroll = this.definePorcentage(numberOfPixelScrolled-viewportHeight*5, viewportHeight);
-      // console.log("sixth anim: animate div with", remainingScroll);
+
+        this.setState({
+          counter: 5,
+          selectedDivId: 2
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          return this.handleAnimation(counter, selectedDivId, "down");
+        })
     }
 
+    if (numberOfPixelScrolled > viewportHeight*6
+      && numberOfPixelScrolled < viewportHeight*7) {
+
+        this.setState({
+          counter: 6,
+          selectedDivId: 0
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          return this.handleAnimation(counter, selectedDivId, "up");
+        })
+    }
+
+    if (numberOfPixelScrolled > viewportHeight*7
+      && numberOfPixelScrolled < viewportHeight*8) {
+
+        this.setState({
+          counter: 7,
+          selectedDivId: 0
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          return this.handleAnimation(counter, selectedDivId, "down");
+        })
+    }
+
+    if (numberOfPixelScrolled > viewportHeight*8
+      && numberOfPixelScrolled < viewportHeight*9) {
+
+        this.setState({
+          counter: 8,
+          selectedDivId: 1
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          return this.handleAnimation(counter, selectedDivId, "up");
+        })
+    }
+
+    if (numberOfPixelScrolled > viewportHeight*9
+      && numberOfPixelScrolled < viewportHeight*10) {
+
+        this.setState({
+          counter: 9,
+          selectedDivId: 1
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          return this.handleAnimation(counter, selectedDivId, "down");
+        })
+    }
+
+    if (numberOfPixelScrolled > viewportHeight*10
+      && numberOfPixelScrolled < viewportHeight*11) {
+
+        this.setState({
+          counter: 10,
+          selectedDivId: 2
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          return this.handleAnimation(counter, selectedDivId, "up");
+        })
+    }
+
+    if (numberOfPixelScrolled > viewportHeight*11
+      && numberOfPixelScrolled < viewportHeight*12) {
+
+        this.setState({
+          counter: 11,
+          selectedDivId: 2
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          return this.handleAnimation(counter, selectedDivId, "down");
+        })
+    }
+
+    if (numberOfPixelScrolled > viewportHeight*12
+      && numberOfPixelScrolled < viewportHeight*11) {
+
+      return null;
+    }
   };
 
 
@@ -197,27 +288,48 @@ class App extends React.Component {
       (numberOfPixelScrolled - this.state.counter * viewportHeight),
       viewportHeight)
     ;
-
-
     let remainingScrollPorcentage = 100-scrolledPorcentage;
 
-    let translateYPorcentage = this.defineValueFromPorcentage(
+    let translateYPorcentageUp = this.defineValueFromPorcentage(
         remainingScrollPorcentage,
         originalImageStretch
     );
 
-    img.style.transform = `scaleY(${translateYPorcentage})`;
-    let newImgContainerHeight = img.getBoundingClientRect().height;
-    imgContainer.style.height = newImgContainerHeight + "px";
+    let translateYPorcentageDown = this.defineValueFromPorcentage(
+        scrolledPorcentage,
+        originalImageStretch
+    );
 
 
+    if(animDirection === "up"){
 
-    // if it's smaller that < 1, then lock;
-    if(translateYPorcentage < 1){
-      img.style.transform = `scaleY(1)`;
+      img.style.transform = `scaleY(${translateYPorcentageUp})`;
       let newImgContainerHeight = img.getBoundingClientRect().height;
       imgContainer.style.height = newImgContainerHeight + "px";
+
+      if(translateYPorcentageUp < 1){
+        img.style.transform = `scaleY(1)`;
+        let newImgContainerHeight = img.getBoundingClientRect().height;
+        imgContainer.style.height = newImgContainerHeight + "px";
+      }
+
     }
+
+    if(animDirection === "down"){
+
+      img.style.transform = `scaleY(${translateYPorcentageDown})`;
+      let newImgContainerHeight = img.getBoundingClientRect().height;
+      imgContainer.style.height = newImgContainerHeight + "px";
+
+      if(translateYPorcentageDown < 1){
+        img.style.transform = `scaleY(1)`;
+        let newImgContainerHeight = img.getBoundingClientRect().height;
+        imgContainer.style.height = newImgContainerHeight + "px";
+      }
+    }
+
+
+
   }
 
   definePorcentage = (percent, total) => {
@@ -237,10 +349,7 @@ class App extends React.Component {
      }else{
        return this.state.dataToDivs;
      }
-   }
-
-
-
+   };
 
   render() {
 
