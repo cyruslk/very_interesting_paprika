@@ -73,17 +73,18 @@ class SvgSection extends React.Component {
     ) * 100;
 
     let remainingScroll = 100 - bodyScroll;
+    console.log(remainingScroll, "remainingScroll: will be fed into the translateYPercentDesc : this , state.originalImageStretch");
 
     let translateYPercentDesc = this.definePorcentage(
         remainingScroll, state.originalImageStretch
     );
-    let translateYPercentAsc = this.definePorcentage(
-        bodyScroll, state.originalImageStretch
-    );
+    console.log("------");
+    console.log(translateYPercentDesc, "translateYPercentDesc: to apply to the scaleY");
+
 
     let translateYPercentDescNumbered = Number(translateYPercentDesc);
 
-    
+
       img.style.transform = `scaleY(${translateYPercentDesc})`;
       let newImgContainerHeight = img.getBoundingClientRect().height;
       imgContainer.style.height = newImgContainerHeight + "px";
