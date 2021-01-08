@@ -1,27 +1,27 @@
 const mock_data = module.exports = {
   entries: [
     {
-      img: "https://bit.ly/3nXBlMo",
+      img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1608683762/paprika%20-%20very%20interesting/01VERYI.svg",
       textContent: [
-        "content 1",
-        "content 2",
-        "content 3"
+        "Dans une économie de l'attention, il faut se démarquer",
+        "Very interesting ajoute un élément de joie ...",
+        "rencontrer des gens very interesting"
       ]
     },
     {
-      img: "https://bit.ly/3nXBlMo",
+      img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1608683762/paprika%20-%20very%20interesting/01VERYI.svg",
       textContent: [
-        "content 1",
-        "content 2",
-        "content 3"
+        "Pour rendre nos clients .... ",
+        "Nos very interesting services ...",
+        "Harry Wakefield ..."
       ]
     },
     {
-      img: "https://bit.ly/3nXBlMo",
+      img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1608683762/paprika%20-%20very%20interesting/01VERYI.svg",
       textContent: [
-        "content 1",
-        "content 2",
-        "content 3"
+        "TOUT LE MONDE N'EN A QUE ....",
+        "-ciblages, analysages",
+        "Pierre Larammée ..."
       ]
     }
   ]
