@@ -1,5 +1,4 @@
 import React from "react";
-import SvgSection from "./SvgSection.js"
 import mock_data from "./mock_data.js";
 import "./App.css";
 
@@ -23,7 +22,9 @@ class Desktop extends React.Component {
   componentDidMount(){
 
     document.addEventListener("wheel", this.scrollHandler);
-    let scrollHeight = document.documentElement.scrollHeight;
+    window.addEventListener("resize", this.resizeHandler);
+
+
     let viewportHeight = window.innerHeight;
 
     // 6 here is the number of sections, to be redefined later;
@@ -72,9 +73,6 @@ class Desktop extends React.Component {
 
     let dataToDivs = mockData.entries.map((ele, index) => {
 
-      console.log(ele, "here");
-      let textContent = ele.textContent;
-
       let divID = `container_div_${index}`;
       return (
         <div className="main_vertical_container_inner">
@@ -94,6 +92,17 @@ class Desktop extends React.Component {
     this.setState({
       dataToDivs
     })
+  }
+
+
+  resizeHandler = () => {
+
+    let viewportHeight = window.innerHeight;
+    this.setState({
+      viewportHeight,
+    }, () => {
+      // make the resize here;
+    });
   }
 
 
@@ -119,7 +128,6 @@ class Desktop extends React.Component {
     let numberOfPixelScrolled = window.scrollY;
     let viewportHeight = this.state.viewportHeight;
 
-    let originalImageStretch = this.state.originalImageStretch;
 
     if (numberOfPixelScrolled > 0
       && numberOfPixelScrolled < viewportHeight) {
@@ -313,21 +321,15 @@ class Desktop extends React.Component {
         })
     }
 
-    if (numberOfPixelScrolled > viewportHeight*11
-      && numberOfPixelScrolled < viewportHeight*12) {
-
-
-    }
-
-    if (numberOfPixelScrolled > viewportHeight*12
-      && numberOfPixelScrolled < viewportHeight*11) {
-
-
-    }
   };
 
 
-  handleAnimation = (counter, selectedDivId, animDirection) => {
+  handleAnimation = (counter, selectedDivId, animDirection, single) => {
+
+
+    this.handleDivTextChange();
+
+
 
     let divID = `container_div_${selectedDivId}`;
     let imgContainer = document.querySelector(`#${divID}`);
@@ -380,6 +382,10 @@ class Desktop extends React.Component {
       }
     }
 
+    if(!single){
+
+    }
+
   }
 
 
@@ -394,8 +400,8 @@ class Desktop extends React.Component {
 
       let imgContainer = document.querySelector(`#${divID}`);
       let img = document.querySelector(`#${divID} img`);
-      let viewportHeight = this.state.viewportHeight;
       let originalImageStretch = this.state.originalImageStretch;
+
       img.style.transform = `scaleY(${originalImageStretch})`;
       let newImgContainerHeight = img.getBoundingClientRect().height;
       imgContainer.style.height = newImgContainerHeight + "px";
@@ -420,14 +426,34 @@ class Desktop extends React.Component {
 
       let imgContainer = document.querySelector(`#${divID}`);
       let img = document.querySelector(`#${divID} img`);
-      let viewportHeight = this.state.viewportHeight;
       let originalImageStretch = this.state.originalImageStretch;
+
       img.style.transform = `scaleY(${originalImageStretch})`;
       let newImgContainerHeight = img.getBoundingClientRect().height;
       imgContainer.style.height = newImgContainerHeight + "px";
     }
 
   }
+
+
+  handleDivTextChange = (counter) => {
+
+    if (counter >= 0
+      && counter < 6) {
+        console.log("first text content here");
+    }
+
+    if (counter >= 6
+      && counter < 9) {
+        console.log("second content here");
+    }
+
+    if (counter > 9) {
+        console.log("third content here");
+    }
+
+  }
+
 
 
 
@@ -451,8 +477,6 @@ class Desktop extends React.Component {
    };
 
   render() {
-
-    let state = this.state;
 
     return (
       <div className="main_vertical_container">
