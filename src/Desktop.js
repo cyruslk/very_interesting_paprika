@@ -135,6 +135,7 @@ class Desktop extends React.Component {
         this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
 
 
+
         this.setState({
           counter: 0,
           selectedDivId: 0,
@@ -326,10 +327,8 @@ class Desktop extends React.Component {
 
   handleAnimation = (counter, selectedDivId, animDirection, single) => {
 
-
-    this.handleDivTextChange();
-
-
+    // to optimze;
+    // this.handleDivTextChange(counter)
 
     let divID = `container_div_${selectedDivId}`;
     let imgContainer = document.querySelector(`#${divID}`);
@@ -477,7 +476,6 @@ class Desktop extends React.Component {
    };
 
   render() {
-
     return (
       <div className="main_vertical_container">
         {this.renderDivsToDom()}
