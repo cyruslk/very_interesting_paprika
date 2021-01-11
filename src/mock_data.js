@@ -1,46 +1,49 @@
 const mock_data = module.exports = {
-  entries: [
-    {
-      img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1608683762/paprika%20-%20very%20interesting/01VERYI.svg",
-      textContent: [
-        "Dans une économie de l'attention, il faut se démarquer",
-        "Very interesting ajoute un élément de joie ...",
-        "rencontrer des gens very interesting"
-      ]
-    },
-    {
-      img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1608683811/paprika%20-%20very%20interesting/02NTERE.svg",
-      textContent: [
-        "Pour rendre nos clients .... ",
-        "Nos very interesting services ...",
-        "Harry Wakefield ..."
-      ]
-    },
-    {
-      img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1608683839/paprika%20-%20very%20interesting/03STING.svg",
-      textContent: [
-        "TOUT LE MONDE N'EN A QUE ....",
-        "-ciblages, analysages",
-        "Pierre Larammée ..."
-      ]
-    }
+  entriesImgDesktop: [
+    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1608683762/paprika%20-%20very%20interesting/01VERYI.svg"},
+    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1608683811/paprika%20-%20very%20interesting/02NTERE.svg"},
+    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1608683839/paprika%20-%20very%20interesting/03STING.svg"},
   ],
   entriesMobile: [
+    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1610211278/paprika%20-%20very%20interesting/M01VERYINTE.svg"},
+    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1610211325/paprika%20-%20very%20interesting/M02RESTING.svg"}
+  ],
+  entriesText: [
     {
-      img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1610211278/paprika%20-%20very%20interesting/M01VERYINTE.svg",
-      textContent: [
-        "Dans une économie de l'attention, il faut se démarquer",
-        "Very interesting ajoute un élément de joie ...",
-        "rencontrer des gens very interesting"
-      ]
+      headlines: "Dans une économie de l’attention, il faut se démarquer.",
+      description: null
     },
     {
-      img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1610211325/paprika%20-%20very%20interesting/M02RESTING.svg",
-      textContent: [
-        "Dans une économie de l'attention, il faut se démarquer",
-        "Very interesting ajoute un élément de joie ...",
-        "rencontrer des gens very interesting"
-      ]
+      headlines: "Pour rendre nos clients «Very Interesting», on combine data et Dada. - Hum… Intéressant… « Very »",
+      description: null
+    },
+    {
+      headlines: "TOUT LE MONDE N’EN A QUE POUR LES DONNÉES. MAIS LES DONNÉES EN ELLES-MÊMES NE SUFFISENT PAS.",
+      description: null
+    },
+    {
+      headlines: "« Very Interesting » ajoute un élément de surprise, de joie, d’incongru.",
+      description: "On intercepte la clientèle et on la garde fortement intéressée par ce que font nos clients."
+    },
+    {
+      headlines: "NOS « Very Interesting » SERVICES",
+      description: "On fait en sorte que les bonnes personnes fassent ce que nos clients souhaitent"
+    },
+    {
+      headlines: "Ciblage Analyse de performance Refonte de l’expérience de marque (design, rédaction) Création de contenu Gardiennage d’animaux de compagnie.",
+      description: null
+    },
+    {
+      headlines: "Rencontrez des gens « Very Interesting »",
+      description: null
+    },
+    {
+      headlines: "Harry Wakefield",
+      description: "A mené une carrière en agence (Cossette, Taxi) et du côté client (Bell, Sympatico, Téléglobe, Pages jaunes); Expérience en communication et en marketing de produits; Spécialiste des outils CRM, web et médias sociaux; Agit depuis 2009 à titre de conseiller en marketing numérique pour des entreprises de technologie de taille moyenne en Europe et au Canada dont TelcoBridges, une entreprise d’ingénierie logicielle et d’équipement de télécommunication."
+    },
+    {
+      headlines: "Pierre Laramée",
+      description: "Co-fondateur de l’agence Tam-Tam Publicité; A été concepteur-rédacteur, directeur de création et président; Impliqué sur des marques telles que Vidéotron, Télébec, le Fonds de solidarité FTQ et l’Université du Québec ; Agit depuis 2010 à titre de consultant et concepteur pour des agences et des clients directs sur des comptes tels que Lafond, Convectair, Bureau du design de la Ville de Montréal, Bernard & Fabien Assurances, Air Inuit, Mobilia et Université de Montréal."
     }
-  ]
+  ],
 };

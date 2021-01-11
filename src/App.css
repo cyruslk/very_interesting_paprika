@@ -30,7 +30,6 @@
 	margin-left: 10px;
 }
 
-
 .main_vertical_container_inner:first-child{
   margin-right: 20px;
 }
@@ -47,9 +46,6 @@
   display: flex;
 }
 
-body {
-  height: 2394px;
-}
 
 .main_vertical_container .main_vertical_container_inner {
   display: inline-flex;
@@ -85,6 +81,25 @@ body {
 	font-size: 75px;
 }
 
+.text_container{
+	margin-left: 10px;
+	margin-top: 20px;
+}
+
+.text_container h1{
+	font-size: 33px;
+	font-weight: 100;
+	font-family: 'NHaasGroteskDSPro';
+	width: 85%;
+}
+
+.text_container p{
+	margin-top: 20px;
+	font-size: 23px;
+	font-weight: 100;
+	font-family: 'NHaasGroteskDSPro';
+	width: 85%;
+}
 
 @media (max-width: 600px) {
 

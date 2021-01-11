@@ -81,7 +81,7 @@ class Desktop extends React.Component {
 
     let mockData = this.state.mock_data;
 
-    let dataToDivs = mockData.entries.map((ele, index) => {
+    let dataToDivs = mockData.entriesImgDesktop.map((ele, index) => {
 
       let divID = `container_div_${index}`;
       return (
@@ -95,8 +95,11 @@ class Desktop extends React.Component {
             </div>
             <div className="text_container">
               <h1>
-                {ele.textContent[0]}
+                  NOS « Very Interesting » SERVICES
               </h1>
+              <p>
+                On fait en sorte que les bonnes personnes fassent ce que nos clients souhaitent
+              </p>
             </div>
         </div>
       )
