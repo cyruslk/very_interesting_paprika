@@ -16,7 +16,8 @@ class Desktop extends React.Component {
       dataToDivs: null,
       mockDataTextSubArrays: null,
       originalImageHeight: null,
-      originalImageStretch: null
+      originalImageStretch: null,
+      originalImageStretchArray: []
     };
   }
 
@@ -61,11 +62,48 @@ class Desktop extends React.Component {
   componentDidUpdate(prevProps, prevState) {
 
     let counter = this.state.counter;
+    let selectedDivId = this.state.selectedDivId;
+
     let divTextH1 = [...document.getElementsByClassName('div_text_h1')];
     let divTextP = [...document.getElementsByClassName('div_text_p')];
 
     let mockDataText = this.state.mockData.entriesText;
 
+    if(selectedDivId !== prevState.selectedDivId){
+
+      if(selectedDivId === 0){
+
+        console.log(this.state.originalImageStretch, "here");
+
+        let divID = `container_div_${1}`;
+        let imgContainer = document.querySelector(`#${divID}`);
+        let img = document.querySelector(`#${divID} img`);
+
+        // to optimze;
+        let originalImageStretch = this.state.originalImageStretchArray[0];
+
+        img.style.transform = `scaleY(${originalImageStretch})`;
+        let newImgContainerHeight = img.getBoundingClientRect().height;
+        imgContainer.style.height = newImgContainerHeight + "px";
+
+
+      }
+      if(selectedDivId === 1){
+
+        let divID = `container_div_${0}`;
+        let imgContainer = document.querySelector(`#${divID}`);
+        let img = document.querySelector(`#${divID} img`);
+
+        // to optimze;
+        let originalImageStretch = this.state.originalImageStretchArray[0];
+
+        img.style.transform = `scaleY(${originalImageStretch})`;
+        let newImgContainerHeight = img.getBoundingClientRect().height;
+        imgContainer.style.height = newImgContainerHeight + "px";
+
+      }
+
+    }
 
 
 
@@ -126,13 +164,12 @@ class Desktop extends React.Component {
             ele.innerHTML = mockDataText[5].description
           })
         }
-        
+
 
       }
 
 
     }
-
 
 
   handleImageLoaded = (divID) => {
@@ -144,8 +181,19 @@ class Desktop extends React.Component {
       let imgContainer = document.querySelector(`#${divID}`);
       let img = document.querySelector(`#${divID} img`);
 
+      let aligningSecondDiv = this.defineValueFromPorcentage(2, viewportHeight);
+
+
       let originalImageHeight = img.getBoundingClientRect().height;
-      let originalImageStretch = viewportHeight/originalImageHeight;
+
+      let originalImageStretch = (viewportHeight + 1.4*aligningSecondDiv)/originalImageHeight;
+
+
+      // to optimize;
+      this.setState({
+        originalImageStretchArray: [...this.state.originalImageStretchArray, originalImageStretch]
+      })
+
 
       imgContainer.style.height = viewportHeight + "px";
       img.style.transform = `scaleY(${originalImageStretch})`;
@@ -230,10 +278,6 @@ class Desktop extends React.Component {
     if (numberOfPixelScrolled > 0
       && numberOfPixelScrolled < viewportHeight) {
 
-        this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
-
-
         this.setState({
           counter: 0,
           selectedDivId: 0,
@@ -242,16 +286,10 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "up");
         })
-
-        console.log("Dans une économie de l’attention, il faut se démarquer.");
-
-
     }
 
     if (numberOfPixelScrolled > viewportHeight
       && numberOfPixelScrolled < viewportHeight*2) {
-
-        this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
 
 
         this.setState({
@@ -262,18 +300,10 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "down");
         })
-
-        console.log("Dans une économie de l’attention, il faut se démarquer.");
-
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*2
       && numberOfPixelScrolled < viewportHeight*3) {
-
-         // reseting the height of the first div;
-       this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
-
 
         this.setState({
           counter: 2,
@@ -283,18 +313,10 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "up");
         })
-
-        console.log("Pour rendre nos clients «Very Interesting», on combine data et Dada.");
-
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*3
       && numberOfPixelScrolled < viewportHeight*4) {
-
-
-        this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
 
         this.setState({
           counter: 3,
@@ -304,17 +326,10 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "down");
         })
-
-        console.log("Pour rendre nos clients «Very Interesting», on combine data et Dada.");
-
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*4
       && numberOfPixelScrolled < viewportHeight*5) {
-
-        this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
-
 
         this.setState({
           counter: 4,
@@ -324,18 +339,10 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "up");
         })
-
-        console.log("TOUT LE MONDE N’EN A QUE POUR LES DONNÉES.");
-
-
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*5
       && numberOfPixelScrolled < viewportHeight*6) {
-
-        this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
 
         this.setState({
           counter: 5,
@@ -345,16 +352,10 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "down");
         })
-
-        console.log("TOUT LE MONDE N’EN A QUE POUR LES DONNÉES.");
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*6
       && numberOfPixelScrolled < viewportHeight*7) {
-
-        this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
-
 
         this.setState({
           counter: 6,
@@ -364,16 +365,10 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "up");
         })
-
-        console.log("« Very Interesting » ajoute un élément de surprise, de joie, d’incongru.");
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*7
       && numberOfPixelScrolled < viewportHeight*8) {
-
-        this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
 
         this.setState({
           counter: 7,
@@ -383,16 +378,10 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "down");
         })
-
-        console.log("« Very Interesting » ajoute un élément de surprise, de joie, d’incongru.");
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*8
       && numberOfPixelScrolled < viewportHeight*9) {
-
-        this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
-
 
         this.setState({
           counter: 8,
@@ -403,16 +392,10 @@ class Desktop extends React.Component {
           this.handleAnimation(counter, selectedDivId, "up");
         })
 
-        console.log("NOS « Very Interesting » SERVICES");
-
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*9
       && numberOfPixelScrolled < viewportHeight*10) {
-
-        this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
 
         this.setState({
           counter: 9,
@@ -423,15 +406,10 @@ class Desktop extends React.Component {
           this.handleAnimation(counter, selectedDivId, "down");
         })
 
-        console.log("NOS « Very Interesting » SERVICES");
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*10
       && numberOfPixelScrolled < viewportHeight*11) {
-
-        this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
-
 
         this.setState({
           counter: 10,
@@ -441,15 +419,10 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "up");
         })
-
-        console.log("Ciblage etx.");
     }
 
     if (numberOfPixelScrolled > viewportHeight*11
       && numberOfPixelScrolled < viewportHeight*12) {
-
-        this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
 
         this.setState({
           counter: 11,
@@ -459,15 +432,10 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "down");
         })
-
-        console.log("Ciblage etx.");
     }
 
     if (numberOfPixelScrolled > viewportHeight*12
       && numberOfPixelScrolled < viewportHeight*13) {
-
-        this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
-
 
         this.setState({
           counter: 11,
@@ -478,8 +446,6 @@ class Desktop extends React.Component {
           this.handleAnimation(counter, 0, "up");
           this.handleAnimation(counter, selectedDivId, "up");
         })
-
-        console.log("000 etx.");
     }
 
 
@@ -583,6 +549,7 @@ class Desktop extends React.Component {
 
   handleResetPreviousDivHeightUp = (id) => {
 
+
     let scrollDirection = this.state.scrollDirection;
 
     if(scrollDirection === "down"){
@@ -603,8 +570,9 @@ class Desktop extends React.Component {
 
       let imgContainer = document.querySelector(`#${divID}`);
       let img = document.querySelector(`#${divID} img`);
-      let originalImageStretch = this.state.originalImageStretch;
 
+
+      let originalImageStretch = this.state.originalImageStretch;
       img.style.transform = `scaleY(${originalImageStretch})`;
       let newImgContainerHeight = img.getBoundingClientRect().height;
       imgContainer.style.height = newImgContainerHeight + "px";
