@@ -112,6 +112,11 @@ ul{
     width: 50%;
   }
 
+	.main_vertical_container_inner:first-child,
+	#container_div_0 {
+		margin: 0;
+	}
+
   .text_container{
     font-size: 6vw;
   }

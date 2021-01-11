@@ -1,5 +1,5 @@
 import React from "react";
-import mock_data from "./mock_data.js";
+import mockData from "./mock_data.js";
 import "./App.css";
 
 class Desktop extends React.Component {
@@ -12,8 +12,9 @@ class Desktop extends React.Component {
       scrollDirection: null,
       updatedHeightOfPage: null,
       viewportHeight: null,
-      mock_data: null,
+      mockData: null,
       dataToDivs: null,
+      mockDataTextSubArrays: null,
       originalImageHeight: null,
       originalImageStretch: null
     };
@@ -27,8 +28,6 @@ class Desktop extends React.Component {
 
     let viewportHeight = window.innerHeight;
 
-    // 6 here is the number of sections, to be redefined later;
-    // +1 so that it can get the viewport;
     let updatedHeightOfPage = viewportHeight*14;
     document.body.style.height = `${updatedHeightOfPage}px`;
 
@@ -36,11 +35,104 @@ class Desktop extends React.Component {
     this.setState({
       updatedHeightOfPage,
       viewportHeight,
-      mock_data,
+      mockData,
     }, () => {
-      this.renderDataToDivs();
+
+      let mockDataText = this.state.mockData.entriesText;
+
+
+      let mockDataTextSubArrays = [
+          mockDataText.slice(0, 2),
+          mockDataText.slice(2, 4),
+          mockDataText.slice(4, 6),
+          mockDataText.slice(6, 8),
+          mockDataText.slice(9,10),
+      ];
+
+      this.setState({
+        mockDataTextSubArrays
+      }, () => {
+        this.renderDataToDivs();
+      })
     })
-  }
+  };
+
+
+  componentDidUpdate(prevProps, prevState) {
+
+    let counter = this.state.counter;
+    let divTextH1 = [...document.getElementsByClassName('div_text_h1')];
+    let divTextP = [...document.getElementsByClassName('div_text_p')];
+
+    let mockDataText = this.state.mockData.entriesText;
+
+
+
+
+      if (counter !== prevState.counter) {
+
+        if(counter >= 0 && counter < 2){
+
+
+          divTextH1.map((ele, index) => {
+            ele.innerHTML = mockDataText[0].headlines
+          })
+          divTextP.map((ele, index) => {
+            ele.innerHTML = ""
+          })
+        }
+
+        if(counter >= 2 && counter < 4){
+          divTextH1.map((ele, index) => {
+            ele.innerHTML = mockDataText[1].headlines
+          })
+          divTextP.map((ele, index) => {
+            ele.innerHTML = mockDataText[1].description
+          })
+        }
+
+        if(counter >= 4 && counter < 6){
+          divTextH1.map((ele, index) => {
+            ele.innerHTML = mockDataText[2].headlines
+          })
+          divTextP.map((ele, index) => {
+            ele.innerHTML = mockDataText[2].description
+          })
+        }
+
+        if(counter >= 6 && counter < 8){
+          divTextH1.map((ele, index) => {
+            ele.innerHTML = mockDataText[3].headlines
+          })
+          divTextP.map((ele, index) => {
+            ele.innerHTML = mockDataText[3].description
+          })
+        }
+
+        if(counter >= 8 && counter < 10){
+          divTextH1.map((ele, index) => {
+            ele.innerHTML = mockDataText[4].headlines
+          })
+          divTextP.map((ele, index) => {
+            ele.innerHTML = mockDataText[4].description
+          })
+        }
+
+        if(counter >= 10 && counter < 12){
+          divTextH1.map((ele, index) => {
+            ele.innerHTML = mockDataText[5].headlines
+          })
+          divTextP.map((ele, index) => {
+            ele.innerHTML = mockDataText[5].description
+          })
+        }
+        
+
+      }
+
+
+    }
+
 
 
   handleImageLoaded = (divID) => {
@@ -70,7 +162,7 @@ class Desktop extends React.Component {
 
   renderDataToDivs = () => {
 
-    let mockData = this.state.mock_data;
+    let mockData = this.state.mockData;
 
     let dataToDivs = mockData.entriesMobile.map((ele, index) => {
 
@@ -85,7 +177,12 @@ class Desktop extends React.Component {
               />
             </div>
             <div className="text_container">
-              {ele.textContent[0]}
+              <h1 className="div_text_h1">
+                  Dans une économie de l’attention, il faut se démarquer.
+              </h1>
+              <p className="div_text_p">
+
+              </p>
             </div>
         </div>
       )
@@ -146,6 +243,8 @@ class Desktop extends React.Component {
           this.handleAnimation(counter, selectedDivId, "up");
         })
 
+        console.log("Dans une économie de l’attention, il faut se démarquer.");
+
 
     }
 
@@ -163,6 +262,9 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "down");
         })
+
+        console.log("Dans une économie de l’attention, il faut se démarquer.");
+
 
     }
 
@@ -182,6 +284,7 @@ class Desktop extends React.Component {
           this.handleAnimation(counter, selectedDivId, "up");
         })
 
+        console.log("Pour rendre nos clients «Very Interesting», on combine data et Dada.");
 
 
     }
@@ -202,6 +305,8 @@ class Desktop extends React.Component {
           this.handleAnimation(counter, selectedDivId, "down");
         })
 
+        console.log("Pour rendre nos clients «Very Interesting», on combine data et Dada.");
+
 
     }
 
@@ -219,6 +324,8 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "up");
         })
+
+        console.log("TOUT LE MONDE N’EN A QUE POUR LES DONNÉES.");
 
 
 
@@ -238,6 +345,9 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "down");
         })
+
+        console.log("TOUT LE MONDE N’EN A QUE POUR LES DONNÉES.");
+
     }
 
     if (numberOfPixelScrolled > viewportHeight*6
@@ -255,6 +365,8 @@ class Desktop extends React.Component {
           this.handleAnimation(counter, selectedDivId, "up");
         })
 
+        console.log("« Very Interesting » ajoute un élément de surprise, de joie, d’incongru.");
+
     }
 
     if (numberOfPixelScrolled > viewportHeight*7
@@ -271,6 +383,9 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "down");
         })
+
+        console.log("« Very Interesting » ajoute un élément de surprise, de joie, d’incongru.");
+
     }
 
     if (numberOfPixelScrolled > viewportHeight*8
@@ -287,6 +402,8 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "up");
         })
+
+        console.log("NOS « Very Interesting » SERVICES");
 
 
     }
@@ -305,6 +422,9 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "down");
         })
+
+        console.log("NOS « Very Interesting » SERVICES");
+
     }
 
     if (numberOfPixelScrolled > viewportHeight*10
@@ -321,7 +441,47 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "up");
         })
+
+        console.log("Ciblage etx.");
     }
+
+    if (numberOfPixelScrolled > viewportHeight*11
+      && numberOfPixelScrolled < viewportHeight*12) {
+
+        this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
+
+
+        this.setState({
+          counter: 11,
+          selectedDivId: 1
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          this.handleAnimation(counter, selectedDivId, "down");
+        })
+
+        console.log("Ciblage etx.");
+    }
+
+    if (numberOfPixelScrolled > viewportHeight*12
+      && numberOfPixelScrolled < viewportHeight*13) {
+
+        this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
+
+
+        this.setState({
+          counter: 11,
+          selectedDivId: 1
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          this.handleAnimation(counter, 0, "up");
+          this.handleAnimation(counter, selectedDivId, "up");
+        })
+
+        console.log("000 etx.");
+    }
+
 
   };
 
@@ -405,7 +565,6 @@ class Desktop extends React.Component {
         let previousDivId = "1";
       }
 
-
       let divID = `container_div_${previousDivId}`;
 
       let imgContainer = document.querySelector(`#${divID}`);
@@ -430,8 +589,16 @@ class Desktop extends React.Component {
       return null;
     }else{
 
-
       let previousDivId = id;
+
+      if(id === "1"){
+        let previousDivId = "0";
+
+      }else{
+        let previousDivId = "1";
+      }
+
+
       let divID = `container_div_${previousDivId}`;
 
       let imgContainer = document.querySelector(`#${divID}`);

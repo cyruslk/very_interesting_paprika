@@ -49,7 +49,6 @@ class Desktop extends React.Component {
         mockDataTextSubArrays
       }, () => {
         this.renderDataToDivs();
-
       })
     })
   };
