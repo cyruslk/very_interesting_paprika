@@ -80,7 +80,7 @@ class Desktop extends React.Component {
         let img = document.querySelector(`#${divID} img`);
 
         // to optimze;
-        let originalImageStretch = this.state.originalImageStretchArray[0];
+        let originalImageStretch = 25;
 
         img.style.transform = `scaleY(${originalImageStretch})`;
         let newImgContainerHeight = img.getBoundingClientRect().height;
@@ -95,7 +95,7 @@ class Desktop extends React.Component {
         let img = document.querySelector(`#${divID} img`);
 
         // to optimze;
-        let originalImageStretch = this.state.originalImageStretchArray[0];
+        let originalImageStretch = 25;
 
         img.style.transform = `scaleY(${originalImageStretch})`;
         let newImgContainerHeight = img.getBoundingClientRect().height;

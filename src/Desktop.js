@@ -658,7 +658,23 @@ class Desktop extends React.Component {
      }
      return (
        <div className="info_body_container">
-            fvdv
+          <div className="info_body_container_headline">
+            <h1>« Very Interesting » rend ses clients plus intéressants, plus remarqués, plus sollicités</h1>
+          </div>
+          <div className="info_body_container_ctas">
+            <h1>Devenir une Cie <br /> « Very interesting » ?</h1>
+            <div className="info_body_container_ctas_spans">
+                <span>
+                  APPELEZ
+                </span>
+                <span>
+                  ÉCRIVEZ
+                </span>
+            </div>
+          </div>
+          <div className="info_body_container_end_para">
+            <h1>Voir des choses <br /> « Very interesting » ?</h1>
+          </div>
        </div>
      )
    }

@@ -46,4 +46,12 @@ const mock_data = module.exports = {
       description: "Co-fondateur de l’agence Tam-Tam Publicité; A été concepteur-rédacteur, directeur de création et président; Impliqué sur des marques telles que Vidéotron, Télébec, le Fonds de solidarité FTQ et l’Université du Québec ; Agit depuis 2010 à titre de consultant et concepteur pour des agences et des clients directs sur des comptes tels que Lafond, Convectair, Bureau du design de la Ville de Montréal, Bernard & Fabien Assurances, Air Inuit, Mobilia et Université de Montréal."
     }
   ],
+  entriesInfoText: [
+    {
+      text: "« Very Interesting » rend ses clients plus intéressants, plus remarqués, plus sollicités"
+    },
+    {
+      text: "Devenir une Cie « Very interesting » ?"
+    }
+  ]
 };
