@@ -1,5 +1,5 @@
 import React from "react";
-import mock_data from "./mock_data.js";
+import mockData from "./mock_data.js";
 import "./App.css";
 
 class Desktop extends React.Component {
@@ -12,11 +12,12 @@ class Desktop extends React.Component {
       scrollDirection: null,
       updatedHeightOfPage: null,
       viewportHeight: null,
-      mock_data: null,
+      mockData: null,
+      mockDataTextSubArrays: null,
       dataToDivs: null,
       originalImageHeight: null,
       originalImageStretch: null,
-      isTriggeredInfoContent: false
+      isTriggeredInfoContent: false,
     };
   }
 
@@ -27,20 +28,82 @@ class Desktop extends React.Component {
 
 
     let viewportHeight = window.innerHeight;
-
-    // 6 here is the number of sections, to be redefined later;
-    // +1 so that it can get the viewport;
     let updatedHeightOfPage = viewportHeight*15;
     document.body.style.height = `${updatedHeightOfPage}px`;
 
     this.setState({
       updatedHeightOfPage,
       viewportHeight,
-      mock_data
+      mockData
     }, () => {
-      this.renderDataToDivs();
+
+      let mockDataText = this.state.mockData.entriesText;
+
+      let mockDataTextSubArrays = [
+          mockDataText.slice(0, 3),
+          mockDataText.slice(3, 6),
+          mockDataText.slice(6, 9),
+      ];
+
+      this.setState({
+        mockDataTextSubArrays
+      }, () => {
+        this.renderDataToDivs();
+
+      })
     })
-  }
+  };
+
+
+  componentDidUpdate(prevProps, prevState) {
+
+    let counter = this.state.counter;
+    let divTextH1 = [...document.getElementsByClassName('div_text_h1')];
+    let divTextP = [...document.getElementsByClassName('div_text_p')];
+
+
+    let mockDataTextSubArrays = this.state.mockDataTextSubArrays;
+
+
+      if (counter !== prevState.counter) {
+        if(counter >= 0 && counter < 6){
+
+          // changed via counter; to optimize;
+          let mockDataTextSubArraysFirstRow = mockDataTextSubArrays[0];
+
+          divTextH1.map((ele, index) => {
+            ele.innerHTML = mockDataTextSubArraysFirstRow[index].headlines
+          })
+          divTextP.map((ele, index) => {
+            ele.innerHTML = mockDataTextSubArraysFirstRow[index].description
+          })
+        }
+
+        if(counter >= 6 && counter < 12){
+
+          let mockDataTextSubArraysSecondRow = mockDataTextSubArrays[1];
+
+            divTextH1.map((ele, index) => {
+              ele.innerHTML = mockDataTextSubArraysSecondRow[index].headlines
+            })
+            divTextP.map((ele, index) => {
+              ele.innerHTML = mockDataTextSubArraysSecondRow[index].description
+            })
+        }
+
+        if(counter === 12){
+
+          let mockDataTextSubArraysThirdRow = mockDataTextSubArrays[2];
+
+          divTextH1.map((ele, index) => {
+            ele.innerHTML = mockDataTextSubArraysThirdRow[index].headlines
+          })
+          divTextP.map((ele, index) => {
+            ele.innerHTML = mockDataTextSubArraysThirdRow[index].description
+          })
+        }
+      }
+    }
 
 
   handleImageLoaded = (divID) => {
@@ -52,16 +115,11 @@ class Desktop extends React.Component {
       let imgContainer = document.querySelector(`#${divID}`);
       let img = document.querySelector(`#${divID} img`);
 
-
       let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
-
-
       let originalImageHeight = img.getBoundingClientRect().height;
-      // to change
-      let originalImageStretch = (viewportHeight + 1.4*aligningThirdDiv)/originalImageHeight;
 
-      // 2 px of the total viewport viewportHeight;
-      // 2 is the height of the image not stretched;
+      // to optimize;
+      let originalImageStretch = (viewportHeight + 1.4*aligningThirdDiv)/originalImageHeight;
 
 
       imgContainer.style.height = viewportHeight + "px";
@@ -71,19 +129,21 @@ class Desktop extends React.Component {
         originalImageHeight,
         originalImageStretch
       })
-
-
     })
   }
 
 
   renderDataToDivs = () => {
 
-    let mockData = this.state.mock_data;
+    let mockData = this.state.mockData;
+    let mockDataTextSubArraysFirstRow = this.state.mockDataTextSubArrays[0];
+
 
     let dataToDivs = mockData.entriesImgDesktop.map((ele, index) => {
 
       let divID = `container_div_${index}`;
+
+
       return (
         <div className="main_vertical_container_inner">
           <div id={divID}>
@@ -94,11 +154,11 @@ class Desktop extends React.Component {
               />
             </div>
             <div className="text_container">
-              <h1>
-                  NOS « Very Interesting » SERVICES
+              <h1 className="div_text_h1">
+                  {mockDataTextSubArraysFirstRow[index].headlines}
               </h1>
-              <p>
-                On fait en sorte que les bonnes personnes fassent ce que nos clients souhaitent
+              <p className="div_text_p">
+                {mockDataTextSubArraysFirstRow[index].description}
               </p>
             </div>
         </div>
@@ -113,9 +173,7 @@ class Desktop extends React.Component {
 
     let viewportHeight = window.innerHeight;
     this.setState({
-      viewportHeight,
-    }, () => {
-      // make the resize here;
+      viewportHeight
     });
   }
 
@@ -174,13 +232,11 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "down");
         })
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*2
       && numberOfPixelScrolled < viewportHeight*3) {
 
-         // reseting the height of the first div;
        this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
 
 
@@ -583,7 +639,6 @@ class Desktop extends React.Component {
      })
    }
 
-
    infoCTAStyle = () => {
      if(!this.state.isTriggeredInfoContent){
        return {
@@ -599,8 +654,13 @@ class Desktop extends React.Component {
    }
 
    renderBodyCTA = () => {
+     if(!this.state.isTriggeredInfoContent){
+       return null;
+     }
      return (
-       <div />
+       <div className="info_body_container">
+            fvdv
+       </div>
      )
    }
 

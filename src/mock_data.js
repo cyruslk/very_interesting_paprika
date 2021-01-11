@@ -14,11 +14,11 @@ const mock_data = module.exports = {
       description: null
     },
     {
-      headlines: "Pour rendre nos clients «Very Interesting», on combine data et Dada. - Hum… Intéressant… « Very »",
+      headlines: "Pour rendre nos clients «Very Interesting», on combine data et Dada. <br /><br /> - Hum… Intéressant… <br /> « Very »",
       description: null
     },
     {
-      headlines: "TOUT LE MONDE N’EN A QUE POUR LES DONNÉES. MAIS LES DONNÉES EN ELLES-MÊMES NE SUFFISENT PAS.",
+      headlines: "TOUT LE MONDE N’EN A QUE POUR LES DONNÉES. <br /><br /> MAIS LES DONNÉES EN ELLES-MÊMES NE SUFFISENT PAS.",
       description: null
     },
     {
@@ -30,19 +30,19 @@ const mock_data = module.exports = {
       description: "On fait en sorte que les bonnes personnes fassent ce que nos clients souhaitent"
     },
     {
-      headlines: "Ciblage Analyse de performance Refonte de l’expérience de marque (design, rédaction) Création de contenu Gardiennage d’animaux de compagnie.",
+      headlines: "<ul><li>Ciblage</li></li>Analyse de performance</li><li>Refonte de l’expérience de marque (design, rédaction)</li><li>Création de contenu</li><li>Gardiennage d’animaux de compagnie.</li></ul>",
       description: null
     },
     {
-      headlines: "Rencontrez des gens « Very Interesting »",
+      headlines: "Rencontrez des gens <br /> « Very Interesting »",
       description: null
     },
     {
-      headlines: "Harry Wakefield",
+      headlines: "Harry <br /> Wakefield",
       description: "A mené une carrière en agence (Cossette, Taxi) et du côté client (Bell, Sympatico, Téléglobe, Pages jaunes); Expérience en communication et en marketing de produits; Spécialiste des outils CRM, web et médias sociaux; Agit depuis 2009 à titre de conseiller en marketing numérique pour des entreprises de technologie de taille moyenne en Europe et au Canada dont TelcoBridges, une entreprise d’ingénierie logicielle et d’équipement de télécommunication."
     },
     {
-      headlines: "Pierre Laramée",
+      headlines: "Pierre <br />  Laramée",
       description: "Co-fondateur de l’agence Tam-Tam Publicité; A été concepteur-rédacteur, directeur de création et président; Impliqué sur des marques telles que Vidéotron, Télébec, le Fonds de solidarité FTQ et l’Université du Québec ; Agit depuis 2010 à titre de consultant et concepteur pour des agences et des clients directs sur des comptes tels que Lafond, Convectair, Bureau du design de la Ville de Montréal, Bernard & Fabien Assurances, Air Inuit, Mobilia et Université de Montréal."
     }
   ],
