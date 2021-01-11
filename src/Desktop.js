@@ -15,7 +15,8 @@ class Desktop extends React.Component {
       mock_data: null,
       dataToDivs: null,
       originalImageHeight: null,
-      originalImageStretch: null
+      originalImageStretch: null,
+      isTriggeredInfoContent: false
     };
   }
 
@@ -29,7 +30,7 @@ class Desktop extends React.Component {
 
     // 6 here is the number of sections, to be redefined later;
     // +1 so that it can get the viewport;
-    let updatedHeightOfPage = viewportHeight*14;
+    let updatedHeightOfPage = viewportHeight*15;
     document.body.style.height = `${updatedHeightOfPage}px`;
 
     this.setState({
@@ -51,8 +52,17 @@ class Desktop extends React.Component {
       let imgContainer = document.querySelector(`#${divID}`);
       let img = document.querySelector(`#${divID} img`);
 
+
+      let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
+
+
       let originalImageHeight = img.getBoundingClientRect().height;
-      let originalImageStretch = viewportHeight/originalImageHeight;
+      // to change
+      let originalImageStretch = (viewportHeight + 1.4*aligningThirdDiv)/originalImageHeight;
+
+      // 2 px of the total viewport viewportHeight;
+      // 2 is the height of the image not stretched;
+
 
       imgContainer.style.height = viewportHeight + "px";
       img.style.transform = `scaleY(${originalImageStretch})`;
@@ -84,7 +94,9 @@ class Desktop extends React.Component {
               />
             </div>
             <div className="text_container">
-              {ele.textContent[0]}
+              <h1>
+                {ele.textContent[0]}
+              </h1>
             </div>
         </div>
       )
@@ -93,7 +105,6 @@ class Desktop extends React.Component {
       dataToDivs
     })
   }
-
 
   resizeHandler = () => {
 
@@ -104,7 +115,6 @@ class Desktop extends React.Component {
       // make the resize here;
     });
   }
-
 
 
   // scrollHandler here;
@@ -133,7 +143,6 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight) {
 
         this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
 
 
         this.setState({
@@ -322,7 +331,48 @@ class Desktop extends React.Component {
         })
     }
 
+    if (numberOfPixelScrolled > viewportHeight*11
+      && numberOfPixelScrolled < viewportHeight*12) {
+
+        this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
+
+
+        this.setState({
+          counter: 11,
+          selectedDivId: 2
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          this.handleAnimation(counter, selectedDivId, "down");
+        })
+    }
+
+
+    if (numberOfPixelScrolled > viewportHeight*12
+      && numberOfPixelScrolled < viewportHeight*13) {
+
+        this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
+
+
+        this.setState({
+          counter: 12,
+          selectedDivId: 2
+        }, () => {
+          let counter = this.state.counter;
+          let selectedDivId = this.state.selectedDivId;
+          this.handleAnimation(counter, 0, "up");
+          this.handleAnimation(counter, 1, "up");
+          this.handleAnimation(counter, 2, "up");
+
+        })
+    }
+
+
   };
+
+
+
+
 
 
   handleAnimation = (counter, selectedDivId, animDirection, single) => {
@@ -361,7 +411,20 @@ class Desktop extends React.Component {
       imgContainer.style.height = newImgContainerHeight + "px";
 
       if(translateYPorcentageUp < 1){
-        img.style.transform = `scaleY(1)`;
+
+
+        // need to fix later;
+        if(selectedDivId === 0){
+          img.style.transform = `scaleY(1.035)`;
+        }
+        if(selectedDivId === 1){
+          img.style.transform = `scaleY(1)`;
+        }
+        if(selectedDivId === 2){
+          img.style.transform = `scaleY(1.04)`;
+        }
+
+
         let newImgContainerHeight = img.getBoundingClientRect().height;
         imgContainer.style.height = newImgContainerHeight + "px";
       }
@@ -375,7 +438,19 @@ class Desktop extends React.Component {
       imgContainer.style.height = newImgContainerHeight + "px";
 
       if(translateYPorcentageDown < 1){
-        img.style.transform = `scaleY(1)`;
+
+        // need to fix later;
+        if(selectedDivId === 0){
+          img.style.transform = `scaleY(1.035)`;
+        }
+        if(selectedDivId === 1){
+          img.style.transform = `scaleY(1)`;
+        }
+        if(selectedDivId === 2){
+          img.style.transform = `scaleY(1.04)`;
+        }
+
+
         let newImgContainerHeight = img.getBoundingClientRect().height;
         imgContainer.style.height = newImgContainerHeight + "px";
       }
@@ -475,9 +550,63 @@ class Desktop extends React.Component {
      }
    };
 
+   renderInfo = () => {
+     return (
+       <div className="info_main_container">
+          {this.renderInfoCTA()}
+          {this.renderBodyCTA()}
+       </div>
+     )
+   }
+
+
+   renderInfoCTA = () => {
+     return (
+       <div
+          className="info_cta_container"
+          onClick={this.triggerInfoContent}
+          style={this.infoCTAStyle()}>
+          <span>
+            +
+          </span>
+       </div>
+     )
+   };
+
+
+   triggerInfoContent = () => {
+     this.setState({
+       isTriggeredInfoContent: !this.state.isTriggeredInfoContent
+     })
+   }
+
+
+   infoCTAStyle = () => {
+     if(!this.state.isTriggeredInfoContent){
+       return {
+         transform: "rotate(0deg)",
+         transition: "0.1s"
+       }
+     }else{
+       return {
+         transform: "rotate(45deg)",
+         transition: "0.1s"
+       }
+     }
+   }
+
+   renderBodyCTA = () => {
+     return (
+       <div />
+     )
+   }
+
+
+
   render() {
     return (
       <div className="main_vertical_container">
+        {this.renderInfo()}
         {this.renderDivsToDom()}
       </div>
     );

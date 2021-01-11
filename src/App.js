@@ -9,45 +9,52 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      viewportHeight: null
+      viewportWidth: null
     };
   }
 
   componentDidMount(){
 
     window.addEventListener("resize", this.resizeHandler);
-    let viewportHeight = window.innerHeight;
-    this.setState({
-      viewportHeight
-    });
+    let viewportWidth = window.innerWidth;
 
+    this.setState({
+      viewportWidth
+    });
   }
 
 
   resizeHandler = () => {
 
-    let viewportHeight = window.innerHeight;
+    let viewportWidth = window.innerWidth;
     this.setState({
-      viewportHeight
+      viewportWidth
     });
 
   }
 
   render() {
 
-    let viewportHeight = this.state.viewportHeight;
-    if(!viewportHeight){
+    let viewportWidth = this.state.viewportWidth;
+    if(!viewportWidth){
       return "loading"
     }
 
-    return (
-      <div>
-        {window.innerWidth > 550 ?
-          <Desktop /> :
+    console.log(viewportWidth);
+
+    if(viewportWidth > 600){
+      return (
+        <div>
+          <Desktop />
+        </div>
+      );
+    }else{
+      return (
+        <div>
           <Mobile />
-        }
-      </div>
-    );
+        </div>
+      );
+    }
   }
 }
 

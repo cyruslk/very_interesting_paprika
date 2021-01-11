@@ -1,9 +1,15 @@
+@font-face {
+	font-family: 'NHaasGroteskDSPro';
+	src: url('fonts/NHaasGroteskDSPro-65Md.otf'); /* IE9 Compat Modes */
+}
+
+
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-
 
 /* .horizontal_master_container{
   display: inline-flex;
@@ -11,11 +17,34 @@
   justify-content: center;
 } */
 
+/* might change soon  */
+#container_div_0{
+	margin-right: 10px;
+}
+
+#container_div_1{
+	margin-left: 10px;
+}
+
+#container_div_2{
+	margin-left: 10px;
+}
+
+
+.main_vertical_container_inner:first-child{
+  margin-right: 20px;
+}
+
+.main_vertical_container_inner:first-child{
+  margin-right: 20px;
+}
+
 /* Your css unchanged */
 .main_vertical_container {
   display: block;
   position: fixed;
   width: 100vw;
+  display: flex;
 }
 
 body {
@@ -31,4 +60,40 @@ body {
 .main_vertical_container img {
   width: 100%;
   transform-origin: top;
+}
+
+.info_main_container{
+	position: fixed;
+	padding: 34px;
+	z-index: 100;
+}
+
+
+.info_cta_container{
+	width: 75px;
+	height: 75px;
+	border-radius: 50%;
+	background-color: #EBFF00;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.info_cta_container span{
+	margin: 0;
+	font-family: NHaasGroteskDSPro;
+	font-size: 75px;
+}
+
+
+@media (max-width: 600px) {
+
+  .main_vertical_container
+  .main_vertical_container_inner{
+    width: 50%;
+  }
+
+  .text_container{
+    font-size: 6vw;
+  }
 }
