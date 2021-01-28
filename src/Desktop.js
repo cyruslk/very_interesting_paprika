@@ -67,7 +67,6 @@ class Desktop extends React.Component {
       if (counter !== prevState.counter) {
         if(counter >= 0 && counter < 6){
 
-          // changed via counter; to optimize;
           let mockDataTextSubArraysFirstRow = mockDataTextSubArrays[0];
 
           divTextH1.map((ele, index) => {
@@ -418,10 +417,9 @@ class Desktop extends React.Component {
         }, () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, 0, "up");
-          this.handleAnimation(counter, 1, "up");
-          this.handleAnimation(counter, 2, "up");
-
+          this.handleAnimation(counter, 0, "up", true);
+          this.handleAnimation(counter, 1, "up", true);
+          this.handleAnimation(counter, 2, "up", true);
         })
     }
 
@@ -433,7 +431,7 @@ class Desktop extends React.Component {
 
 
 
-  handleAnimation = (counter, selectedDivId, animDirection, single) => {
+  handleAnimation = (counter, selectedDivId, animDirection, all) => {
 
     // to optimze;
     // this.handleDivTextChange(counter)
@@ -446,78 +444,151 @@ class Desktop extends React.Component {
     let originalImageStretch = this.state.originalImageStretch;
 
 
-    let scrolledPorcentage = this.definePorcentage(
-      (numberOfPixelScrolled - this.state.counter * viewportHeight),
-      viewportHeight)
-    ;
-    let remainingScrollPorcentage = 100-scrolledPorcentage;
+    if(!all){
 
-    let translateYPorcentageUp = this.defineValueFromPorcentage(
-        remainingScrollPorcentage,
-        originalImageStretch
-    );
+          let scrolledPorcentage = this.definePorcentage(
+            (numberOfPixelScrolled - this.state.counter * viewportHeight),
+            viewportHeight)
+          ;
+          let remainingScrollPorcentage = 100-scrolledPorcentage;
+          let translateYPorcentageUp = this.defineValueFromPorcentage(
+              remainingScrollPorcentage,
+              originalImageStretch
+          );
+          let translateYPorcentageDown = this.defineValueFromPorcentage(
+              scrolledPorcentage,
+              originalImageStretch
+          );
 
-    let translateYPorcentageDown = this.defineValueFromPorcentage(
-        scrolledPorcentage,
-        originalImageStretch
-    );
+          if(animDirection === "up"){
+            img.style.transform = `scaleY(${translateYPorcentageUp})`;
+            let newImgContainerHeight = img.getBoundingClientRect().height;
+            imgContainer.style.height = newImgContainerHeight + "px";
 
-    if(animDirection === "up"){
+              if(translateYPorcentageUp < 1){
+                if(selectedDivId === 0){
+                  img.style.transform = `scaleY(1.035)`;
+                }
+                if(selectedDivId === 1){
+                  img.style.transform = `scaleY(1)`;
+                }
+                if(selectedDivId === 2){
+                  img.style.transform = `scaleY(1.04)`;
+                }
 
-      img.style.transform = `scaleY(${translateYPorcentageUp})`;
-      let newImgContainerHeight = img.getBoundingClientRect().height;
-      imgContainer.style.height = newImgContainerHeight + "px";
+              let newImgContainerHeight = img.getBoundingClientRect().height;
+              imgContainer.style.height = newImgContainerHeight + "px";
+            }
+          }
 
-      if(translateYPorcentageUp < 1){
+          if(animDirection === "down"){
+            img.style.transform = `scaleY(${translateYPorcentageDown})`;
+            let newImgContainerHeight = img.getBoundingClientRect().height;
+            imgContainer.style.height = newImgContainerHeight + "px";
+
+            if(translateYPorcentageDown < 1){
+              if(selectedDivId === 0){
+                img.style.transform = `scaleY(1.035)`;
+              }
+              if(selectedDivId === 1){
+                img.style.transform = `scaleY(1)`;
+              }
+              if(selectedDivId === 2){
+                img.style.transform = `scaleY(1.04)`;
+              }
+              let newImgContainerHeight = img.getBoundingClientRect().height;
+              imgContainer.style.height = newImgContainerHeight + "px";
+            }
+          }
+
+      }else{
+
+        let scrolledPorcentage = this.definePorcentage(
+          (numberOfPixelScrolled - this.state.counter * viewportHeight),
+          viewportHeight)
+        ;
+        let remainingScrollPorcentage = 100-scrolledPorcentage;
+        let translateYPorcentageUp = this.defineValueFromPorcentage(
+            remainingScrollPorcentage,
+            originalImageStretch
+        );
+        let translateYPorcentageDown = this.defineValueFromPorcentage(
+            scrolledPorcentage,
+            originalImageStretch
+        );
+
+        if(animDirection === "up"){
+
+          img.style.transform = `scaleY(${translateYPorcentageUp})`;
+          let newImgContainerHeight = img.getBoundingClientRect().height;
+          imgContainer.style.height = newImgContainerHeight + "px";
+
+          if(selectedDivId === 1){
+
+            console.log(typeof translateYPorcentageUp, "here");
+            let x = (translateYPorcentageUp - 0.1)
+            console.log(x, "here");
 
 
-        // need to fix later;
-        if(selectedDivId === 0){
-          img.style.transform = `scaleY(1.035)`;
+            // APPLY THE CHANGE HERE;
+
+            img.style.transform = `scaleY(${x})`;
+            let newImgContainerHeight = img.getBoundingClientRect().height;
+            imgContainer.style.height = newImgContainerHeight + "px";
+
+          }
+
+            if(translateYPorcentageUp < 1){
+              if(selectedDivId === 0){
+                img.style.transform = `scaleY(1)`;
+              }
+              if(selectedDivId === 1){
+                img.style.transform = `scaleY(0.95)`;
+              }
+              if(selectedDivId === 2){
+                img.style.transform = `scaleY(1)`;
+              }
+
+            let newImgContainerHeight = img.getBoundingClientRect().height;
+            imgContainer.style.height = newImgContainerHeight + "px";
+          }
         }
-        if(selectedDivId === 1){
-          img.style.transform = `scaleY(1)`;
-        }
-        if(selectedDivId === 2){
-          img.style.transform = `scaleY(1.04)`;
-        }
+
+        if(animDirection === "down"){
+
+          // APPLY THE CHANGE HERE;
+
+          img.style.transform = `scaleY(${translateYPorcentageDown})`;
+          let newImgContainerHeight = img.getBoundingClientRect().height;
+          imgContainer.style.height = newImgContainerHeight + "px";
 
 
-        let newImgContainerHeight = img.getBoundingClientRect().height;
-        imgContainer.style.height = newImgContainerHeight + "px";
-      }
+          if(selectedDivId === 1){
+
+            console.log(translateYPorcentageDown);
+
+            img.style.transform = `scaleY(${translateYPorcentageDown})`;
+            let newImgContainerHeight = img.getBoundingClientRect().height;
+            imgContainer.style.height = newImgContainerHeight + "px";
+
+          }
+
+          if(translateYPorcentageDown < 1){
+            if(selectedDivId === 0){
+              img.style.transform = `scaleY(1)`;
+            }
+            if(selectedDivId === 1){
+              img.style.transform = `scaleY(1)`;
+            }
+            if(selectedDivId === 2){
+              img.style.transform = `scaleY(1)`;
+            }
+            let newImgContainerHeight = img.getBoundingClientRect().height;
+            imgContainer.style.height = newImgContainerHeight + "px";
+          }
+        }
 
     }
-
-    if(animDirection === "down"){
-
-      img.style.transform = `scaleY(${translateYPorcentageDown})`;
-      let newImgContainerHeight = img.getBoundingClientRect().height;
-      imgContainer.style.height = newImgContainerHeight + "px";
-
-      if(translateYPorcentageDown < 1){
-
-        // need to fix later;
-        if(selectedDivId === 0){
-          img.style.transform = `scaleY(1.035)`;
-        }
-        if(selectedDivId === 1){
-          img.style.transform = `scaleY(1)`;
-        }
-        if(selectedDivId === 2){
-          img.style.transform = `scaleY(1.04)`;
-        }
-
-
-        let newImgContainerHeight = img.getBoundingClientRect().height;
-        imgContainer.style.height = newImgContainerHeight + "px";
-      }
-    }
-
-    if(!single){
-
-    }
-
   }
 
 

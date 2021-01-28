@@ -17,7 +17,8 @@ class Desktop extends React.Component {
       mockDataTextSubArrays: null,
       originalImageHeight: null,
       originalImageStretch: null,
-      originalImageStretchArray: []
+      originalImageStretchArray: [],
+      isTriggeredInfoContent: false
     };
   }
 
@@ -29,7 +30,7 @@ class Desktop extends React.Component {
 
     let viewportHeight = window.innerHeight;
 
-    let updatedHeightOfPage = viewportHeight*14;
+    let updatedHeightOfPage = viewportHeight*15;
     document.body.style.height = `${updatedHeightOfPage}px`;
 
 
@@ -80,7 +81,7 @@ class Desktop extends React.Component {
         let img = document.querySelector(`#${divID} img`);
 
         // to optimze;
-        let originalImageStretch = 25;
+        let originalImageStretch = 30;
 
         img.style.transform = `scaleY(${originalImageStretch})`;
         let newImgContainerHeight = img.getBoundingClientRect().height;
@@ -95,7 +96,7 @@ class Desktop extends React.Component {
         let img = document.querySelector(`#${divID} img`);
 
         // to optimze;
-        let originalImageStretch = 25;
+        let originalImageStretch = 30;
 
         img.style.transform = `scaleY(${originalImageStretch})`;
         let newImgContainerHeight = img.getBoundingClientRect().height;
@@ -165,6 +166,19 @@ class Desktop extends React.Component {
           })
         }
 
+        if(counter >= 12 && counter < 13){
+
+          let container_div_h1_0 = document.getElementById("container_div_h1_0").innerHTML =  mockDataText[7].headlines
+          let container_div_p_0 = document.getElementById("container_div_p_0").innerHTML =  mockDataText[7].description;
+
+
+          let container_div_h1_1 = document.getElementById("container_div_h1_1").innerHTML =  mockDataText[8].headlines
+          let container_div_p_1 = document.getElementById("container_div_p_1").innerHTML =  mockDataText[8].description;
+
+
+        }
+
+
 
       }
 
@@ -215,6 +229,9 @@ class Desktop extends React.Component {
     let dataToDivs = mockData.entriesMobile.map((ele, index) => {
 
       let divID = `container_div_${index}`;
+      let divIDH1 = `container_div_h1_${index}`;
+      let divIP = `container_div_p_${index}`;
+
       return (
         <div className="main_vertical_container_inner">
           <div id={divID}>
@@ -225,10 +242,14 @@ class Desktop extends React.Component {
               />
             </div>
             <div className="text_container">
-              <h1 className="div_text_h1">
+              <h1
+                id={divIDH1}
+                className="div_text_h1">
                   Dans une économie de l’attention, il faut se démarquer.
               </h1>
-              <p className="div_text_p">
+              <p
+                id={divIP}
+                className="div_text_p">
 
               </p>
             </div>
@@ -438,7 +459,7 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight*13) {
 
         this.setState({
-          counter: 11,
+          counter: 12,
           selectedDivId: 1
         }, () => {
           let counter = this.state.counter;
@@ -580,28 +601,6 @@ class Desktop extends React.Component {
 
   }
 
-
-  handleDivTextChange = (counter) => {
-
-    if (counter >= 0
-      && counter < 6) {
-        console.log("first text content here");
-    }
-
-    if (counter >= 6
-      && counter < 9) {
-        console.log("second content here");
-    }
-
-    if (counter > 9) {
-        console.log("third content here");
-    }
-
-  }
-
-
-
-
   definePorcentage = (percent, total) => {
       let porcentage = (percent/total)*100;
       return porcentage
@@ -621,9 +620,79 @@ class Desktop extends React.Component {
      }
    };
 
+
+   renderInfo = () => {
+     return (
+       <div className="info_main_container">
+          {this.renderInfoCTA()}
+          {this.renderBodyCTA()}
+       </div>
+     )
+   }
+
+
+   renderInfoCTA = () => {
+     return (
+       <div
+          className="info_cta_container"
+          onClick={this.triggerInfoContent}
+          style={this.infoCTAStyle()}>
+          <span>
+            +
+          </span>
+       </div>
+     )
+   };
+
+   triggerInfoContent = () => {
+     this.setState({
+       isTriggeredInfoContent: !this.state.isTriggeredInfoContent
+     })
+   }
+
+   infoCTAStyle = () => {
+     if(!this.state.isTriggeredInfoContent){
+       return {
+         transform: "rotate(0deg)",
+         transition: "0.1s"
+       }
+     }else{
+       return {
+         transform: "rotate(45deg)",
+         transition: "0.1s"
+       }
+     }
+   }
+
+   renderBodyCTA = () => {
+     if(!this.state.isTriggeredInfoContent){
+       return null;
+     }
+     return (
+       <div className="info_body_container">
+          <div className="info_body_container_headline">
+            <h1>« Very interesting » est une firme spécialisée en lorem ipsum lorem</h1>
+          </div>
+          <div className="info_body_container_ctas">
+            <div className="info_body_container_ctas_spans">
+                <span>
+                  EN SAVOIR PLUS
+                </span>
+            </div>
+          </div>
+          <div className="info_body_container_end_para">
+            <h1>Vous aimeriez savoir comment votre cie peut devenir « Very interesting » ?</h1>
+          </div>
+       </div>
+     )
+   }
+
+
+
   render() {
     return (
       <div className="main_vertical_container">
+        {this.renderInfo()}
         {this.renderDivsToDom()}
       </div>
     );

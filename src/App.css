@@ -162,6 +162,21 @@ ul{
     width: 50%;
   }
 
+	.info_body_container_ctas_spans span{
+		padding: 2.5vw;
+	}
+
+	.info_body_container_headline h1,
+	.info_body_container_end_para h1{
+		font-size: 25px;
+	}
+
+
+	.info_body_container{
+		width: 86vw;
+		height: 60vh;
+	}
+
 	.text_container h1{
 		font-size: 25px;
 		font-weight: 100;
