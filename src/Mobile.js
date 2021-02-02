@@ -12,178 +12,103 @@ class Desktop extends React.Component {
       scrollDirection: null,
       updatedHeightOfPage: null,
       viewportHeight: null,
+      viewportWidth: null,
       mockData: null,
       dataToDivs: null,
       mockDataTextSubArrays: null,
       originalImageHeight: null,
       originalImageStretch: null,
       originalImageStretchArray: [],
-      isTriggeredInfoContent: false
+      isTriggeredInfoContent: false,
+      imagesMobileToDiv: null
     };
   }
 
+
   componentDidMount(){
 
-    document.addEventListener("scroll", this.scrollHandler);
-    window.addEventListener("resize", this.resizeHandler);
+     document.addEventListener("scroll", this.scrollHandler);
+     window.addEventListener("resize", this.resizeHandler);
 
 
-    let viewportHeight = window.innerHeight;
-
-    let updatedHeightOfPage = viewportHeight*15;
-    document.body.style.height = `${updatedHeightOfPage}px`;
+     let viewportHeight = window.innerHeight;
+     let viewportWidth = window.innerWidth;
 
 
-    this.setState({
-      updatedHeightOfPage,
-      viewportHeight,
-      mockData,
-    }, () => {
-
-      let mockDataText = this.state.mockData.entriesText;
+     let updatedHeightOfPage = viewportHeight*15;
+     document.body.style.height = `${updatedHeightOfPage}px`;
 
 
-      let mockDataTextSubArrays = [
-          mockDataText.slice(0, 2),
-          mockDataText.slice(2, 4),
-          mockDataText.slice(4, 6),
-          mockDataText.slice(6, 8),
-          mockDataText.slice(9,10),
-      ];
+     this.setState({
+       updatedHeightOfPage,
+       viewportHeight,
+       viewportWidth,
+       mockData,
+     }, () => {
 
-      this.setState({
-        mockDataTextSubArrays
-      }, () => {
-        this.renderDataToDivs();
+       let mockDataText = this.state.mockData.entriesText;
+
+
+       let mockDataTextSubArrays = [
+           mockDataText.slice(0, 2),
+           mockDataText.slice(2, 4),
+           mockDataText.slice(4, 6),
+           mockDataText.slice(6, 8),
+           mockDataText.slice(9,10),
+       ];
+
+       this.setState({
+         mockDataTextSubArrays
+       }, () => {
+         this.renderDataToDivs();
+       })
+     })
+   };
+
+
+   renderDataToDivs = () => {
+
+      let mockData = this.state.mockData;
+      let dataToDivs = mockData.entriesMobile.map((ele, index) => {
+
+        let divID = `container_mobile_div_${index}`;
+        let divIDText = `container_mobile_text_${index}`;
+        let divIDH1 = `container_mobile_div_h1_${index}`;
+        let divIP = `container_mobile_div_p_${index}`;
+
+        return (
+          <div
+            id={divID}
+            className="img_mobile_container">
+              <div
+                  id={divIDText}
+                  className="mobile_text_content">
+                  <h1>
+                    « Very Interesting » ajoute un élément de surprise, de joie, d’incongru.
+                  </h1>
+              </div>
+              <img
+                onLoad={() => {this.handleImageLoaded(divID)}}
+                alt={ele.img}
+                src={ele.img}
+              />
+          </div>
+        )
       })
-    })
+      this.setState({
+        dataToDivs
+      })
   };
 
 
-  componentDidUpdate(prevProps, prevState) {
+  resizeHandler = () => {
 
-    let counter = this.state.counter;
-    let selectedDivId = this.state.selectedDivId;
+  let viewportHeight = window.innerHeight;
+  this.setState({
+    viewportHeight
+  })
 
-    let divTextH1 = [...document.getElementsByClassName('div_text_h1')];
-    let divTextP = [...document.getElementsByClassName('div_text_p')];
-
-    let mockDataText = this.state.mockData.entriesText;
-
-    if(selectedDivId !== prevState.selectedDivId){
-
-      if(selectedDivId === 0){
-
-        console.log(this.state.originalImageStretch, "here");
-
-        let divID = `container_div_${1}`;
-        let imgContainer = document.querySelector(`#${divID}`);
-        let img = document.querySelector(`#${divID} img`);
-
-        // to optimze;
-        let originalImageStretch = 30;
-
-        img.style.transform = `scaleY(${originalImageStretch})`;
-        let newImgContainerHeight = img.getBoundingClientRect().height;
-        imgContainer.style.height = newImgContainerHeight + "px";
-
-
-      }
-      if(selectedDivId === 1){
-
-        let divID = `container_div_${0}`;
-        let imgContainer = document.querySelector(`#${divID}`);
-        let img = document.querySelector(`#${divID} img`);
-
-        // to optimze;
-        let originalImageStretch = 30;
-
-        img.style.transform = `scaleY(${originalImageStretch})`;
-        let newImgContainerHeight = img.getBoundingClientRect().height;
-        imgContainer.style.height = newImgContainerHeight + "px";
-
-      }
-
-    }
-
-
-
-      if (counter !== prevState.counter) {
-
-        if(counter >= 0 && counter < 2){
-
-
-          divTextH1.map((ele, index) => {
-            ele.innerHTML = mockDataText[0].headlines
-          })
-          divTextP.map((ele, index) => {
-            ele.innerHTML = ""
-          })
-        }
-
-        if(counter >= 2 && counter < 4){
-          divTextH1.map((ele, index) => {
-            ele.innerHTML = mockDataText[1].headlines
-          })
-          divTextP.map((ele, index) => {
-            ele.innerHTML = mockDataText[1].description
-          })
-        }
-
-        if(counter >= 4 && counter < 6){
-          divTextH1.map((ele, index) => {
-            ele.innerHTML = mockDataText[2].headlines
-          })
-          divTextP.map((ele, index) => {
-            ele.innerHTML = mockDataText[2].description
-          })
-        }
-
-        if(counter >= 6 && counter < 8){
-          divTextH1.map((ele, index) => {
-            ele.innerHTML = mockDataText[3].headlines
-          })
-          divTextP.map((ele, index) => {
-            ele.innerHTML = mockDataText[3].description
-          })
-        }
-
-        if(counter >= 8 && counter < 10){
-          divTextH1.map((ele, index) => {
-            ele.innerHTML = mockDataText[4].headlines
-          })
-          divTextP.map((ele, index) => {
-            ele.innerHTML = mockDataText[4].description
-          })
-        }
-
-        if(counter >= 10 && counter < 12){
-          divTextH1.map((ele, index) => {
-            ele.innerHTML = mockDataText[5].headlines
-          })
-          divTextP.map((ele, index) => {
-            ele.innerHTML = mockDataText[5].description
-          })
-        }
-
-        if(counter >= 12 && counter < 13){
-
-          let container_div_h1_0 = document.getElementById("container_div_h1_0").innerHTML =  mockDataText[7].headlines
-          let container_div_p_0 = document.getElementById("container_div_p_0").innerHTML =  mockDataText[7].description;
-
-
-          let container_div_h1_1 = document.getElementById("container_div_h1_1").innerHTML =  mockDataText[8].headlines
-          let container_div_p_1 = document.getElementById("container_div_p_1").innerHTML =  mockDataText[8].description;
-
-
-        }
-
-
-
-      }
-
-
-    }
+}
 
 
   handleImageLoaded = (divID) => {
@@ -191,92 +116,30 @@ class Desktop extends React.Component {
       loaded: true
     }, () => {
 
-      let viewportHeight = this.state.viewportHeight;
+      let viewportWidth = this.state.viewportWidth;
+
       let imgContainer = document.querySelector(`#${divID}`);
       let img = document.querySelector(`#${divID} img`);
+      // because it's rotated();
 
-      let aligningSecondDiv = this.defineValueFromPorcentage(2, viewportHeight);
-
-
-      let originalImageHeight = img.getBoundingClientRect().height;
-
-      let originalImageStretch = (viewportHeight + 1.4*aligningSecondDiv)/originalImageHeight;
-
-
-      // to optimize;
-      this.setState({
-        originalImageStretchArray: [...this.state.originalImageStretchArray, originalImageStretch]
-      })
-
-
-      imgContainer.style.height = viewportHeight + "px";
-      img.style.transform = `scaleY(${originalImageStretch})`;
+      let originalImageHeight = img.getBoundingClientRect().width;
+      let originalImageStretch = viewportWidth/originalImageHeight;
+      img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${originalImageStretch})`;
 
       this.setState({
         originalImageHeight,
         originalImageStretch
+      }, () => {
+        // there's a bug here;
+        // console.log(originalImageStretch);
       })
 
-
     })
   }
-
-
-  renderDataToDivs = () => {
-
-    let mockData = this.state.mockData;
-
-    let dataToDivs = mockData.entriesMobile.map((ele, index) => {
-
-      let divID = `container_div_${index}`;
-      let divIDH1 = `container_div_h1_${index}`;
-      let divIP = `container_div_p_${index}`;
-
-      return (
-        <div className="main_vertical_container_inner">
-          <div id={divID}>
-              <img
-                onLoad={() => {this.handleImageLoaded(divID)}}
-                src={ele.img}
-                alt={ele.img}
-              />
-            </div>
-            <div className="text_container">
-              <h1
-                id={divIDH1}
-                className="div_text_h1">
-                  Dans une économie de l’attention, il faut se démarquer.
-              </h1>
-              <p
-                id={divIP}
-                className="div_text_p">
-
-              </p>
-            </div>
-        </div>
-      )
-    })
-    this.setState({
-      dataToDivs
-    })
-  }
-
-
-  resizeHandler = () => {
-
-    let viewportHeight = window.innerHeight;
-    this.setState({
-      viewportHeight,
-    }, () => {
-      // make the resize here;
-    });
-  }
-
 
 
   // scrollHandler here;
   scrollHandler = (event) => {
-
     if(!this.state.originalImageStretch){
       return null;
     }
@@ -296,8 +159,10 @@ class Desktop extends React.Component {
     let viewportHeight = this.state.viewportHeight;
 
 
+
     if (numberOfPixelScrolled > 0
       && numberOfPixelScrolled < viewportHeight) {
+
 
         this.setState({
           counter: 0,
@@ -326,6 +191,8 @@ class Desktop extends React.Component {
     if (numberOfPixelScrolled > viewportHeight*2
       && numberOfPixelScrolled < viewportHeight*3) {
 
+        this.handleResetDivUp(0);
+
         this.setState({
           counter: 2,
           selectedDivId: 1,
@@ -334,6 +201,7 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "up");
         })
+
     }
 
     if (numberOfPixelScrolled > viewportHeight*3
@@ -351,6 +219,8 @@ class Desktop extends React.Component {
 
     if (numberOfPixelScrolled > viewportHeight*4
       && numberOfPixelScrolled < viewportHeight*5) {
+
+        this.handleResetDivUp(1);
 
         this.setState({
           counter: 4,
@@ -378,6 +248,8 @@ class Desktop extends React.Component {
     if (numberOfPixelScrolled > viewportHeight*6
       && numberOfPixelScrolled < viewportHeight*7) {
 
+        this.handleResetDivUp(0);
+
         this.setState({
           counter: 6,
           selectedDivId: 1,
@@ -403,6 +275,8 @@ class Desktop extends React.Component {
 
     if (numberOfPixelScrolled > viewportHeight*8
       && numberOfPixelScrolled < viewportHeight*9) {
+
+        this.handleResetDivUp(1);
 
         this.setState({
           counter: 8,
@@ -431,6 +305,8 @@ class Desktop extends React.Component {
 
     if (numberOfPixelScrolled > viewportHeight*10
       && numberOfPixelScrolled < viewportHeight*11) {
+
+        this.handleResetDivUp(0);
 
         this.setState({
           counter: 10,
@@ -468,232 +344,149 @@ class Desktop extends React.Component {
           this.handleAnimation(counter, selectedDivId, "up");
         })
     }
-
-
   };
-
 
   handleAnimation = (counter, selectedDivId, animDirection, single) => {
 
-    // to optimze;
-    // this.handleDivTextChange(counter)
 
-    let divID = `container_div_${selectedDivId}`;
+    // div for img;
+    let divID = `container_mobile_div_${selectedDivId}`;
     let imgContainer = document.querySelector(`#${divID}`);
     let img = document.querySelector(`#${divID} img`);
+
+    // div for text;
+    let divTextID = `container_mobile_text_${selectedDivId}`;
+    let divText = document.querySelector(`#${divTextID}`);
+
+
     let numberOfPixelScrolled = window.scrollY;
     let viewportHeight = this.state.viewportHeight;
+
     let originalImageStretch = this.state.originalImageStretch;
 
+    // to optimize;
+    let divTextOriginalOffset = -80;
 
     let scrolledPorcentage = this.definePorcentage(
-      (numberOfPixelScrolled - this.state.counter * viewportHeight),
-      viewportHeight)
-    ;
-    let remainingScrollPorcentage = 100-scrolledPorcentage;
-
-    let translateYPorcentageUp = this.defineValueFromPorcentage(
-        remainingScrollPorcentage,
-        originalImageStretch
+     (numberOfPixelScrolled - this.state.counter * viewportHeight), viewportHeight
     );
 
-    let translateYPorcentageDown = this.defineValueFromPorcentage(
-        scrolledPorcentage,
-        originalImageStretch
-    );
+   let remainingScrollPorcentage = 100-scrolledPorcentage;
 
-    if(animDirection === "up"){
+   let translateYPorcentageUp = this.defineValueFromPorcentage(
+       remainingScrollPorcentage,
+       originalImageStretch
+   );
 
-      img.style.transform = `scaleY(${translateYPorcentageUp})`;
-      let newImgContainerHeight = img.getBoundingClientRect().height;
-      imgContainer.style.height = newImgContainerHeight + "px";
 
-      if(translateYPorcentageUp < 1){
-        img.style.transform = `scaleY(1)`;
-        let newImgContainerHeight = img.getBoundingClientRect().height;
-        imgContainer.style.height = newImgContainerHeight + "px";
-      }
+   let translateYPorcentageDown = this.defineValueFromPorcentage(
+       scrolledPorcentage,
+       originalImageStretch
+   );
 
-    }
+   let textLeftUp = this.defineValueFromPorcentage(
+       remainingScrollPorcentage,
+       80
+   );
 
-    if(animDirection === "down"){
+   let textLeftDown = this.defineValueFromPorcentage(
+       scrolledPorcentage,
+       80
+   );
 
-      img.style.transform = `scaleY(${translateYPorcentageDown})`;
-      let newImgContainerHeight = img.getBoundingClientRect().height;
-      imgContainer.style.height = newImgContainerHeight + "px";
 
-      if(translateYPorcentageDown < 1){
-        img.style.transform = `scaleY(1)`;
-        let newImgContainerHeight = img.getBoundingClientRect().height;
-        imgContainer.style.height = newImgContainerHeight + "px";
-      }
-    }
+   if(animDirection === "up"){
 
-    if(!single){
+     img.style.transform = `
+        rotateZ(90deg)
+        translate(100%)
+        scaleY(${translateYPorcentageUp})`;
 
-    }
+      divText.style.left = `-${textLeftUp}vw`
 
+       if(translateYPorcentageUp < 1){
+         img.style.transform = `
+              rotateZ(90deg)
+              translate(100%)
+              scaleY(1)`;
+
+        divText.style.left = `0vw`
+
+       }
+   }
+   if(animDirection === "down"){
+
+     img.style.transform = `
+          rotateZ(90deg)
+          translate(100%)
+          scaleY(${translateYPorcentageDown})
+      `;
+
+     divText.style.left = `-${textLeftDown}vw`
+
+     if(translateYPorcentageDown < 1){
+       img.style.transform = `
+            rotateZ(90deg)
+            translate(100%)
+            scaleY(1)
+        `;
+     }
+   }
   }
 
+  handleResetDivUp = (id) => {
 
-  handleResetPreviousDivHeightDown = (id) => {
-
-
+    console.log(id, "here");
     let scrollDirection = this.state.scrollDirection;
+    let previousDivId = id;
+    let divID = `container_mobile_div_${previousDivId}`;
+    let imgContainer = document.querySelector(`#${divID}`);
+    let img = document.querySelector(`#${divID} img`);
 
-    if(scrollDirection === "down"){
-
-      let previousDivId = id;
-
-      if(id === "1"){
-        let previousDivId = "0";
-
-      }else{
-        let previousDivId = "1";
-      }
-
-      let divID = `container_div_${previousDivId}`;
-
-      let imgContainer = document.querySelector(`#${divID}`);
-      let img = document.querySelector(`#${divID} img`);
-      let originalImageStretch = this.state.originalImageStretch;
-
-      img.style.transform = `scaleY(${originalImageStretch})`;
-      let newImgContainerHeight = img.getBoundingClientRect().height;
-      imgContainer.style.height = newImgContainerHeight + "px";
-
-    }else{
-      return null;
-    }
+    let originalImageStretch = this.state.originalImageStretch;
+    img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${10})`;
   };
 
 
-  handleResetPreviousDivHeightUp = (id) => {
+  handleResetDivDown = (id) => {
+    // console.log(id, "here");
+    // let scrollDirection = this.state.scrollDirection;
+    // let previousDivId = id;
+    // let divID = `container_mobile_div_${previousDivId}`;
+    // let imgContainer = document.querySelector(`#${divID}`);
+    // let img = document.querySelector(`#${divID} img`);
+    //
+    // let originalImageStretch = this.state.originalImageStretch;
+    // img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${10})`;
+  };
 
-
-    let scrollDirection = this.state.scrollDirection;
-
-    if(scrollDirection === "down"){
-      return null;
-    }else{
-
-      let previousDivId = id;
-
-      if(id === "1"){
-        let previousDivId = "0";
-
-      }else{
-        let previousDivId = "1";
-      }
-
-
-      let divID = `container_div_${previousDivId}`;
-
-      let imgContainer = document.querySelector(`#${divID}`);
-      let img = document.querySelector(`#${divID} img`);
-
-
-      let originalImageStretch = this.state.originalImageStretch;
-      img.style.transform = `scaleY(${originalImageStretch})`;
-      let newImgContainerHeight = img.getBoundingClientRect().height;
-      imgContainer.style.height = newImgContainerHeight + "px";
-    }
-
-  }
 
   definePorcentage = (percent, total) => {
       let porcentage = (percent/total)*100;
       return porcentage
    }
 
-
-   defineValueFromPorcentage = (percentage, total) => {
-     let value =  ((percentage * total)/100);
-     return value;
-   }
-
-   renderDivsToDom = () => {
-     if(!this.state.dataToDivs){
-       return "loading"
-     }else{
-       return this.state.dataToDivs;
-     }
-   };
-
-
-   renderInfo = () => {
-     return (
-       <div className="info_main_container">
-          {this.renderInfoCTA()}
-          {this.renderBodyCTA()}
-       </div>
-     )
-   }
-
-
-   renderInfoCTA = () => {
-     return (
-       <div
-          className="info_cta_container"
-          onClick={this.triggerInfoContent}
-          style={this.infoCTAStyle()}>
-          <span>
-            +
-          </span>
-       </div>
-     )
-   };
-
-   triggerInfoContent = () => {
-     this.setState({
-       isTriggeredInfoContent: !this.state.isTriggeredInfoContent
-     })
-   }
-
-   infoCTAStyle = () => {
-     if(!this.state.isTriggeredInfoContent){
-       return {
-         transform: "rotate(0deg)",
-         transition: "0.1s"
-       }
-     }else{
-       return {
-         transform: "rotate(45deg)",
-         transition: "0.1s"
-       }
-     }
-   }
-
-   renderBodyCTA = () => {
-     if(!this.state.isTriggeredInfoContent){
-       return null;
-     }
-     return (
-       <div className="info_body_container">
-          <div className="info_body_container_headline">
-            <h1>« Very interesting » est une firme spécialisée en lorem ipsum lorem</h1>
-          </div>
-          <div className="info_body_container_ctas">
-            <div className="info_body_container_ctas_spans">
-                <span>
-                  EN SAVOIR PLUS
-                </span>
-            </div>
-          </div>
-          <div className="info_body_container_end_para">
-            <h1>Vous aimeriez savoir comment votre cie peut devenir « Very interesting » ?</h1>
-          </div>
-       </div>
-     )
-   }
+  defineValueFromPorcentage = (percentage, total) => {
+    let value =  ((percentage * total)/100);
+    return value;
+  }
 
 
 
   render() {
+    if(!this.state.dataToDivs){
+      return null;
+    };
     return (
-      <div className="main_vertical_container">
-        {this.renderInfo()}
-        {this.renderDivsToDom()}
+      <div className="main_vertical_container_mobile">
+            <div style={{position: "fixed"}}>
+              {this.state.counter}
+              <hr />
+              {this.state.scrollDirection}
+              <hr />
+              {this.state.selectedDivId}
+            </div>
+            {this.state.dataToDivs}
       </div>
     );
   }

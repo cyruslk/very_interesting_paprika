@@ -114,6 +114,7 @@ class Desktop extends React.Component {
       let img = document.querySelector(`#${divID} img`);
 
       let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
+
       let originalImageHeight = img.getBoundingClientRect().height;
 
       // to optimize;
@@ -525,12 +526,9 @@ class Desktop extends React.Component {
 
           if(selectedDivId === 1){
 
-            console.log(typeof translateYPorcentageUp, "here");
-            let x = (translateYPorcentageUp - 0.1)
-            console.log(x, "here");
-
-
             // APPLY THE CHANGE HERE;
+            let x = (translateYPorcentageUp - 0.2)
+            console.log(x, "here");
 
             img.style.transform = `scaleY(${x})`;
             let newImgContainerHeight = img.getBoundingClientRect().height;
@@ -637,27 +635,6 @@ class Desktop extends React.Component {
     }
 
   }
-
-
-  handleDivTextChange = (counter) => {
-
-    if (counter >= 0
-      && counter < 6) {
-        console.log("first text content here");
-    }
-
-    if (counter >= 6
-      && counter < 9) {
-        console.log("second content here");
-    }
-
-    if (counter > 9) {
-        console.log("third content here");
-    }
-
-  }
-
-
 
 
   definePorcentage = (percent, total) => {

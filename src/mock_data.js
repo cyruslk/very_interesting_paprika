@@ -6,7 +6,7 @@ const mock_data = module.exports = {
   ],
   entriesMobile: [
     {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1610211278/paprika%20-%20very%20interesting/M01VERYINTE.svg"},
-    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1610211325/paprika%20-%20very%20interesting/M02RESTING.svg"}
+    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1610211325/paprika%20-%20very%20interesting/M02RESTING.svg"},
   ],
   entriesText: [
     {
