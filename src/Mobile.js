@@ -165,8 +165,8 @@ class Mobile extends React.Component {
          translate(100%)
          scaleY(${originalImageStretchArray[0]})
        `;
-       divText.style.width = `${textDivSize}px`;
-       divText.style.left = `-${textDivSize}px`;
+       divText.style.width = `${textDivSize-5}px`;
+       divText.style.left = `-${textDivSize-5}px`;
      })
     })
   }
@@ -467,8 +467,6 @@ class Mobile extends React.Component {
 
 
   handleResetDivUp = (id) => {
-
-    console.log(id, "here: id");
 
     let scrollDirection = this.state.scrollDirection;
     let previousDivId = id;

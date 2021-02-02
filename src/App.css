@@ -169,7 +169,6 @@ ul{
     transform-origin: right top;
     transform: rotateZ(90deg) translate(100%) scaleY(1);
 		right: 0;
-		width: 50.07vh;
 	}
 
 	.mobile_text_content{
@@ -180,7 +179,6 @@ ul{
 	}
 
 	.mobile_text_content h1{
-		padding: 1vw;
 		padding-right: 0.4vw;
 	}
 
