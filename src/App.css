@@ -158,8 +158,13 @@ ul{
 @media screen and (max-width:600px){
 
 
+	.main_vertical_container_mobile{
+		display: block;
+		position: fixed;
+	}
+
+
 	.img_mobile_container{
-		display: inline;
 		width: 100vw;
 		position: fixed;
 	}
@@ -171,16 +176,31 @@ ul{
 		right: 0;
 	}
 
+
 	.mobile_text_content{
 		height: 100%;
-		position: absolute;
-		background-color: white;
-		z-index: 10;
+    position: absolute;
+    background-color: white;
+    z-index: 10;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+		flex-direction: column;
+	}
+
+	.main_vertical_container_mobile{
+		position: fixed;
+    width: 100vw;
+    background-color: white;
+		height: 100vh;
 	}
 
 	.mobile_text_content h1{
-		padding-right: 0.4vw;
+		font-size: 24px;
 	}
+
+
 
 	#container_mobile_div_1{
 		bottom: 0;
