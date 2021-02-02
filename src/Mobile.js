@@ -2,7 +2,7 @@ import React from "react";
 import mockData from "./mock_data.js";
 import "./App.css";
 
-class Desktop extends React.Component {
+class Mobile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,10 +30,8 @@ class Desktop extends React.Component {
      document.addEventListener("scroll", this.scrollHandler);
      window.addEventListener("resize", this.resizeHandler);
 
-
      let viewportHeight = window.innerHeight;
      let viewportWidth = window.innerWidth;
-
 
      let updatedHeightOfPage = viewportHeight*15;
      document.body.style.height = `${updatedHeightOfPage}px`;
@@ -63,7 +61,29 @@ class Desktop extends React.Component {
          this.renderDataToDivs();
        })
      })
-   };
+  };
+
+
+
+  componentDidUpdate(prevProps, prevState) {
+    let viewportHeight = this.state.viewportHeight;
+    if(viewportHeight !== prevState.viewportHeight){
+
+      let imgMobileContainer = [...document.getElementsByClassName('img_mobile_container')];
+      let imgMobile = [...document.getElementsByClassName("img_mobile")];
+
+      // 10 is the space between letters; hardcodes for now
+      imgMobileContainer.map((ele, index) => {
+        ele.style.height = `${viewportHeight/2-5}px`;
+      })
+
+      imgMobile.map((ele, index) => {
+        ele.style.width = `${viewportHeight/2-5}px`;
+      })
+
+    }
+   }
+
 
 
    renderDataToDivs = () => {
@@ -79,6 +99,7 @@ class Desktop extends React.Component {
         return (
           <div
             id={divID}
+            style={{height: `${this.state.viewportHeight/2-5}px`}}
             className="img_mobile_container">
               <div
                   id={divIDText}
@@ -88,7 +109,9 @@ class Desktop extends React.Component {
                   </h1>
               </div>
               <img
-                onLoad={() => {this.handleImageLoaded(divID)}}
+              className="img_mobile"
+                style={{width: `${this.state.viewportHeight/2-5}px`}}
+                onLoad={() => {this.handleImageLoaded(divID, divIDText)}}
                 alt={ele.img}
                 src={ele.img}
               />
@@ -103,43 +126,54 @@ class Desktop extends React.Component {
 
   resizeHandler = () => {
 
-  let viewportHeight = window.innerHeight;
-  this.setState({
-    viewportHeight
-  })
+      let viewportHeight = window.innerHeight;
+      this.setState({
+        viewportHeight
+      })
+    }
 
-}
 
+  handleImageLoaded = (divID, divIDText) => {
 
-  handleImageLoaded = (divID) => {
     this.setState({
       loaded: true
     }, () => {
 
       let viewportWidth = this.state.viewportWidth;
+      console.log(viewportWidth);
 
+      // div for img;
       let imgContainer = document.querySelector(`#${divID}`);
       let img = document.querySelector(`#${divID} img`);
-      // because it's rotated();
+      let divText = document.querySelector(`#${divIDText}`);
 
       let originalImageHeight = img.getBoundingClientRect().width;
       let originalImageStretch = viewportWidth/originalImageHeight;
-      img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${originalImageStretch})`;
+      let textDivSize = viewportWidth-originalImageHeight;
 
       this.setState({
-        originalImageHeight,
-        originalImageStretch
-      }, () => {
-        // there's a bug here;
-        // console.log(originalImageStretch);
-      })
+      originalImageHeight,
+      originalImageStretch,
+      textDivSize,
+       originalImageStretchArray: [...this.state.originalImageStretchArray, originalImageStretch]
+     }, () => {
 
+       let originalImageStretchArray = this.state.originalImageStretchArray;
+
+       img.style.transform = `
+         rotateZ(90deg)
+         translate(100%)
+         scaleY(${originalImageStretchArray[0]})
+       `;
+       divText.style.width = `${textDivSize}px`;
+       divText.style.left = `-${textDivSize}px`;
+     })
     })
   }
 
 
-  // scrollHandler here;
   scrollHandler = (event) => {
+
     if(!this.state.originalImageStretch){
       return null;
     }
@@ -157,7 +191,6 @@ class Desktop extends React.Component {
 
     let numberOfPixelScrolled = window.scrollY;
     let viewportHeight = this.state.viewportHeight;
-
 
 
     if (numberOfPixelScrolled > 0
@@ -348,7 +381,6 @@ class Desktop extends React.Component {
 
   handleAnimation = (counter, selectedDivId, animDirection, single) => {
 
-
     // div for img;
     let divID = `container_mobile_div_${selectedDivId}`;
     let imgContainer = document.querySelector(`#${divID}`);
@@ -361,15 +393,12 @@ class Desktop extends React.Component {
 
     let numberOfPixelScrolled = window.scrollY;
     let viewportHeight = this.state.viewportHeight;
-
     let originalImageStretch = this.state.originalImageStretch;
 
-    // to optimize;
-    let divTextOriginalOffset = -80;
-
     let scrolledPorcentage = this.definePorcentage(
-     (numberOfPixelScrolled - this.state.counter * viewportHeight), viewportHeight
-    );
+     (numberOfPixelScrolled - this.state.counter * viewportHeight),
+     viewportHeight)
+   ;
 
    let remainingScrollPorcentage = 100-scrolledPorcentage;
 
@@ -377,88 +406,87 @@ class Desktop extends React.Component {
        remainingScrollPorcentage,
        originalImageStretch
    );
-
-
    let translateYPorcentageDown = this.defineValueFromPorcentage(
        scrolledPorcentage,
        originalImageStretch
    );
 
+
+   // to change;
    let textLeftUp = this.defineValueFromPorcentage(
        remainingScrollPorcentage,
-       80
+       this.state.textDivSize
+
    );
 
    let textLeftDown = this.defineValueFromPorcentage(
        scrolledPorcentage,
-       80
+       this.state.textDivSize
    );
 
 
-   if(animDirection === "up"){
+    if(animDirection === "up"){
 
-     img.style.transform = `
-        rotateZ(90deg)
-        translate(100%)
-        scaleY(${translateYPorcentageUp})`;
+      img.style.transform = `
+         rotateZ(90deg)
+         translate(100%)
+         scaleY(${translateYPorcentageUp})`;
 
-      divText.style.left = `-${textLeftUp}vw`
+       divText.style.left = `-${textLeftUp}px`
 
-       if(translateYPorcentageUp < 1){
-         img.style.transform = `
-              rotateZ(90deg)
-              translate(100%)
-              scaleY(1)`;
+        if(translateYPorcentageUp < 1){
+          img.style.transform = `
+               rotateZ(90deg)
+               translate(100%)
+               scaleY(1)`;
 
-        divText.style.left = `0vw`
+         divText.style.left = `0vw`
 
-       }
+        }
+    }
+    if(animDirection === "down"){
+
+      img.style.transform = `
+           rotateZ(90deg)
+           translate(100%)
+           scaleY(${translateYPorcentageDown})
+       `;
+
+      divText.style.left = `-${textLeftDown}px`
+
+      if(translateYPorcentageDown < 1){
+        img.style.transform = `
+             rotateZ(90deg)
+             translate(100%)
+             scaleY(1)
+         `;
+         divText.style.left = `0vw`
+      }
+    }
    }
-   if(animDirection === "down"){
 
-     img.style.transform = `
-          rotateZ(90deg)
-          translate(100%)
-          scaleY(${translateYPorcentageDown})
-      `;
-
-     divText.style.left = `-${textLeftDown}vw`
-
-     if(translateYPorcentageDown < 1){
-       img.style.transform = `
-            rotateZ(90deg)
-            translate(100%)
-            scaleY(1)
-        `;
-     }
-   }
-  }
 
   handleResetDivUp = (id) => {
 
-    console.log(id, "here");
+    console.log(id, "here: id");
+
     let scrollDirection = this.state.scrollDirection;
     let previousDivId = id;
     let divID = `container_mobile_div_${previousDivId}`;
     let imgContainer = document.querySelector(`#${divID}`);
     let img = document.querySelector(`#${divID} img`);
 
+    let divTextID = `container_mobile_text_${id}`;
+    let divText = document.querySelector(`#${divTextID}`);
+
     let originalImageStretch = this.state.originalImageStretch;
-    img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${10})`;
+    let originalImageStretchArray = this.state.originalImageStretchArray;
+
+    img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${originalImageStretchArray[0]})`;
+    divText.style.left = `-${this.state.textDivSize}px`;
+
   };
 
-
-  handleResetDivDown = (id) => {
-    // console.log(id, "here");
-    // let scrollDirection = this.state.scrollDirection;
-    // let previousDivId = id;
-    // let divID = `container_mobile_div_${previousDivId}`;
-    // let imgContainer = document.querySelector(`#${divID}`);
-    // let img = document.querySelector(`#${divID} img`);
-    //
-    // let originalImageStretch = this.state.originalImageStretch;
-    // img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${10})`;
-  };
 
 
   definePorcentage = (percent, total) => {
@@ -479,17 +507,10 @@ class Desktop extends React.Component {
     };
     return (
       <div className="main_vertical_container_mobile">
-            <div style={{position: "fixed"}}>
-              {this.state.counter}
-              <hr />
-              {this.state.scrollDirection}
-              <hr />
-              {this.state.selectedDivId}
-            </div>
-            {this.state.dataToDivs}
+          {this.state.dataToDivs}
       </div>
     );
   }
 }
 
-export default Desktop;
+export default Mobile;

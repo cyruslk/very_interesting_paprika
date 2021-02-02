@@ -159,8 +159,7 @@ ul{
 
 
 	.img_mobile_container{
-		display: block;
-		height: 50vh;
+		display: inline;
 		width: 100vw;
 		position: fixed;
 	}
@@ -168,18 +167,16 @@ ul{
 	.img_mobile_container img{
 		position: absolute;
     transform-origin: right top;
-    transform: rotateZ(90deg) translate(100%);
+    transform: rotateZ(90deg) translate(100%) scaleY(1);
 		right: 0;
 		width: 50.07vh;
 	}
 
 	.mobile_text_content{
-		width: 80vw;
 		height: 100%;
 		position: absolute;
 		background-color: white;
 		z-index: 10;
-		left: -80vw;
 	}
 
 	.mobile_text_content h1{

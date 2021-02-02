@@ -286,8 +286,6 @@ class Desktop extends React.Component {
           this.handleAnimation(counter, selectedDivId, "up");
         })
 
-
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*5
