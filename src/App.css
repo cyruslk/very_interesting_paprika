@@ -158,32 +158,21 @@ ul{
 @media screen and (max-width:600px){
 
 
-	.img_mobile_container{
-		display: inline;
-		width: 100vw;
+	.main_vertical_container_mobile{
+		display: block;
 		position: fixed;
 	}
 
+	.img_mobile_container{
+		width: 100vw;
+		border-bottom: 1px solid;
+	}
+
 	.img_mobile_container img{
-		position: absolute;
     transform-origin: right top;
-    transform: rotateZ(90deg) translate(100%) scaleY(1);
+    transform: rotateZ(90deg) translate(100%) scaleY(8) translateY(-0.9vh);
 		right: 0;
 	}
 
-	.mobile_text_content{
-		height: 100%;
-		position: absolute;
-		background-color: white;
-		z-index: 10;
-	}
-
-	.mobile_text_content h1{
-		padding-right: 0.4vw;
-	}
-
-	#container_mobile_div_1{
-		bottom: 0;
-	}
 
 }
