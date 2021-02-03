@@ -208,6 +208,7 @@ class Mobile extends React.Component {
       if(animDirection === "down"){
         if(selectedDivId === 0){
 
+
           let divID = `container_mobile_div_${1}`;
           let divIDText = `container_mobile_text_${1}`;
           let imgScale = originalImageStretchArray[1];
@@ -215,6 +216,9 @@ class Mobile extends React.Component {
           let img = document.querySelector(`#${divID} img`);
 
           let divText = document.querySelector(`#${divIDText}`);
+
+          console.log(imgScale*0.9, "for first");
+
 
           divText.style.left = `-${textDivSize}px`
           img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.9})`;
@@ -228,8 +232,11 @@ class Mobile extends React.Component {
           let imgContainer = document.querySelector(`#${divID}`);
           let img = document.querySelector(`#${divID} img`);
           let divText = document.querySelector(`#${divIDText}`);
+
+          console.log(imgScale*0.9, "for zero ");
+
+
           divText.style.left = `-${textDivSize}px`
-          console.log(imgScale, divID);
           img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.9})`;
 
         }
@@ -237,10 +244,12 @@ class Mobile extends React.Component {
 
       if(animDirection === "up"){
 
+
         if(selectedDivId === 0){
 
-          let divID = `container_mobile_div_${0}`;
-          let divIDText = `container_mobile_text_${0}`;
+
+          let divID = `container_mobile_div_${1}`;
+          let divIDText = `container_mobile_text_${1}`;
           let imgScale = originalImageStretchArray[1];
           let imgContainer = document.querySelector(`#${divID}`);
           let img = document.querySelector(`#${divID} img`);
@@ -248,20 +257,20 @@ class Mobile extends React.Component {
           let divText = document.querySelector(`#${divIDText}`);
 
           divText.style.left = `-${textDivSize}px`
-          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${15})`;
+          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(8)`;
 
         }
         if(selectedDivId === 1){
 
-          let divID = `container_mobile_div_${1}`;
-          let divIDText = `container_mobile_text_${1}`;
+          let divID = `container_mobile_div_${0}`;
+          let divIDText = `container_mobile_text_${0}`;
           let imgScale = originalImageStretchArray[0];
           let imgContainer = document.querySelector(`#${divID}`);
           let img = document.querySelector(`#${divID} img`);
           let divText = document.querySelector(`#${divIDText}`);
 
           divText.style.left = `-${textDivSize}px`
-          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${15})`;
+          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(9)`;
 
         }
       }
@@ -699,7 +708,6 @@ class Mobile extends React.Component {
              scaleY(1)
          `;
          divText.style.left = `0vw`
-
       }
     }
    }
@@ -731,9 +739,10 @@ class Mobile extends React.Component {
 
      }else{
 
+       // 2.8?
        let scrolledPorcentageVertical = this.definePorcentage(
           (numberOfPixelScrolled - 9 * viewportHeight),
-          viewportHeight*3)
+          viewportHeight*2.8)
         ;
 
       verticalDiv.style.left = "0px";
