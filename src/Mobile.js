@@ -1,13 +1,17 @@
 import React from "react";
 import ReactHtmlParser from 'react-html-parser';
+import ScrollDirection from '@anakinyuen/scroll-direction';
 import mockData from "./mock_data.js";
 import "./App.css";
+
 
 class Mobile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loaded: false,
+      animDirection: null,
+      isTriggeredInfoContent: false,
       numberOfPixelScrolled: 0,
       resetTextDivs: false,
       margin: 0,
@@ -71,6 +75,8 @@ class Mobile extends React.Component {
        })
      })
   };
+
+
 
   componentDidUpdate(prevProps, prevState) {
 
@@ -178,48 +184,72 @@ class Mobile extends React.Component {
     // resizing the divs here;
     if(selectedDivId !== prevState.selectedDivId){
 
-    let textDivSize = this.state.textDivSizeArray[1];
-    let originalImageStretchArray = this.state.originalImageStretchArray;
+      console.log(this.state.animDirection);
 
-     if(selectedDivId === 0){
+      let animDirection = this.state.animDirection
+      let textDivSize = this.state.textDivSizeArray[1];
+      let originalImageStretchArray = this.state.originalImageStretchArray;
 
-       let divID = `container_mobile_div_${1}`;
-       let divIDText = `container_mobile_text_${1}`;
-       let imgScale = originalImageStretchArray[1];
+      if(animDirection === "down"){
+        if(selectedDivId === 0){
 
-       let imgContainer = document.querySelector(`#${divID}`);
-       let img = document.querySelector(`#${divID} img`);
+          let divID = `container_mobile_div_${1}`;
+          let divIDText = `container_mobile_text_${1}`;
+          let imgScale = originalImageStretchArray[1];
+          let imgContainer = document.querySelector(`#${divID}`);
+          let img = document.querySelector(`#${divID} img`);
 
-       let divText = document.querySelector(`#${divIDText}`);
+          let divText = document.querySelector(`#${divIDText}`);
 
-       divText.style.left = `-${textDivSize}px`
-       // ici pour le premier;
-       console.log(imgScale, divID);
+          divText.style.left = `-${textDivSize}px`
+          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.9})`;
 
-       img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.9})`;
+        }
+        if(selectedDivId === 1){
 
-     }
-     if(selectedDivId === 1){
+          let divID = `container_mobile_div_${0}`;
+          let divIDText = `container_mobile_text_${0}`;
+          let imgScale = originalImageStretchArray[0];
+          let imgContainer = document.querySelector(`#${divID}`);
+          let img = document.querySelector(`#${divID} img`);
+          let divText = document.querySelector(`#${divIDText}`);
+          divText.style.left = `-${textDivSize}px`
+          console.log(imgScale, divID);
+          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.9})`;
 
-       let divID = `container_mobile_div_${0}`;
-       let divIDText = `container_mobile_text_${0}`;
-       let imgScale = originalImageStretchArray[0];
+        }
+      }
 
-       let scalingCoeffStart = this.state.scalingCoeffStart;
+      if(animDirection === "up"){
 
-       let imgContainer = document.querySelector(`#${divID}`);
-       let img = document.querySelector(`#${divID} img`);
+        if(selectedDivId === 0){
 
-       let divText = document.querySelector(`#${divIDText}`);
+          let divID = `container_mobile_div_${0}`;
+          let divIDText = `container_mobile_text_${0}`;
+          let imgScale = originalImageStretchArray[1];
+          let imgContainer = document.querySelector(`#${divID}`);
+          let img = document.querySelector(`#${divID} img`);
 
+          let divText = document.querySelector(`#${divIDText}`);
 
-       divText.style.left = `-${textDivSize}px`
+          divText.style.left = `-${textDivSize}px`
+          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${15})`;
 
-       // ici pour le deuxième
-       console.log(imgScale, divID);
-       img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.9*scalingCoeffStart})`;
+        }
+        if(selectedDivId === 1){
 
-     }
+          let divID = `container_mobile_div_${1}`;
+          let divIDText = `container_mobile_text_${1}`;
+          let imgScale = originalImageStretchArray[0];
+          let imgContainer = document.querySelector(`#${divID}`);
+          let img = document.querySelector(`#${divID} img`);
+          let divText = document.querySelector(`#${divIDText}`);
+
+          divText.style.left = `-${textDivSize}px`
+          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${15})`;
+
+        }
+      }
     }
   };
 
@@ -361,6 +391,7 @@ class Mobile extends React.Component {
 
 
   scrollHandler = (event) => {
+
 
     if(!this.state.originalImageStretch){
       return null;
@@ -519,6 +550,10 @@ class Mobile extends React.Component {
 
 
   handleAnimation = (counter, selectedDivId, animDirection, single) => {
+
+    this.setState({
+      animDirection
+    })
 
     // div for img;
     let divID = `container_mobile_div_${selectedDivId}`;
@@ -700,6 +735,8 @@ class Mobile extends React.Component {
     }else{
 
       verticalDiv.style.left = "0px";
+      // lock the other text divs;
+
 
       // Make the translateY() on the div;
 
@@ -726,6 +763,84 @@ class Mobile extends React.Component {
   };
 
 
+  renderInfo = () => {
+    return (
+      <div className="info_main_container">
+         {this.renderInfoCTA()}
+         {this.renderBodyCTA()}
+      </div>
+    )
+  }
+
+
+  renderInfoCTA = () => {
+    return (
+      <div className="cta_desktop_container">
+      <div
+         className="info_cta_container"
+         onClick={this.triggerInfoContent}
+         style={this.infoCTAStyle()}>
+         <span>
+           +
+         </span>
+      </div>
+      <div className="en_cta">
+         <span>
+           EN
+         </span>
+      </div>
+      </div>
+    )
+  };
+
+
+  triggerInfoContent = () => {
+    this.setState({
+      isTriggeredInfoContent: !this.state.isTriggeredInfoContent
+    })
+  }
+
+  infoCTAStyle = () => {
+    if(!this.state.isTriggeredInfoContent){
+      return {
+        transform: "rotate(0deg)",
+        transition: "0.1s"
+      }
+    }else{
+      return {
+        transform: "rotate(45deg)",
+        transition: "0.1s"
+      }
+    }
+  }
+
+  renderBodyCTA = () => {
+    if(!this.state.isTriggeredInfoContent){
+      return null;
+    }
+    return (
+      <div className="info_body_container">
+         <div className="info_body_container_headline">
+           <h1>« Very Interesting » rend ses clients plus intéressants, plus remarqués, plus sollicités</h1>
+         </div>
+         <div className="info_body_container_ctas">
+           <h1>Devenir une Cie <br /> « Very interesting » ?</h1>
+           <div className="info_body_container_ctas_spans">
+               <span>
+                 APPELEZ
+               </span>
+               <span>
+                 ÉCRIVEZ
+               </span>
+               <span>
+                 REGARDEZ
+               </span>
+           </div>
+         </div>
+      </div>
+    )
+  };
+
 
   render() {
     if(!this.state.dataToDivs){
@@ -735,6 +850,7 @@ class Mobile extends React.Component {
       <div className="main_vertical_container_mobile">
           {this.state.dataToDivs}
           {this.renderVerticalAnimation()}
+          {this.renderInfo()}
       </div>
     );
   }

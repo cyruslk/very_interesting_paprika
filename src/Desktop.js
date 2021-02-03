@@ -686,6 +686,8 @@ class Desktop extends React.Component {
      }
    };
 
+
+
    renderInfo = () => {
      return (
        <div className="info_main_container">
@@ -762,7 +764,7 @@ class Desktop extends React.Component {
           </div>
        </div>
      )
-   }
+   };
 
 
    renderFooter = () => {

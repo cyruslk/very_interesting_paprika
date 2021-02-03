@@ -1,15 +1,18 @@
 @font-face {
-	font-family: 'NHaasGroteskDSPro';
+	font-family: 'NHaasGroteskDSProMedium';
 	src: url('fonts/NHaasGroteskDSPro-65Md.otf'); /* IE9 Compat Modes */
 }
 
+@font-face {
+	font-family: 'NHaasGroteskDSProBold';
+	src: url('fonts/NHaasGroteskDSPro-75Bd.otf'); /* IE9 Compat Modes */
+}
 
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-	font-family: NHaasGroteskDSPro;
 	font-weight: 100;
 }
 
@@ -111,9 +114,9 @@
 .info_body_container_headline h1,
 .info_body_container_ctas h1{
 	text-align: center;
-	font-weight: 700;
 	font-size: 33px;
 	letter-spacing: 0.1px;
+	font-family: NHaasGroteskDSProBold;
 }
 
 .info_body_container_ctas{
@@ -137,7 +140,7 @@
 	background-color: black;
 	border-radius: 18px;
 	color: #EBFF00;
-	font-family: NHaasGroteskDSPro;
+	font-family: NHaasGroteskDSProMedium;
 	width: 155px;
 	margin-top: 0;
 	margin-bottom: 1vw;
@@ -152,7 +155,7 @@
 	background-color: black;
 	border-radius: 18px;
 	color: white;
-	font-family: NHaasGroteskDSPro;
+	font-family: NHaasGroteskDSProMedium;
 	width: 155px;
 	margin-top: 0;
 	margin-bottom: 1vw;
@@ -165,6 +168,7 @@
 
 .copyright{
 	position: absolute;
+	font-family: NHaasGroteskDSProMedium;
 	bottom: 0;
 	right: 50px;
 }
@@ -186,7 +190,7 @@
 
 .footer_desktop_first h1{
 	font-size: 33px;
-	font-weight: 700;
+	font-family: NHaasGroteskDSProBold;
 }
 
 
@@ -201,7 +205,7 @@
 
 .info_cta_container span{
 	margin: 0;
-	font-family: NHaasGroteskDSPro;
+	font-family: NHaasGroteskDSProMedium;
 	font-size: 65px;
 	display: flex;
 	align-items: center;
@@ -213,6 +217,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	font-family: NHaasGroteskDSProMedium;
 }
 
 .text_container{
@@ -227,9 +232,8 @@ ul{
 .text_container h1{
 	font-size: 33px;
 	font-weight: 100;
-	font-family: 'NHaasGroteskDSPro';
 	width: 85%;
-	font-weight: 700;
+	font-family: NHaasGroteskDSProBold;
 	letter-spacing: 0.1px;
 }
 
@@ -237,16 +241,63 @@ ul{
 	margin-top: 20px;
 	font-size: 23px;
 	font-weight: 100;
-	font-family: 'NHaasGroteskDSPro';
+	font-family: NHaasGroteskDSProMedium;
 	width: 85%;
 }
 
 .text_container p span{
-	font-weight: 700;
+	font-family: NHaasGroteskDSProBold;
 }
 
 @media screen and (max-width:600px){
 
+
+	.info_main_container{
+		position: fixed;
+		padding: 12px;
+		z-index: 100;
+	}
+
+	.en_cta span{
+		font-size: 28px;
+	}
+
+	.info_cta_container span{
+		font-size: 50px;
+	}
+
+	.info_body_container_ctas{
+		padding-top: 6vw;
+	}
+
+	.info_body_container_ctas_spans span{
+		font-size: 20px;
+		padding: 2.5vw;
+		margin-bottom: 20px;
+	}
+
+	.info_body_container_ctas_spans{
+		margin-top: 12vw;
+	}
+
+	.info_cta_container{
+		margin-right: 12px;
+	}
+
+	.info_body_container{
+	  width: 100%;
+		height: auto;
+	}
+
+	.info_body_container_headline{
+		margin-top: 3vw;
+	}
+
+	.info_body_container_headline h1,
+	.info_body_container_ctas h1{
+		font-size: 24px;
+		font-family: NHaasGroteskDSProMedium;
+	}
 
 
 	.main_vertical_container_mobile{
@@ -304,12 +355,14 @@ ul{
 	.mobile_text_content h1,
 	.vertical_text_content h1{
 		font-size: 24px;
+		font-family: NHaasGroteskDSProBold;
 	}
 
 	.mobile_text_content p,
 	.vertical_text_content p{
 		font-size: 16px;
 		margin-top: 10px;
+		font-family: NHaasGroteskDSProMedium;
 	}
 
 	#vertical_div_main_container{
