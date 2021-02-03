@@ -71,6 +71,22 @@
 	width: 75px;
 	height: 75px;
 	border-radius: 50%;
+	margin-right: 20px;
+	background-color: #EBFF00;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.cta_desktop_container{
+	display: flex;
+	align-items: center;
+}
+
+.en_cta{
+	width: 75px;
+	height: 75px;
+	border-radius: 50%;
 	background-color: #EBFF00;
 	display: flex;
 	align-items: center;
@@ -79,10 +95,11 @@
 
 
 .info_body_container{
-	width: 43vw;
-  height: 80vh;
+	width: 36vw;
+  height: auto;
   background-color: #EBFF00;
 	padding: 3vw;
+	border-radius: 20px;
 }
 
 .info_body_container_headline{
@@ -91,13 +108,17 @@
 	justify-content: center;
 }
 
-.info_body_container_headline h1{
+.info_body_container_headline h1,
+.info_body_container_ctas h1{
 	text-align: center;
+	font-weight: 700;
+	font-size: 33px;
+	letter-spacing: 0.1px;
 }
 
 .info_body_container_ctas{
 	text-align: center;
-	padding-top: 4vw;
+	padding-top: 3vw;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -106,17 +127,68 @@
 
 .info_body_container_ctas_spans{
 	display: flex;
-	align-items: baseline;
+	align-items: center;
+	flex-direction: column;
+	margin-top: 3vw;
 }
 
 .info_body_container_ctas_spans span{
 	padding: 1vw;
-	margin: 2vw;
 	background-color: black;
-	border-radius: 20px;
+	border-radius: 18px;
 	color: #EBFF00;
 	font-family: NHaasGroteskDSPro;
+	width: 155px;
+	margin-top: 0;
+	margin-bottom: 1vw;
+	cursor: pointer;
+	padding-top: 0.8vw;
+	padding-bottom: 0.8vw;
+	font-size: 16px;
 }
+
+.footer_cta span{
+	padding: 1vw;
+	background-color: black;
+	border-radius: 18px;
+	color: white;
+	font-family: NHaasGroteskDSPro;
+	width: 155px;
+	margin-top: 0;
+	margin-bottom: 1vw;
+	cursor: pointer;
+	padding-top: 0.8vw;
+	padding-bottom: 0.8vw;
+	font-size: 16px;
+	margin-right: 1vw;
+}
+
+.copyright{
+	position: absolute;
+	bottom: 0;
+	right: 50px;
+}
+
+.info_body_container_ctas_spans span:hover{
+	color: white;
+}
+
+.footer_desktop{
+	position: fixed;
+	bottom: 0;
+	margin: 34px;
+	width: 100%;
+}
+
+.footer_desktop_first{
+	margin-bottom: 30px;
+}
+
+.footer_desktop_first h1{
+	font-size: 33px;
+	font-weight: 700;
+}
+
 
 .info_body_container_end_para{
 	margin-top: 2vw;
@@ -130,12 +202,22 @@
 .info_cta_container span{
 	margin: 0;
 	font-family: NHaasGroteskDSPro;
-	font-size: 75px;
+	font-size: 65px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.en_cta span{
+	font-size: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .text_container{
 	margin-left: 10px;
-	margin-top: 20px;
+	margin-top: 30px;
 }
 
 ul{
@@ -147,6 +229,8 @@ ul{
 	font-weight: 100;
 	font-family: 'NHaasGroteskDSPro';
 	width: 85%;
+	font-weight: 700;
+	letter-spacing: 0.1px;
 }
 
 .text_container p{
@@ -155,6 +239,10 @@ ul{
 	font-weight: 100;
 	font-family: 'NHaasGroteskDSPro';
 	width: 85%;
+}
+
+.text_container p span{
+	font-weight: 700;
 }
 
 @media screen and (max-width:600px){

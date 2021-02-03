@@ -67,6 +67,10 @@ class Desktop extends React.Component {
       if (counter !== prevState.counter) {
         if(counter >= 0 && counter < 6){
 
+          this.setState({
+            isDisplayFooter: false
+          })
+
           let mockDataTextSubArraysFirstRow = mockDataTextSubArrays[0];
 
           divTextH1.map((ele, index) => {
@@ -79,6 +83,10 @@ class Desktop extends React.Component {
 
         if(counter >= 6 && counter < 12){
 
+          this.setState({
+            isDisplayFooter: false
+          })
+
           let mockDataTextSubArraysSecondRow = mockDataTextSubArrays[1];
 
             divTextH1.map((ele, index) => {
@@ -90,6 +98,24 @@ class Desktop extends React.Component {
         }
 
         if(counter === 12){
+
+          window.onscroll = (ev) =>  {
+
+            console.log(ev, "here");
+
+              // Make it appear a bit before;
+              if ((window.innerHeight + window.scrollY)
+              >= document.body.offsetHeight - 800) {
+                this.setState({
+                  isDisplayFooter: true
+                })
+              }else{
+                this.setState({
+                  isDisplayFooter: false
+                })
+              }
+          };
+
 
           let mockDataTextSubArraysThirdRow = mockDataTextSubArrays[2];
 
@@ -672,6 +698,7 @@ class Desktop extends React.Component {
 
    renderInfoCTA = () => {
      return (
+       <div className="cta_desktop_container">
        <div
           className="info_cta_container"
           onClick={this.triggerInfoContent}
@@ -679,6 +706,12 @@ class Desktop extends React.Component {
           <span>
             +
           </span>
+       </div>
+       <div className="en_cta">
+          <span>
+            EN
+          </span>
+       </div>
        </div>
      )
    };
@@ -722,12 +755,40 @@ class Desktop extends React.Component {
                 <span>
                   ÉCRIVEZ
                 </span>
+                <span>
+                  REGARDEZ
+                </span>
             </div>
           </div>
-          <div className="info_body_container_end_para">
-            <h1>Voir des choses <br /> « Very interesting » ?</h1>
-          </div>
        </div>
+     )
+   }
+
+
+   renderFooter = () => {
+     if(!this.state.isDisplayFooter){
+       return null;
+     }
+     return (
+       <footer className="footer_desktop">
+          <div className="footer_desktop_first">
+            <h1>Intéressé(e)?</h1>
+          </div>
+          <div className="footer_cta">
+              <span>
+                APPELEZ
+              </span>
+              <span>
+                ÉCRIVEZ
+              </span>
+              <span>
+                REGARDEZ
+              </span>
+          </div>
+          <span className="copyright">
+              « Very Interesting » ©2021
+          </span>
+       </footer>
      )
    }
 
@@ -738,6 +799,7 @@ class Desktop extends React.Component {
       <div className="main_vertical_container">
         {this.renderInfo()}
         {this.renderDivsToDom()}
+        {this.renderFooter()}
       </div>
     );
   }

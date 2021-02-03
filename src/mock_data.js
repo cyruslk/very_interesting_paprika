@@ -39,11 +39,11 @@ const mock_data = module.exports = {
     },
     {
       headlines: "Harry <br /> Wakefield",
-      description: "A mené une carrière en agence (Cossette, Taxi) et du côté client (Bell, Sympatico, Téléglobe, Pages jaunes); Expérience en communication et en marketing de produits; Spécialiste des outils CRM, web et médias sociaux; Agit depuis 2009 à titre de conseiller en marketing numérique pour des entreprises de technologie de taille moyenne en Europe et au Canada dont TelcoBridges, une entreprise d’ingénierie logicielle et d’équipement de télécommunication."
+      description: "« Ce que je trouve de « Very Interesting » chez Harry, ce sont deux choses. Il a toujours eu une longueur d’avance dans sa compréhension des médias sociaux. Et il capable de synthétiser des enjeux complexes en une formule simple, avec laquelle tout le monde est d’accord ». <br /> <span>— Pierre</span>"
     },
     {
       headlines: "Pierre <br />  Laramée",
-      description: "Co-fondateur de l’agence Tam-Tam Publicité; A été concepteur-rédacteur, directeur de création et président; Impliqué sur des marques telles que Vidéotron, Télébec, le Fonds de solidarité FTQ et l’Université du Québec ; Agit depuis 2010 à titre de consultant et concepteur pour des agences et des clients directs sur des comptes tels que Lafond, Convectair, Bureau du design de la Ville de Montréal, Bernard & Fabien Assurances, Air Inuit, Mobilia et Université de Montréal."
+      description: "« C’est sa curiosité et son talent avec les mots, qui rendent Pierre « Very Interetsting ». Il tisse des liens entre ce qu’il apprend, ce qu’il découvre, pour résoudre les problèmes auxquels les entreprises font face. Et il utilise les mots avec brio pour attirer l’attention, toucher, surprendre et inciter à passer à l’action » <span>— Harry</span>"
     }
   ],
   entriesInfoText: [

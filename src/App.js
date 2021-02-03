@@ -54,8 +54,6 @@ class App extends React.Component {
       return "loading"
     }
 
-    console.log(viewportWidth);
-
     if(viewportWidth > 600){
       return (
         <div>
