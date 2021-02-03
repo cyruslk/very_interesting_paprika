@@ -511,7 +511,7 @@ class Mobile extends React.Component {
         }, () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleVerticalHanimation(counter, "vertical", distanceToScroll);
+          this.handleVerticalHanimation(12, "vertical", distanceToScroll);
         })
     }
 
@@ -653,6 +653,10 @@ class Mobile extends React.Component {
 
    handleVerticalHanimation = (counter, slideDirection, distanceToScroll) => {
 
+     // calculate the distance of the scroll between the viewportHeight*9 and the viewportHeight*12;
+     // then, make a % of this
+     // then calculate what this pourcentage means for the verticalDivHeight, which is the height of the div;
+
      let verticalDiv = document.getElementById("vertical_div_main_container");
      console.log(distanceToScroll);
 
@@ -666,8 +670,6 @@ class Mobile extends React.Component {
       (numberOfPixelScrolled - this.state.counter * viewportHeight),
       viewportHeight)
     ;
-
-
 
     let remainingScrollPorcentage = 100-scrolledPorcentage;
 
