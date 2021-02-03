@@ -532,6 +532,9 @@ class Mobile extends React.Component {
     if (numberOfPixelScrolled > viewportHeight*9
       && numberOfPixelScrolled < viewportHeight*12) {
 
+
+        // here, I need to calculate the distance that will be scrolled;
+        // from viewPort*9 to viewportHeight*12
         let distanceToScroll = (viewportHeight*12 - viewportHeight*9);
 
         this.setState({
@@ -542,7 +545,8 @@ class Mobile extends React.Component {
         }, () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleVerticalHanimation(12, "vertical", distanceToScroll);
+          // I'm sending this distanceToScroll to my function
+          this.handleVerticalHanimation(9, "vertical", distanceToScroll);
         })
     }
 
