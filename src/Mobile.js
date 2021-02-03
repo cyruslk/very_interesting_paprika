@@ -9,6 +9,7 @@ class Mobile extends React.Component {
     this.state = {
       loaded: false,
       numberOfPixelScrolled: 0,
+      resetTextDivs: false,
       margin: 0,
       counter: 0,
       selectedDivId: 0,
@@ -24,10 +25,10 @@ class Mobile extends React.Component {
       originalImageStretchArray: [],
       originalImageHeightArray: [],
       textDivSizeArray: [],
-      isTriggeredInfoContent: false,
       scalingCoeffStart: 482/471,
       scalingCoeffEnd: 1.13,
-      divsLastFold: null
+      divsLastFold: null,
+      resetTextDivs: false
     };
   }
 
@@ -78,6 +79,7 @@ class Mobile extends React.Component {
     let viewportHeight = this.state.viewportHeight;
     let selectedDivId = this.state.selectedDivId;
     let counter = this.state.counter;
+    let resetTextDivs = this.state.resetTextDivs;
 
     // Updating these divs;
     let imgMobileContainer = [...document.getElementsByClassName('img_mobile_container')];
@@ -101,7 +103,8 @@ class Mobile extends React.Component {
     if (counter !== prevState.counter) {
       if(counter >= 0 && counter < 4){
         this.setState({
-          vertical: false
+          vertical: false,
+          resetTextDivs: false
         })
 
         let textSubArray = mockDataTextSubArrays[0]
@@ -114,8 +117,46 @@ class Mobile extends React.Component {
       }
       if(counter >= 4 && counter < 8){
         this.setState({
-          vertical: false
+          vertical: false,
+          resetTextDivs: false
         })
+
+        //initalizing the last arrayl
+        let textSubArrayLastFall = mockDataTextSubArrays.slice(2, 5);
+        let verticalContentArray = textSubArrayLastFall[0].concat(textSubArrayLastFall[1])
+
+        let divsLastFold = verticalContentArray.map((ele, index) => {
+          return (
+            <div>
+              <h1>{ReactHtmlParser(ele.headlines)}</h1>
+              <p>{ReactHtmlParser(ele.description)}</p>
+            </div>
+          )
+        })
+
+        let textWidth = document
+        .getElementById("container_mobile_text_0")
+        .getBoundingClientRect().width;
+
+
+        let renderVerticalAnimationDivContainer = () => {
+          let styling = {
+            width: `${textWidth}px`,
+            left: `-${textWidth}px`
+          }
+          return (
+            <div
+              style={styling}
+              id="vertical_div_main_container">
+                 {divsLastFold}
+            </div>
+          )
+        }
+
+        this.setState({
+          divsLastFold: renderVerticalAnimationDivContainer()
+        })
+
 
         let textSubArray = mockDataTextSubArrays[1]
         divTextH1.map((ele, index) => {
@@ -128,27 +169,8 @@ class Mobile extends React.Component {
 
       if(counter >= 8 && counter < 12){
         this.setState({
-          vertical: true
-        })
-        let textSubArray = mockDataTextSubArrays.slice(2, 5);
-        let verticalContentArray = textSubArray[0].concat(textSubArray[1])
-
-        // let textdiv1 = document.getElementById("container_mobile_text_1");
-        // textdiv1.style.display = "none";
-        //
-        // let textdiv0 = document.getElementById("container_mobile_text_0");
-        // textdiv0.style.display = "none";
-
-        let divsLastFold = verticalContentArray.map((ele, index) => {
-          return (
-            <div>
-              <h1>{ReactHtmlParser(ele.headlines)}</h1>
-              <p>{ReactHtmlParser(ele.description)}</p>
-            </div>
-          )
-        })
-        this.setState({
-          divsLastFold,
+          vertical: true,
+          resetTextDivs: true
         })
       }
     };
@@ -169,9 +191,6 @@ class Mobile extends React.Component {
        let img = document.querySelector(`#${divID} img`);
 
        let divText = document.querySelector(`#${divIDText}`);
-
-
-        console.log(textDivSize, "textDivSize");
 
        divText.style.left = `-${textDivSize}px`
        // ici pour le premier;
@@ -347,16 +366,10 @@ class Mobile extends React.Component {
       return null;
     }
 
-    let textdiv1 = document.getElementById("container_mobile_text_1");
-    textdiv1.style.display = "flex";
-
     let numberOfPixelScrolled = window.scrollY;
     // fix the wheeldelta;
 
-
-
     let viewportHeight = this.state.viewportHeight;
-
 
     if (numberOfPixelScrolled > 0
       && numberOfPixelScrolled < viewportHeight) {
@@ -479,26 +492,64 @@ class Mobile extends React.Component {
 
           this.handleAnimation(counter, 0, "up");
           this.handleAnimation(counter, 1, "up");
+          this.handleVerticalHanimation(counter, "horizontal");
 
         })
 
     }
 
     if (numberOfPixelScrolled > viewportHeight*9
-      && numberOfPixelScrolled < viewportHeight*13) {
+      && numberOfPixelScrolled < viewportHeight*10) {
 
         this.setState({
           counter: 9,
           selectedDivId: 0,
+          vertical: true,
+
         }, () => {
+
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
 
-          this.handleVertical();
+          this.handleVerticalHanimation(counter, "vertical");
+
         })
 
     }
 
+    if (numberOfPixelScrolled > viewportHeight*10
+      && numberOfPixelScrolled < viewportHeight*11) {
+
+      this.setState({
+        counter: 10,
+        selectedDivId: 0,
+        vertical: true,
+      }, () => {
+
+        let counter = this.state.counter;
+        let selectedDivId = this.state.selectedDivId;
+
+        this.handleVerticalHanimation(counter, "vertical");
+
+      })
+
+    }
+
+    if (numberOfPixelScrolled > viewportHeight*11
+      && numberOfPixelScrolled < viewportHeight*12) {
+
+      this.setState({
+        counter: 10,
+        selectedDivId: 0,
+      }, () => {
+
+        let counter = this.state.counter;
+        let selectedDivId = this.state.selectedDivId;
+
+        this.handleVerticalHanimation(counter, "vertical");
+
+      })
+    };
   };
 
 
@@ -546,9 +597,10 @@ class Mobile extends React.Component {
 
     if(animDirection === "up"){
 
-      if(selectedDivId === 0){
-        let originalImageHeightArray = this.state.originalImageHeightArray;
 
+      if(selectedDivId === 0){
+
+        let originalImageHeightArray = this.state.originalImageHeightArray;
         let scalingCoeffEnd = this.state.scalingCoeffEnd;
         let scalingCoeffEndFirstDiv = translateYPorcentageUp*scalingCoeffEnd;
 
@@ -557,7 +609,11 @@ class Mobile extends React.Component {
          translate(100%)
          scaleY(${scalingCoeffEndFirstDiv})`;
 
-         divText.style.left = `-${textLeftUp}px`
+         if(!this.state.vertical){
+           divText.style.left = `-${textLeftUp}px`
+         }else{
+           divText.style.left = "-289.703px"
+         }
 
           if(translateYPorcentageUp < 1){
 
@@ -565,10 +621,15 @@ class Mobile extends React.Component {
                  rotateZ(90deg)
                  translate(100%)
                  scaleY(${1*scalingCoeffEnd})`;
+
+
+           if(!this.state.vertical){
              divText.style.left = `0vw`;
+           }else{
+             divText.style.left = "-289.703px"
+           }
 
-          }
-
+        }
       }
 
       if(selectedDivId === 1){
@@ -578,7 +639,12 @@ class Mobile extends React.Component {
          translate(100%)
          scaleY(${translateYPorcentageUp})`;
 
-         divText.style.left = `-${textLeftUp}px`
+
+         if(!this.state.vertical){
+           divText.style.left = `-${textLeftUp}px`
+         }else{
+           divText.style.left = "-289.703px"
+         }
 
           if(translateYPorcentageUp < 1){
 
@@ -586,13 +652,18 @@ class Mobile extends React.Component {
                  rotateZ(90deg)
                  translate(100%)
                  scaleY(1)`;
-           divText.style.left = `0vw`
+
+
+           if(!this.state.vertical){
+             divText.style.left = `0vw`;
+           }else{
+             divText.style.left = "-289.703px"
+           }
           }
       }
 
     }
     if(animDirection === "down"){
-
 
       img.style.transform = `
            rotateZ(90deg)
@@ -609,13 +680,57 @@ class Mobile extends React.Component {
              scaleY(1)
          `;
          divText.style.left = `0vw`
+
       }
     }
    }
 
-   handleVertical = () => {
 
-     // make the skew here;
+   handleVerticalHanimation = (counter, slideDirection) => {
+
+
+     let verticalDiv = document.getElementById("vertical_div_main_container");
+
+     console.log(verticalDiv);
+
+     let numberOfPixelScrolled = window.scrollY;
+     let viewportHeight = this.state.viewportHeight;
+     let originalImageStretch = this.state.originalImageStretch;
+
+     let scrolledPorcentage = this.definePorcentage(
+      (numberOfPixelScrolled - this.state.counter * viewportHeight),
+      viewportHeight)
+    ;
+
+    let remainingScrollPorcentage = 100-scrolledPorcentage;
+
+    let translateYPorcentageUp = this.defineValueFromPorcentage(
+        remainingScrollPorcentage,
+        originalImageStretch
+    );
+
+    let translateYPorcentageDown = this.defineValueFromPorcentage(
+        scrolledPorcentage,
+        originalImageStretch
+    );
+
+    let textLeftUp = this.defineValueFromPorcentage(
+        remainingScrollPorcentage,
+        this.state.textDivSizeArray[1]
+    );
+
+    let textLeftDown = this.defineValueFromPorcentage(
+        scrolledPorcentage,
+        this.state.textDivSizeArray[1]
+    );
+
+    if(slideDirection === "horizontal"){
+      verticalDiv.style.left = `-${textLeftUp}px`
+    }else{
+      // then translateY() here;
+    }
+
+
 
    }
 
@@ -630,16 +745,14 @@ class Mobile extends React.Component {
     return value;
   }
 
-  renderVertical = () => {
+  renderVerticalAnimation = () => {
     if(!this.state.vertical){
       return null;
     }
-    return (
-      <div className="vertical_div_main_container">
-        {this.state.divsLastFold}
-      </div>
-    )
-  }
+    return this.state.divsLastFold;
+  };
+
+
 
   render() {
     if(!this.state.dataToDivs){
@@ -648,6 +761,7 @@ class Mobile extends React.Component {
     return (
       <div className="main_vertical_container_mobile">
           {this.state.dataToDivs}
+          {this.renderVerticalAnimation()}
       </div>
     );
   }

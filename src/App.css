@@ -200,6 +200,10 @@ ul{
 		font-size: 24px;
 	}
 
+	#vertical_div_main_container{
+		position: absolute;
+	}
+
 
 
 	#container_mobile_div_1{
