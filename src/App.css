@@ -341,9 +341,6 @@ ul{
 		margin-left: 20px;
 	}
 
-	#vertical_div_main_container div:first-child{
-		margin-bottom: 20px;
-	}
 
 	.main_vertical_container_mobile{
 		position: fixed;
@@ -370,6 +367,47 @@ ul{
 		margin-top: 48vw;
 	}
 
+
+	#vertical_text_content_1{
+		margin-bottom: 184px;
+	}
+
+	#vertical_text_content_2,
+	#vertical_text_content_3,
+	#vertical_text_content_4{
+		margin-bottom: 60px;
+	}
+
+	.footer_mobile{
+		display: block;
+		margin-bottom: 30px;
+	}
+
+	.footer_mobile_cta{
+		margin-top: 60px;
+	}
+
+
+	.footer_mobile h1{
+		margin-bottom: 20px;
+	}
+
+	.footer_mobile span{
+		display: block;
+		font-size: 20px;
+		padding: 2.5vw;
+		margin-bottom: 20px;
+		background-color: black;
+		border-radius: 18px;
+		color: white;
+		font-family: NHaasGroteskDSProMedium;
+		width: 155px;
+		margin-top: 0;
+		text-transform: uppercase;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 
 
 	#container_mobile_div_1{

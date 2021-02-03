@@ -46,7 +46,7 @@ class Mobile extends React.Component {
      let viewportWidth = window.innerWidth;
 
      // Init the state here;
-     let updatedHeightOfPage = viewportHeight*13;
+     let updatedHeightOfPage = viewportHeight*14;
      document.body.style.height = `${updatedHeightOfPage}px`;
 
 
@@ -60,13 +60,15 @@ class Mobile extends React.Component {
       // Getting the data from the mockData;
       let mockDataText = this.state.mockData.entriesText;
 
+
+
        let mockDataTextSubArrays = [
            mockDataText.slice(0, 2),
            mockDataText.slice(2, 4),
-           mockDataText.slice(4, 6),
-           mockDataText.slice(6, 8),
-           mockDataText.slice(9,10),
+           mockDataText.slice(4, 9),
        ];
+
+       console.log(mockDataTextSubArrays);
 
        this.setState({
          mockDataTextSubArrays
@@ -79,7 +81,6 @@ class Mobile extends React.Component {
 
 
   componentDidUpdate(prevProps, prevState) {
-
 
     //updating th view based on the viewPort;
     let viewportHeight = this.state.viewportHeight;
@@ -127,13 +128,15 @@ class Mobile extends React.Component {
           resetTextDivs: false
         })
 
-        //initalizing the last arrayl
-        let textSubArrayLastFall = mockDataTextSubArrays.slice(2, 5);
-        let verticalContentArray = textSubArrayLastFall[0].concat(textSubArrayLastFall[1])
+
+        let verticalContentArray =  mockDataTextSubArrays[2];
 
         let divsLastFold = verticalContentArray.map((ele, index) => {
+
+          let id = `vertical_text_content_${index}`
           return (
-            <div className="vertical_text_content">
+            <div id={id}
+                className="vertical_text_content">
               <h1>{ReactHtmlParser(ele.headlines)}</h1>
               <p>{ReactHtmlParser(ele.description)}</p>
             </div>
@@ -154,7 +157,19 @@ class Mobile extends React.Component {
             <div
               style={styling}
               id="vertical_div_main_container">
-                 {divsLastFold}
+               {divsLastFold}
+               <div className="vertical_text_content footer_mobile">
+
+                 <h1>Intéressé(e)?</h1>
+                 <span>APPELEZ</span>
+                 <span>ÉCRIVEZ</span>
+                 <span>REGARDEZ</span>
+
+                  <div className="footer_mobile_cta">
+                    <p>« Very Interesting » ©2021</p>
+                 </div>
+
+               </div>
             </div>
           )
         }
@@ -173,7 +188,7 @@ class Mobile extends React.Component {
          })
       }
 
-      if(counter >= 8 && counter < 12){
+      if(counter >= 8 && counter < 14){
         this.setState({
           vertical: true,
           resetTextDivs: true
@@ -530,12 +545,12 @@ class Mobile extends React.Component {
     }
 
     if (numberOfPixelScrolled > viewportHeight*9
-      && numberOfPixelScrolled < viewportHeight*12) {
+      && numberOfPixelScrolled < viewportHeight*13) {
 
 
         // here, I need to calculate the distance that will be scrolled;
         // from viewPort*9 to viewportHeight*12
-        let distanceToScroll = (viewportHeight*12 - viewportHeight*9);
+        let distanceToScroll = (viewportHeight*13 - viewportHeight*9);
 
         this.setState({
           counter: 9,
@@ -717,9 +732,9 @@ class Mobile extends React.Component {
      }else{
 
        let scrolledPorcentageVertical = this.definePorcentage(
-        (numberOfPixelScrolled - 9 * viewportHeight),
-        viewportHeight*3)
-      ;
+          (numberOfPixelScrolled - 9 * viewportHeight),
+          viewportHeight*3)
+        ;
 
       verticalDiv.style.left = "0px";
       verticalDiv.style.transform = `translateY(-${scrolledPorcentageVertical}%)`
