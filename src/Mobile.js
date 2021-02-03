@@ -46,7 +46,7 @@ class Mobile extends React.Component {
      let viewportWidth = window.innerWidth;
 
      // Init the state here;
-     let updatedHeightOfPage = viewportHeight*15;
+     let updatedHeightOfPage = viewportHeight*13;
      document.body.style.height = `${updatedHeightOfPage}px`;
 
 
@@ -546,7 +546,7 @@ class Mobile extends React.Component {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
           // I'm sending this distanceToScroll to my function
-          this.handleVerticalHanimation(9, "vertical", distanceToScroll);
+          this.handleVerticalHanimation(12, "vertical", distanceToScroll, [9, 12]);
         })
     }
 
@@ -690,62 +690,41 @@ class Mobile extends React.Component {
    }
 
 
-   handleVerticalHanimation = (counter, slideDirection, distanceToScroll) => {
-
-     // calculate the distance of the scroll between the viewportHeight*9 and the viewportHeight*12;
-     // then, make a % of this
-     // then calculate what this pourcentage means for the verticalDivHeight, which is the height of the div;
+   handleVerticalHanimation = (counter, slideDirection, distanceToScroll, counterToMakeTranslation) => {
 
      let verticalDiv = document.getElementById("vertical_div_main_container");
-     console.log(distanceToScroll);
-
      let verticalDivHeight = verticalDiv.getBoundingClientRect().height;
 
      let numberOfPixelScrolled = window.scrollY;
      let viewportHeight = this.state.viewportHeight;
-     let originalImageStretch = this.state.originalImageStretch;
 
-     let scrolledPorcentage = this.definePorcentage(
-      (numberOfPixelScrolled - this.state.counter * viewportHeight),
-      viewportHeight)
-    ;
+     if(slideDirection === "horizontal"){
 
-    let remainingScrollPorcentage = 100-scrolledPorcentage;
+       let scrolledPorcentage = this.definePorcentage(
+         (numberOfPixelScrolled - this.state.counter * viewportHeight),
+         viewportHeight)
+       ;
 
-    let translateYPorcentageUp = this.defineValueFromPorcentage(
-        remainingScrollPorcentage,
-        originalImageStretch
-    );
+       let remainingScrollPorcentage = 100-scrolledPorcentage;
 
-    let translateYPorcentageDown = this.defineValueFromPorcentage(
-        scrolledPorcentage,
-        originalImageStretch
-    );
+       let textLeftUp = this.defineValueFromPorcentage(
+           remainingScrollPorcentage,
+           this.state.textDivSizeArray[1]
+       );
 
-    let textLeftUp = this.defineValueFromPorcentage(
-        remainingScrollPorcentage,
-        this.state.textDivSizeArray[1]
-    );
+       verticalDiv.style.left = `-${textLeftUp}px`;
 
-    let textLeftDown = this.defineValueFromPorcentage(
-        scrolledPorcentage,
-        this.state.textDivSizeArray[1]
-    );
+     }else{
 
-    if(slideDirection === "horizontal"){
-
-      verticalDiv.style.left = `-${textLeftUp}px`;
-
-    }else{
+       let scrolledPorcentageVertical = this.definePorcentage(
+        (numberOfPixelScrolled - 9 * viewportHeight),
+        viewportHeight*3)
+      ;
 
       verticalDiv.style.left = "0px";
-      // lock the other text divs;
+      verticalDiv.style.transform = `translateY(-${scrolledPorcentageVertical}%)`
 
-
-      // Make the translateY() on the div;
-
-
-    }
+     }
    }
 
 
