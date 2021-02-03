@@ -8,6 +8,8 @@ class Mobile extends React.Component {
     super(props);
     this.state = {
       loaded: false,
+      numberOfPixelScrolled: 0,
+      margin: 0,
       counter: 0,
       selectedDivId: 0,
       scrollDirection: null,
@@ -21,9 +23,11 @@ class Mobile extends React.Component {
       originalImageStretch: null,
       originalImageStretchArray: [],
       originalImageHeightArray: [],
+      textDivSizeArray: [],
       isTriggeredInfoContent: false,
-      imagesMobileToDiv: null,
-      scalingCoeff: 1.04
+      scalingCoeffStart: 482/471,
+      scalingCoeffEnd: 1.13,
+      divsLastFold: null
     };
   }
 
@@ -67,9 +71,8 @@ class Mobile extends React.Component {
      })
   };
 
-
-
   componentDidUpdate(prevProps, prevState) {
+
 
     //updating th view based on the viewPort;
     let viewportHeight = this.state.viewportHeight;
@@ -85,22 +88,22 @@ class Mobile extends React.Component {
     let mockDataTextSubArrays = this.state.mockDataTextSubArrays;
 
     if(viewportHeight !== prevState.viewportHeight){
-      // 5 is the space between letters; hardcodes for now
+
       imgMobileContainer.map((ele, index) => {
         ele.style.height = `${viewportHeight/2}px`;
       })
       imgMobile.map((ele, index) => {
         ele.style.width = `${viewportHeight/2}px`;
       })
-
-      // calculate the stretch here;
-
     };
 
     // updating the data;
     if (counter !== prevState.counter) {
-
       if(counter >= 0 && counter < 4){
+        this.setState({
+          vertical: false
+        })
+
         let textSubArray = mockDataTextSubArrays[0]
         divTextH1.map((ele, index) => {
          ele.innerHTML = textSubArray[index].headlines
@@ -109,8 +112,11 @@ class Mobile extends React.Component {
            ele.innerHTML = textSubArray[index].description
          })
       }
-
       if(counter >= 4 && counter < 8){
+        this.setState({
+          vertical: false
+        })
+
         let textSubArray = mockDataTextSubArrays[1]
         divTextH1.map((ele, index) => {
          ele.innerHTML = textSubArray[index].headlines
@@ -121,15 +127,36 @@ class Mobile extends React.Component {
       }
 
       if(counter >= 8 && counter < 12){
-        return this.refactorMobileTextDiv();
-      }
+        this.setState({
+          vertical: true
+        })
+        let textSubArray = mockDataTextSubArrays.slice(2, 5);
+        let verticalContentArray = textSubArray[0].concat(textSubArray[1])
 
+        // let textdiv1 = document.getElementById("container_mobile_text_1");
+        // textdiv1.style.display = "none";
+        //
+        // let textdiv0 = document.getElementById("container_mobile_text_0");
+        // textdiv0.style.display = "none";
+
+        let divsLastFold = verticalContentArray.map((ele, index) => {
+          return (
+            <div>
+              <h1>{ReactHtmlParser(ele.headlines)}</h1>
+              <p>{ReactHtmlParser(ele.description)}</p>
+            </div>
+          )
+        })
+        this.setState({
+          divsLastFold,
+        })
+      }
     };
 
     // resizing the divs here;
     if(selectedDivId !== prevState.selectedDivId){
 
-    let textDivSize = this.state.textDivSize;
+    let textDivSize = this.state.textDivSizeArray[1];
     let originalImageStretchArray = this.state.originalImageStretchArray;
 
      if(selectedDivId === 0){
@@ -143,8 +170,15 @@ class Mobile extends React.Component {
 
        let divText = document.querySelector(`#${divIDText}`);
 
+
+        console.log(textDivSize, "textDivSize");
+
        divText.style.left = `-${textDivSize}px`
-       img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale})`;
+       // ici pour le premier;
+       console.log(imgScale, divID);
+
+       img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.9})`;
+
      }
      if(selectedDivId === 1){
 
@@ -152,22 +186,23 @@ class Mobile extends React.Component {
        let divIDText = `container_mobile_text_${0}`;
        let imgScale = originalImageStretchArray[0];
 
+       let scalingCoeffStart = this.state.scalingCoeffStart;
+
        let imgContainer = document.querySelector(`#${divID}`);
        let img = document.querySelector(`#${divID} img`);
 
        let divText = document.querySelector(`#${divIDText}`);
 
+
        divText.style.left = `-${textDivSize}px`
-       img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale})`;
+
+       // ici pour le deuxième
+       console.log(imgScale, divID);
+       img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.9*scalingCoeffStart})`;
 
      }
     }
   };
-
-
-  refactorMobileTextDiv = () => {
-    console.log("going there");
-  }
 
 
    // Render the data to divs;
@@ -176,8 +211,6 @@ class Mobile extends React.Component {
      // Mapping through the mockData; to be changed;
       let mockData = this.state.mockData;
       let mockDataTextSubArraysFirstRow = this.state.mockDataTextSubArrays[0];
-
-
       let dataToDivs = mockData.entriesMobile.map((ele, index) => {
 
         let divID = `container_mobile_div_${index}`;
@@ -188,9 +221,8 @@ class Mobile extends React.Component {
         return (
           <div
             id={divID}
-            style={{height: `${this.state.viewportHeight/2-5}px`}}
+            style={{height: `${this.state.viewportHeight/2-this.state.margin}px`}}
             className="img_mobile_container">
-
               <div
                   id={divIDText}
                   className="mobile_text_content">
@@ -230,11 +262,9 @@ class Mobile extends React.Component {
     }else{
 
       let style = {
-        width: `${this.state.viewportHeight/2-5}px`,
+        width: `${this.state.viewportHeight/2-this.state.margin}px`,
         transform: `rotateZ(90deg) translate(100%) scaleY(1)`
       }
-
-
       return (
         <img
           className="img_mobile"
@@ -279,13 +309,17 @@ class Mobile extends React.Component {
       this.setState({
       originalImageHeight,
       originalImageStretch,
-      textDivSize,
-       originalImageHeightArray: [...this.state.originalImageHeightArray, originalImageHeight],
-       originalImageStretchArray: [...this.state.originalImageStretchArray, originalImageStretch]
+      textDivSizeArray: [...this.state.textDivSizeArray, textDivSize],
+      originalImageHeightArray: [...this.state.originalImageHeightArray, originalImageHeight],
+      originalImageStretchArray: [...this.state.originalImageStretchArray, originalImageStretch]
      }, () => {
+
+       divText.style.width = `${textDivSize - 40}px`;
+       divText.style.left = `-${textDivSize - this.state.margin}px`;
 
        let originalImageStretchArray = this.state.originalImageStretchArray;
 
+       // why it goes on the first and not the second;
        if(index === 0){
          img.style.transform = `
            rotateZ(90deg)
@@ -294,19 +328,16 @@ class Mobile extends React.Component {
          `;
        }else{
 
-         let scaleOne = originalImageStretchArray[0]/originalImageStretchArray[1];
-         let scalingCoeff = this.state.scalingCoeff;
-
+         let scalingCoeffStart = this.state.scalingCoeffStart;
          img.style.transform = `
            rotateZ(90deg)
            translate(100%)
-           scaleY(${originalImageStretchArray[1]*scalingCoeff})
+           scaleY(${originalImageStretchArray[1]*scalingCoeffStart})
          `;
        }
-      divText.style.width = `${textDivSize - 5}px`;
-      divText.style.left = `-${textDivSize - 5}px`;
+
      })
-    })
+   })
   }
 
 
@@ -316,18 +347,14 @@ class Mobile extends React.Component {
       return null;
     }
 
-    let deltaY = event.deltaY;
-    if (deltaY < 0){
-      this.setState({
-        scrollDirection: "up"
-      })
-    }else{
-      this.setState({
-        scrollDirection: "down"
-      })
-    }
+    let textdiv1 = document.getElementById("container_mobile_text_1");
+    textdiv1.style.display = "flex";
 
     let numberOfPixelScrolled = window.scrollY;
+    // fix the wheeldelta;
+
+
+
     let viewportHeight = this.state.viewportHeight;
 
 
@@ -443,8 +470,10 @@ class Mobile extends React.Component {
 
         this.setState({
           counter: 8,
+          vertical: true,
           selectedDivId: 0,
         }, () => {
+
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
 
@@ -464,6 +493,8 @@ class Mobile extends React.Component {
         }, () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
+
+          this.handleVertical();
         })
 
     }
@@ -473,21 +504,10 @@ class Mobile extends React.Component {
 
   handleAnimation = (counter, selectedDivId, animDirection, single) => {
 
-    // add in componentDidUpdate
-    let mobileTextContent = [...document.getElementsByClassName('mobile_text_content')];
-    mobileTextContent.map((ele, index) => {
-      ele.style.display = "flex"
-    })
-
-    this.setState({
-      vertical: false
-    })
-
     // div for img;
     let divID = `container_mobile_div_${selectedDivId}`;
     let imgContainer = document.querySelector(`#${divID}`);
     let img = document.querySelector(`#${divID} img`);
-
     // div for text;
     let divTextID = `container_mobile_text_${selectedDivId}`;
     let divText = document.querySelector(`#${divTextID}`);
@@ -514,56 +534,54 @@ class Mobile extends React.Component {
        originalImageStretch
    );
 
-   // to change;
    let textLeftUp = this.defineValueFromPorcentage(
        remainingScrollPorcentage,
-       this.state.textDivSize
+       this.state.textDivSizeArray[1]
    );
 
    let textLeftDown = this.defineValueFromPorcentage(
        scrolledPorcentage,
-       this.state.textDivSize
+       this.state.textDivSizeArray[1]
    );
-
-
 
     if(animDirection === "up"){
 
       if(selectedDivId === 0){
-
         let originalImageHeightArray = this.state.originalImageHeightArray;
 
-        // let offset = originalImageHeightArray[1]/originalImageHeightArray[0];
-        let offset = 1.12;
-        console.log(offset);
-
-        let scalingCoeff = translateYPorcentageUp*offset;
+        let scalingCoeffEnd = this.state.scalingCoeffEnd;
+        let scalingCoeffEndFirstDiv = translateYPorcentageUp*scalingCoeffEnd;
 
         img.style.transform = `
-           rotateZ(90deg)
-           translate(100%)
-           scaleY(${scalingCoeff})`;
+         rotateZ(90deg)
+         translate(100%)
+         scaleY(${scalingCoeffEndFirstDiv})`;
 
          divText.style.left = `-${textLeftUp}px`
 
           if(translateYPorcentageUp < 1){
+
             img.style.transform = `
                  rotateZ(90deg)
                  translate(100%)
-                 scaleY(${1*offset})`;
-           divText.style.left = `0vw`
+                 scaleY(${1*scalingCoeffEnd})`;
+             divText.style.left = `0vw`;
+
           }
 
-      }else{
+      }
+
+      if(selectedDivId === 1){
 
         img.style.transform = `
-           rotateZ(90deg)
-           translate(100%)
-           scaleY(${translateYPorcentageUp})`;
+         rotateZ(90deg)
+         translate(100%)
+         scaleY(${translateYPorcentageUp})`;
 
          divText.style.left = `-${textLeftUp}px`
 
           if(translateYPorcentageUp < 1){
+
             img.style.transform = `
                  rotateZ(90deg)
                  translate(100%)
@@ -595,6 +613,12 @@ class Mobile extends React.Component {
     }
    }
 
+   handleVertical = () => {
+
+     // make the skew here;
+
+   }
+
 
   definePorcentage = (percent, total) => {
       let porcentage = (percent/total)*100;
@@ -611,27 +635,11 @@ class Mobile extends React.Component {
       return null;
     }
     return (
-      <div
-        style={{width: `${this.state.textDivSize}px`}}
-        className="main_vertical_container_mobile">
-
-        <h1>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</h1>
-
-        <h1>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</h1>
-
-        <h1>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</h1>
-
-        <h1>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</h1>
-
-        <h1>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</h1>
-
-        <h1>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</h1>
-
+      <div className="vertical_div_main_container">
+        {this.state.divsLastFold}
       </div>
     )
   }
-
-
 
   render() {
     if(!this.state.dataToDivs){
@@ -640,7 +648,6 @@ class Mobile extends React.Component {
     return (
       <div className="main_vertical_container_mobile">
           {this.state.dataToDivs}
-          {this.renderVertical()}
       </div>
     );
   }

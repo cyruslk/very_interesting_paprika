@@ -117,7 +117,6 @@ class Desktop extends React.Component {
 
       let originalImageHeight = img.getBoundingClientRect().height;
 
-      // to optimize;
       let originalImageStretch = (viewportHeight + 1.4*aligningThirdDiv)/originalImageHeight;
 
 
@@ -432,6 +431,8 @@ class Desktop extends React.Component {
 
   handleAnimation = (counter, selectedDivId, animDirection, all) => {
 
+    console.log(all);
+
     // to optimze;
     // this.handleDivTextChange(counter)
 
@@ -460,6 +461,7 @@ class Desktop extends React.Component {
           );
 
           if(animDirection === "up"){
+
             img.style.transform = `scaleY(${translateYPorcentageUp})`;
             let newImgContainerHeight = img.getBoundingClientRect().height;
             imgContainer.style.height = newImgContainerHeight + "px";
@@ -502,6 +504,7 @@ class Desktop extends React.Component {
 
       }else{
 
+
         let scrolledPorcentage = this.definePorcentage(
           (numberOfPixelScrolled - this.state.counter * viewportHeight),
           viewportHeight)
@@ -518,17 +521,20 @@ class Desktop extends React.Component {
 
         if(animDirection === "up"){
 
+          console.log(translateYPorcentageUp, selectedDivId, "heres");
+
+
           img.style.transform = `scaleY(${translateYPorcentageUp})`;
           let newImgContainerHeight = img.getBoundingClientRect().height;
           imgContainer.style.height = newImgContainerHeight + "px";
 
           if(selectedDivId === 1){
 
-            // APPLY THE CHANGE HERE;
-            let x = (translateYPorcentageUp - 0.2)
-            console.log(x, "here");
-
-            img.style.transform = `scaleY(${x})`;
+            // 570 = hauteur premier div;
+            // 593 = hauteur deuxième div;
+            let coeffScalDivId1 = (translateYPorcentageUp * 570/593)
+            // console.log(x, "here");
+            img.style.transform = `scaleY(${coeffScalDivId1})`;
             let newImgContainerHeight = img.getBoundingClientRect().height;
             imgContainer.style.height = newImgContainerHeight + "px";
 

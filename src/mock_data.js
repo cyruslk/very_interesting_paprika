@@ -35,7 +35,7 @@ const mock_data = module.exports = {
     },
     {
       headlines: "Rencontrez des gens <br /> « Very Interesting »",
-      description: null
+      description: "Harry et Pierre possèdent tous deux une longue feuille de route en agence et/ou du côté client, en stratégie, en marketing de produits et de services, en création."
     },
     {
       headlines: "Harry <br /> Wakefield",
