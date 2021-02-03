@@ -18,7 +18,7 @@ const mock_data = module.exports = {
       description: null
     },
     {
-      headlines: "TOUT LE MONDE N’EN A QUE POUR LES DONNÉES. <br /><br /> MAIS LES DONNÉES EN ELLES-MÊMES NE SUFFISENT PAS.",
+      headlines: "TOUT LE MONDE N’EN A QUE POUR LES DONNÉES. <br /> MAIS LES DONNÉES EN ELLES-MÊMES NE SUFFISENT PAS.",
       description: null
     },
     {

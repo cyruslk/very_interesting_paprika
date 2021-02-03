@@ -127,7 +127,7 @@ class Mobile extends React.Component {
 
         let divsLastFold = verticalContentArray.map((ele, index) => {
           return (
-            <div>
+            <div className="vertical_text_content">
               <h1>{ReactHtmlParser(ele.headlines)}</h1>
               <p>{ReactHtmlParser(ele.description)}</p>
             </div>
@@ -499,7 +499,9 @@ class Mobile extends React.Component {
     }
 
     if (numberOfPixelScrolled > viewportHeight*9
-      && numberOfPixelScrolled < viewportHeight*10) {
+      && numberOfPixelScrolled < viewportHeight*12) {
+
+        let distanceToScroll = (viewportHeight*12 - viewportHeight*9);
 
         this.setState({
           counter: 9,
@@ -507,49 +509,12 @@ class Mobile extends React.Component {
           vertical: true,
 
         }, () => {
-
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-
-          this.handleVerticalHanimation(counter, "vertical");
-
+          this.handleVerticalHanimation(counter, "vertical", distanceToScroll);
         })
-
     }
 
-    if (numberOfPixelScrolled > viewportHeight*10
-      && numberOfPixelScrolled < viewportHeight*11) {
-
-      this.setState({
-        counter: 10,
-        selectedDivId: 0,
-        vertical: true,
-      }, () => {
-
-        let counter = this.state.counter;
-        let selectedDivId = this.state.selectedDivId;
-
-        this.handleVerticalHanimation(counter, "vertical");
-
-      })
-
-    }
-
-    if (numberOfPixelScrolled > viewportHeight*11
-      && numberOfPixelScrolled < viewportHeight*12) {
-
-      this.setState({
-        counter: 10,
-        selectedDivId: 0,
-      }, () => {
-
-        let counter = this.state.counter;
-        let selectedDivId = this.state.selectedDivId;
-
-        this.handleVerticalHanimation(counter, "vertical");
-
-      })
-    };
   };
 
 
@@ -686,12 +651,12 @@ class Mobile extends React.Component {
    }
 
 
-   handleVerticalHanimation = (counter, slideDirection) => {
-
+   handleVerticalHanimation = (counter, slideDirection, distanceToScroll) => {
 
      let verticalDiv = document.getElementById("vertical_div_main_container");
+     console.log(distanceToScroll);
 
-     console.log(verticalDiv);
+     let verticalDivHeight = verticalDiv.getBoundingClientRect().height;
 
      let numberOfPixelScrolled = window.scrollY;
      let viewportHeight = this.state.viewportHeight;
@@ -701,6 +666,8 @@ class Mobile extends React.Component {
       (numberOfPixelScrolled - this.state.counter * viewportHeight),
       viewportHeight)
     ;
+
+
 
     let remainingScrollPorcentage = 100-scrolledPorcentage;
 
@@ -725,13 +692,17 @@ class Mobile extends React.Component {
     );
 
     if(slideDirection === "horizontal"){
-      verticalDiv.style.left = `-${textLeftUp}px`
+
+      verticalDiv.style.left = `-${textLeftUp}px`;
+
     }else{
-      // then translateY() here;
+
+      verticalDiv.style.left = "0px";
+
+      // Make the translateY() on the div;
+
+
     }
-
-
-
    }
 
 

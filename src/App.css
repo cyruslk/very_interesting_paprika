@@ -9,6 +9,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+	font-family: NHaasGroteskDSPro;
+	font-weight: 100;
 }
 
 /* .horizontal_master_container{
@@ -113,7 +115,7 @@
 	background-color: black;
 	border-radius: 20px;
 	color: #EBFF00;
-	font-family: 'NHaasGroteskDSPro';
+	font-family: NHaasGroteskDSPro;
 }
 
 .info_body_container_end_para{
@@ -158,6 +160,7 @@ ul{
 @media screen and (max-width:600px){
 
 
+
 	.main_vertical_container_mobile{
 		display: block;
 		position: fixed;
@@ -183,10 +186,24 @@ ul{
     background-color: white;
     z-index: 10;
     padding: 16px;
+		padding-right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
 		flex-direction: column;
+	}
+
+	.vertical_text_content{
+		padding-left: 16px;
+		padding-right: 0;
+	}
+
+	.vertical_text_content ul{
+		margin-left: 20px;
+	}
+
+	#vertical_div_main_container div:first-child{
+		margin-bottom: 20px;
 	}
 
 	.main_vertical_container_mobile{
@@ -196,12 +213,20 @@ ul{
 		height: 100vh;
 	}
 
-	.mobile_text_content h1{
+	.mobile_text_content h1,
+	.vertical_text_content h1{
 		font-size: 24px;
+	}
+
+	.mobile_text_content p,
+	.vertical_text_content p{
+		font-size: 16px;
+		margin-top: 10px;
 	}
 
 	#vertical_div_main_container{
 		position: absolute;
+		margin-top: 48vw;
 	}
 
 
