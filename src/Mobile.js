@@ -60,8 +60,6 @@ class Mobile extends React.Component {
       // Getting the data from the mockData;
       let mockDataText = this.state.mockData.entriesText;
 
-
-
        let mockDataTextSubArrays = [
            mockDataText.slice(0, 2),
            mockDataText.slice(2, 4),
@@ -104,6 +102,9 @@ class Mobile extends React.Component {
       imgMobile.map((ele, index) => {
         ele.style.width = `${viewportHeight/2}px`;
       })
+
+      // here, reset the translateY();
+
     };
 
     // updating the data;
@@ -244,9 +245,7 @@ class Mobile extends React.Component {
 
       if(animDirection === "up"){
 
-
         if(selectedDivId === 0){
-
 
           let divID = `container_mobile_div_${1}`;
           let divIDText = `container_mobile_text_${1}`;
@@ -352,7 +351,6 @@ class Mobile extends React.Component {
 
 
   resizeHandler = () => {
-
       let viewportHeight = window.innerHeight;
       this.setState({
         viewportHeight

@@ -9,6 +9,7 @@
 }
 
 
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -407,6 +408,10 @@ ul{
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	.vertical_text_content span{
+		font-family: NHaasGroteskDSProBold;
 	}
 
 

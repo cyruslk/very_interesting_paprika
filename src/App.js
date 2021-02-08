@@ -18,6 +18,10 @@ class App extends React.Component {
 
   componentDidMount(){
 
+    document.addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+    });
+
       Tabletop.init({
       key: '1N5WFhAZpqz6Spgr6pQowDRJLmr_Ni99_sh95TCArGQ8',
       callback: googleData => {
