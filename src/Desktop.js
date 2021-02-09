@@ -33,7 +33,7 @@ class Desktop extends React.Component {
 
     let {cmsData} = this.props;
     let mainCmsData = cmsData.slice(0, 9);
-    let infoCmsData = cmsData.slice(9, 12);
+    let infoCmsData = cmsData.slice(9, 14);
     let viewportHeight = window.innerHeight;
     let updatedHeightOfPage = viewportHeight*15;
     document.body.style.height = `${updatedHeightOfPage}px`;
@@ -46,7 +46,6 @@ class Desktop extends React.Component {
       infoCmsData
     }, () => {
 
-      let mockDataText = this.state.mockData.entriesText;
       let {mainCmsData} = this.state;
 
       let mainCmsDataSubArrays = [
@@ -191,16 +190,12 @@ class Desktop extends React.Component {
 
   renderDataToDivs = (selectedlan) => {
 
-    let mockData = this.state.mockData;
     let mainCmsDataSubArraysFirstRow = this.state.mainCmsDataSubArrays[0];
 
-    console.log(selectedlan);
-
-
+    // get these images here;
     let dataToDivs = mockData.entriesImgDesktop.map((ele, index) => {
 
       let divID = `container_div_${index}`;
-
       let selectedLanHeadlines = `headlines_${selectedlan}`;
       let selectedLanPara = `paragraph_${selectedlan}`;
 
@@ -264,8 +259,6 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight) {
 
         this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
-
         this.setState({
           counter: 0,
           selectedDivId: 0,
@@ -282,8 +275,6 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight*2) {
 
         this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
-
         this.setState({
           counter: 1,
           selectedDivId: 0,
@@ -298,8 +289,6 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight*3) {
 
        this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
-
-
         this.setState({
           counter: 2,
           selectedDivId: 1,
@@ -308,18 +297,12 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "up");
         })
-
-
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*3
       && numberOfPixelScrolled < viewportHeight*4) {
 
-
         this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
-
         this.setState({
           counter: 3,
           selectedDivId: 1,
@@ -336,8 +319,6 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight*5) {
 
         this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
-
-
         this.setState({
           counter: 4,
           selectedDivId: 2,
@@ -353,8 +334,6 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight*6) {
 
         this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
-
         this.setState({
           counter: 5,
           selectedDivId: 2,
@@ -369,8 +348,6 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight*7) {
 
         this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
-
-
         this.setState({
           counter: 6,
           selectedDivId: 0,
@@ -386,8 +363,6 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight*8) {
 
         this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
-
         this.setState({
           counter: 7,
           selectedDivId: 0,
@@ -402,8 +377,6 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight*9) {
 
         this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
-
-
         this.setState({
           counter: 8,
           selectedDivId: 1,
@@ -420,8 +393,6 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight*10) {
 
         this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
-
         this.setState({
           counter: 9,
           selectedDivId: 1,
@@ -436,8 +407,6 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight*11) {
 
         this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
-
-
         this.setState({
           counter: 10,
           selectedDivId: 2
@@ -452,8 +421,6 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight*12) {
 
         this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
-
-
         this.setState({
           counter: 11,
           selectedDivId: 2
@@ -469,8 +436,6 @@ class Desktop extends React.Component {
       && numberOfPixelScrolled < viewportHeight*13) {
 
         this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
-
-
         this.setState({
           counter: 12,
           selectedDivId: 2
@@ -775,29 +740,47 @@ class Desktop extends React.Component {
    }
 
    renderBodyCTA = () => {
+
+     let {infoCmsData} = this.state;
+     let {selectedlan} = this.state;
+
+     let selectedLanHeadlines = `headlines_${selectedlan}`;
+     let selectedLanPara = `paragraph_${selectedlan}`;
+
      if(!this.state.isTriggeredInfoContent){
        return null;
      }
+
      return (
        <div className="info_body_container">
           <div className="info_body_container_headline">
-            <h1>« Very Interesting » rend ses clients plus intéressants, plus remarqués, plus sollicités</h1>
+            <h1>{infoCmsData[0][selectedLanHeadlines]}</h1>
           </div>
           <div className="info_body_container_ctas">
-            <h1>Devenir une Cie <br /> « Very interesting » ?</h1>
+            <h1>{infoCmsData[0][selectedLanPara]}</h1>
             <div className="info_body_container_ctas_spans">
                 <span
                   id="body"
                   onMouseEnter={() => this.toggleOnHoverCallCTA("body")}
                   onMouseLeave={() => this.toggleOnHoverCallCTA("body")}>
-                  APPELEZ
+                    {infoCmsData[1][selectedLanHeadlines]}
                 </span>
+                <a
+                  href={"mailto:" + infoCmsData[2][selectedLanPara]}
+                  rel="noopener"
+                  target="_blank">
                 <span>
-                  ÉCRIVEZ
+                  {infoCmsData[2][selectedLanHeadlines]}
                 </span>
+                </a>
+                <a
+                  href={infoCmsData[3][selectedLanPara]}
+                  rel="noopener"
+                  target="_blank">
                 <span>
-                  REGARDEZ
+                  {infoCmsData[3][selectedLanHeadlines]}
                 </span>
+                </a>
             </div>
           </div>
        </div>
@@ -805,6 +788,14 @@ class Desktop extends React.Component {
    };
 
    toggleOnHoverCallCTA = (id) => {
+
+     let {infoCmsData} = this.state;
+     let {selectedlan} = this.state;
+
+     let selectedLanHeadlines = `headlines_${selectedlan}`;
+     let selectedLanPara = `paragraph_${selectedlan}`;
+
+
      this.setState({
        toggleOnHoverCallCTA: !this.state.toggleOnHoverCallCTA
      }, () => {
@@ -812,34 +803,52 @@ class Desktop extends React.Component {
        if(this.state.toggleOnHoverCallCTA){
          selectedSpan.innerText = "(514) 577 1553"
        }else{
-         selectedSpan.innerText = "APPELEZ"
+         selectedSpan.innerText = infoCmsData[1][selectedLanHeadlines]
        }
      })
    }
 
 
    renderFooter = () => {
+
+     let {infoCmsData} = this.state;
+     let {selectedlan} = this.state;
+
+     let selectedLanHeadlines = `headlines_${selectedlan}`;
+     let selectedLanPara = `paragraph_${selectedlan}`;
+
+
      if(!this.state.isDisplayFooter){
        return null;
      }
      return (
        <footer className="footer_desktop">
           <div className="footer_desktop_first">
-            <h1>Intéressé(e)?</h1>
+            <h1>{infoCmsData[4][selectedLanHeadlines]}</h1>
           </div>
-          <div className="footer_cta">
-              <span
-                id="footer"
-                onMouseEnter={() => this.toggleOnHoverCallCTA("footer")}
-                onMouseLeave={() => this.toggleOnHoverCallCTA("footer")}>
-                APPELEZ
-              </span>
-              <span>
-                ÉCRIVEZ
-              </span>
-              <span>
-                REGARDEZ
-              </span>
+            <div className="footer_cta">
+            <span
+              id="footer"
+              onMouseEnter={() => this.toggleOnHoverCallCTA("footer")}
+              onMouseLeave={() => this.toggleOnHoverCallCTA("footer")}>
+                {infoCmsData[1][selectedLanHeadlines]}
+            </span>
+            <a
+              href={"mailto:" + infoCmsData[2][selectedLanPara]}
+              rel="noopener"
+              target="_blank">
+            <span>
+              {infoCmsData[2][selectedLanHeadlines]}
+            </span>
+            </a>
+            <a
+              href={infoCmsData[3][selectedLanPara]}
+              rel="noopener"
+              target="_blank">
+            <span>
+              {infoCmsData[3][selectedLanHeadlines]}
+            </span>
+            </a>
           </div>
           <span className="copyright">
               « Very Interesting » ©2021

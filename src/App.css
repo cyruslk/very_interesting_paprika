@@ -150,7 +150,8 @@
 	margin-top: 3vw;
 }
 
-.info_body_container_ctas_spans span{
+.info_body_container_ctas_spans span,
+.info_body_container_ctas_spans  a{
 	padding: 1vw;
 	background-color: black;
 	border-radius: 18px;
@@ -163,9 +164,11 @@
 	padding-top: 0.8vw;
 	padding-bottom: 0.8vw;
 	font-size: 16px;
+	text-decoration: none;
 }
 
-.footer_cta span{
+.footer_cta span,
+.footer_cta a{
 	padding: 1vw;
 	background-color: black;
 	border-radius: 18px;
@@ -179,6 +182,7 @@
 	padding-bottom: 0.8vw;
 	font-size: 16px;
 	margin-right: 1vw;
+	text-decoration: none;
 }
 
 .copyright{
