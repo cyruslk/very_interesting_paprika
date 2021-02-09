@@ -6,6 +6,8 @@ class Desktop extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isEnglishDisplayed: false,
+      toggleOnHoverCallCTA: false,
       loaded: false,
       counter: 0,
       selectedDivId: 0,
@@ -13,11 +15,13 @@ class Desktop extends React.Component {
       updatedHeightOfPage: null,
       viewportHeight: null,
       mockData: null,
-      mockDataTextSubArrays: null,
+      mainCmsDataSubArrays: null,
       dataToDivs: null,
       originalImageHeight: null,
       originalImageStretch: null,
       isTriggeredInfoContent: false,
+      mainCmsData: null,
+      infoCmsData: null
     };
   }
 
@@ -26,7 +30,9 @@ class Desktop extends React.Component {
     document.addEventListener("wheel", this.scrollHandler);
     window.addEventListener("resize", this.resizeHandler);
 
-
+    let {cmsData} = this.props;
+    let mainCmsData = cmsData.slice(0, 9);
+    let infoCmsData = cmsData.slice(9, 12);
     let viewportHeight = window.innerHeight;
     let updatedHeightOfPage = viewportHeight*15;
     document.body.style.height = `${updatedHeightOfPage}px`;
@@ -34,19 +40,22 @@ class Desktop extends React.Component {
     this.setState({
       updatedHeightOfPage,
       viewportHeight,
-      mockData
+      mockData,
+      mainCmsData,
+      infoCmsData
     }, () => {
 
       let mockDataText = this.state.mockData.entriesText;
+      let {mainCmsData} = this.state;
 
-      let mockDataTextSubArrays = [
-          mockDataText.slice(0, 3),
-          mockDataText.slice(3, 6),
-          mockDataText.slice(6, 9),
-      ];
+      let mainCmsDataSubArrays = [
+        mainCmsData.slice(0, 3),
+        mainCmsData.slice(3, 6),
+        mainCmsData.slice(6, 9),
+      ]
 
       this.setState({
-        mockDataTextSubArrays
+        mainCmsDataSubArrays
       }, () => {
         this.renderDataToDivs();
       })
@@ -60,9 +69,7 @@ class Desktop extends React.Component {
     let divTextH1 = [...document.getElementsByClassName('div_text_h1')];
     let divTextP = [...document.getElementsByClassName('div_text_p')];
 
-
-    let mockDataTextSubArrays = this.state.mockDataTextSubArrays;
-
+    let mainCmsDataSubArrays = this.state.mainCmsDataSubArrays;
 
       if (counter !== prevState.counter) {
         if(counter >= 0 && counter < 6){
@@ -71,14 +78,15 @@ class Desktop extends React.Component {
             isDisplayFooter: false
           })
 
-          let mockDataTextSubArraysFirstRow = mockDataTextSubArrays[0];
+          let mainCmsDataSubArraysFirstRow = mainCmsDataSubArrays[0];
 
           divTextH1.map((ele, index) => {
-            ele.innerHTML = mockDataTextSubArraysFirstRow[index].headlines
+            ele.innerHTML = mainCmsDataSubArraysFirstRow[index].headlines_fr
           })
           divTextP.map((ele, index) => {
-            ele.innerHTML = mockDataTextSubArraysFirstRow[index].description
+            ele.innerHTML = mainCmsDataSubArraysFirstRow[index].paragraph_fr
           })
+
         }
 
         if(counter >= 6 && counter < 12){
@@ -87,13 +95,13 @@ class Desktop extends React.Component {
             isDisplayFooter: false
           })
 
-          let mockDataTextSubArraysSecondRow = mockDataTextSubArrays[1];
+          let mainCmsDataSubArraysSecondRow = mainCmsDataSubArrays[1];
 
             divTextH1.map((ele, index) => {
-              ele.innerHTML = mockDataTextSubArraysSecondRow[index].headlines
+              ele.innerHTML = mainCmsDataSubArraysSecondRow[index].headlines_fr
             })
             divTextP.map((ele, index) => {
-              ele.innerHTML = mockDataTextSubArraysSecondRow[index].description
+              ele.innerHTML = mainCmsDataSubArraysSecondRow[index].paragraph_fr
             })
         }
 
@@ -103,7 +111,6 @@ class Desktop extends React.Component {
 
             console.log(ev, "here");
 
-              // Make it appear a bit before;
               if ((window.innerHeight + window.scrollY)
               >= document.body.offsetHeight - 800) {
                 this.setState({
@@ -117,17 +124,25 @@ class Desktop extends React.Component {
           };
 
 
-          let mockDataTextSubArraysThirdRow = mockDataTextSubArrays[2];
+          let mainCmsDataSubArraysThirdRow = mainCmsDataSubArrays[2];
 
           divTextH1.map((ele, index) => {
-            ele.innerHTML = mockDataTextSubArraysThirdRow[index].headlines
+            ele.innerHTML = mainCmsDataSubArraysThirdRow[index].headlines_fr
           })
           divTextP.map((ele, index) => {
-            ele.innerHTML = mockDataTextSubArraysThirdRow[index].description
+            ele.innerHTML = mainCmsDataSubArraysThirdRow[index].paragraph_fr
           })
         }
       }
     }
+
+  triggerEN = () => {
+    this.setState({
+      isEnglishDisplayed: true
+    }, () => {
+      alert(this.state.isEnglishDisplayed)
+    })
+  }
 
 
   handleImageLoaded = (divID) => {
@@ -140,9 +155,7 @@ class Desktop extends React.Component {
       let img = document.querySelector(`#${divID} img`);
 
       let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
-
       let originalImageHeight = img.getBoundingClientRect().height;
-
       let originalImageStretch = (viewportHeight + 1.4*aligningThirdDiv)/originalImageHeight;
 
 
@@ -160,7 +173,7 @@ class Desktop extends React.Component {
   renderDataToDivs = () => {
 
     let mockData = this.state.mockData;
-    let mockDataTextSubArraysFirstRow = this.state.mockDataTextSubArrays[0];
+    let mainCmsDataSubArraysFirstRow = this.state.mainCmsDataSubArrays[0];
 
 
     let dataToDivs = mockData.entriesImgDesktop.map((ele, index) => {
@@ -179,10 +192,10 @@ class Desktop extends React.Component {
             </div>
             <div className="text_container">
               <h1 className="div_text_h1">
-                  {mockDataTextSubArraysFirstRow[index].headlines}
+                  {mainCmsDataSubArraysFirstRow[index].headlines_fr}
               </h1>
               <p className="div_text_p">
-                {mockDataTextSubArraysFirstRow[index].description}
+                {mainCmsDataSubArraysFirstRow[index].paragraph_fr}
               </p>
             </div>
         </div>
@@ -457,8 +470,6 @@ class Desktop extends React.Component {
 
   handleAnimation = (counter, selectedDivId, animDirection, all) => {
 
-    console.log(all);
-
     // to optimze;
     // this.handleDivTextChange(counter)
 
@@ -705,12 +716,10 @@ class Desktop extends React.Component {
           className="info_cta_container"
           onClick={this.triggerInfoContent}
           style={this.infoCTAStyle()}>
-          <span>
-            +
-          </span>
+            <img src="https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1612842534/paprika%20-%20very%20interesting/Croix.svg" />
        </div>
        <div className="en_cta">
-          <span>
+          <span onClick={this.triggerEN}>
             EN
           </span>
        </div>
@@ -729,12 +738,14 @@ class Desktop extends React.Component {
      if(!this.state.isTriggeredInfoContent){
        return {
          transform: "rotate(0deg)",
-         transition: "0.1s"
+         transitionTimingFunction: "ease-in-out",
+         transition: "0.4s"
        }
      }else{
        return {
-         transform: "rotate(45deg)",
-         transition: "0.1s"
+         transform: "rotate(270deg)",
+         transitionTimingFunction: "ease-in-out",
+         transition: "0.4s"
        }
      }
    }
@@ -751,7 +762,10 @@ class Desktop extends React.Component {
           <div className="info_body_container_ctas">
             <h1>Devenir une Cie <br /> « Very interesting » ?</h1>
             <div className="info_body_container_ctas_spans">
-                <span>
+                <span
+                  id="body"
+                  onMouseEnter={() => this.toggleOnHoverCallCTA("body")}
+                  onMouseLeave={() => this.toggleOnHoverCallCTA("body")}>
                   APPELEZ
                 </span>
                 <span>
@@ -766,6 +780,19 @@ class Desktop extends React.Component {
      )
    };
 
+   toggleOnHoverCallCTA = (id) => {
+     this.setState({
+       toggleOnHoverCallCTA: !this.state.toggleOnHoverCallCTA
+     }, () => {
+       let selectedSpan = document.getElementById(id);
+       if(this.state.toggleOnHoverCallCTA){
+         selectedSpan.innerText = "(514) 577 1553"
+       }else{
+         selectedSpan.innerText = "APPELEZ"
+       }
+     })
+   }
+
 
    renderFooter = () => {
      if(!this.state.isDisplayFooter){
@@ -777,7 +804,10 @@ class Desktop extends React.Component {
             <h1>Intéressé(e)?</h1>
           </div>
           <div className="footer_cta">
-              <span>
+              <span
+                id="footer"
+                onMouseEnter={() => this.toggleOnHoverCallCTA("footer")}
+                onMouseLeave={() => this.toggleOnHoverCallCTA("footer")}>
                 APPELEZ
               </span>
               <span>

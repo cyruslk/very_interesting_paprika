@@ -30,7 +30,7 @@ class Mobile extends React.Component {
       originalImageHeightArray: [],
       textDivSizeArray: [],
       scalingCoeffStart: 482/471,
-      scalingCoeffEnd: 1.13,
+      scalingCoeffEnd: 1.15,
       divsLastFold: null,
       resetTextDivs: false
     };
@@ -46,7 +46,7 @@ class Mobile extends React.Component {
      let viewportWidth = window.innerWidth;
 
      // Init the state here;
-     let updatedHeightOfPage = viewportHeight*14;
+     let updatedHeightOfPage = viewportHeight*12.05;
      document.body.style.height = `${updatedHeightOfPage}px`;
 
 
@@ -93,19 +93,6 @@ class Mobile extends React.Component {
     let divTextP = [...document.getElementsByClassName('div_text_p')];
 
     let mockDataTextSubArrays = this.state.mockDataTextSubArrays;
-
-    if(viewportHeight !== prevState.viewportHeight){
-
-      imgMobileContainer.map((ele, index) => {
-        ele.style.height = `${viewportHeight/2}px`;
-      })
-      imgMobile.map((ele, index) => {
-        ele.style.width = `${viewportHeight/2}px`;
-      })
-
-      // here, reset the translateY();
-
-    };
 
     // updating the data;
     if (counter !== prevState.counter) {
@@ -189,7 +176,7 @@ class Mobile extends React.Component {
          })
       }
 
-      if(counter >= 8 && counter < 14){
+      if(counter >= 8 && counter < 12.05){
         this.setState({
           vertical: true,
           resetTextDivs: true
@@ -256,7 +243,7 @@ class Mobile extends React.Component {
           let divText = document.querySelector(`#${divIDText}`);
 
           divText.style.left = `-${textDivSize}px`
-          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(8)`;
+          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(9)`;
 
         }
         if(selectedDivId === 1){
@@ -351,9 +338,15 @@ class Mobile extends React.Component {
 
 
   resizeHandler = () => {
+      let imgMobileContainer = [...document.getElementsByClassName('img_mobile_container')];
+      let imgMobile = [...document.getElementsByClassName("img_mobile")];
       let viewportHeight = window.innerHeight;
-      this.setState({
-        viewportHeight
+
+      imgMobileContainer.map((ele, index) => {
+        ele.style.height = `${viewportHeight/2}px`;
+      })
+      imgMobile.map((ele, index) => {
+        ele.style.width = `${viewportHeight/2}px`;
       })
     }
 

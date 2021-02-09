@@ -11,7 +11,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       viewportWidth: null,
-      data: null
+      cmsData: null
     };
   }
 
@@ -26,7 +26,7 @@ class App extends React.Component {
       key: '1N5WFhAZpqz6Spgr6pQowDRJLmr_Ni99_sh95TCArGQ8',
       callback: googleData => {
         this.setState({
-          data: googleData
+          cmsData: googleData
         })
       },
       simpleSheet: true
@@ -53,21 +53,26 @@ class App extends React.Component {
 
   render() {
 
-    let viewportWidth = this.state.viewportWidth;
-    if(!viewportWidth){
-      return "loading"
+    let {viewportWidth, cmsData} = this.state;
+
+    if(!viewportWidth || !cmsData){
+      return (
+        <div className="loading_screen">
+          <h1>LOADING</h1>
+        </div>
+      )
     }
 
     if(viewportWidth > 600){
       return (
         <div>
-          <Desktop />
+          <Desktop {...this.state}/>
         </div>
       );
     }else{
       return (
         <div>
-          <Mobile />
+          <Mobile {...this.state}/>
         </div>
       );
     }

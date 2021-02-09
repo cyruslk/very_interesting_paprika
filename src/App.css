@@ -17,6 +17,19 @@
 	font-weight: 100;
 }
 
+.loading_screen{
+	margin-left: 10px;
+	margin-top: 30px;
+}
+
+.loading_screen h1{
+	font-size: 33px;
+  font-weight: 100;
+  width: 85%;
+  font-family: NHaasGroteskDSProBold;
+  letter-spacing: 0.1px;
+}
+
 /* .horizontal_master_container{
   display: inline-flex;
   align-items: center;
@@ -103,7 +116,7 @@
   height: auto;
   background-color: #EBFF00;
 	padding: 3vw;
-	border-radius: 20px;
+	border-radius: 36px;
 }
 
 .info_body_container_headline{
@@ -170,8 +183,8 @@
 .copyright{
 	position: absolute;
 	font-family: NHaasGroteskDSProMedium;
-	bottom: 0;
-	right: 50px;
+	bottom: -1vw;
+	right: 68px;
 }
 
 .info_body_container_ctas_spans span:hover{
@@ -211,6 +224,11 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.info_cta_container img{
+	height: 65%;
+	cursor: pointer;
 }
 
 .en_cta span{
