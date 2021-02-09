@@ -205,11 +205,9 @@ class Mobile extends React.Component {
 
           let divText = document.querySelector(`#${divIDText}`);
 
-          console.log(imgScale*0.9, "for first");
-
-
           divText.style.left = `-${textDivSize}px`
           img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.9})`;
+
 
         }
         if(selectedDivId === 1){

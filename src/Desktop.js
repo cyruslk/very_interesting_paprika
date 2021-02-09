@@ -6,8 +6,9 @@ class Desktop extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isEnglishDisplayed: false,
       toggleOnHoverCallCTA: false,
+      toggleEN: false,
+      selectedlan: "fr",
       loaded: false,
       counter: 0,
       selectedDivId: 0,
@@ -57,7 +58,7 @@ class Desktop extends React.Component {
       this.setState({
         mainCmsDataSubArrays
       }, () => {
-        this.renderDataToDivs();
+        this.renderDataToDivs(this.state.selectedlan);
       })
     })
   };
@@ -68,8 +69,15 @@ class Desktop extends React.Component {
     let counter = this.state.counter;
     let divTextH1 = [...document.getElementsByClassName('div_text_h1')];
     let divTextP = [...document.getElementsByClassName('div_text_p')];
-
     let mainCmsDataSubArrays = this.state.mainCmsDataSubArrays;
+    let selectedlan = this.state.selectedlan;
+    let selectedLanHeadlines = `headlines_${selectedlan}`;
+    let selectedLanPara = `paragraph_${selectedlan}`;
+
+      if(selectedlan !== prevState.selectedlan){
+        window.scrollTo(0, 0)
+      }
+
 
       if (counter !== prevState.counter) {
         if(counter >= 0 && counter < 6){
@@ -81,10 +89,10 @@ class Desktop extends React.Component {
           let mainCmsDataSubArraysFirstRow = mainCmsDataSubArrays[0];
 
           divTextH1.map((ele, index) => {
-            ele.innerHTML = mainCmsDataSubArraysFirstRow[index].headlines_fr
+            ele.innerHTML = mainCmsDataSubArraysFirstRow[index][selectedLanHeadlines]
           })
           divTextP.map((ele, index) => {
-            ele.innerHTML = mainCmsDataSubArraysFirstRow[index].paragraph_fr
+            ele.innerHTML = mainCmsDataSubArraysFirstRow[index][selectedLanPara]
           })
 
         }
@@ -98,19 +106,16 @@ class Desktop extends React.Component {
           let mainCmsDataSubArraysSecondRow = mainCmsDataSubArrays[1];
 
             divTextH1.map((ele, index) => {
-              ele.innerHTML = mainCmsDataSubArraysSecondRow[index].headlines_fr
+              ele.innerHTML = mainCmsDataSubArraysSecondRow[index][selectedLanHeadlines]
             })
             divTextP.map((ele, index) => {
-              ele.innerHTML = mainCmsDataSubArraysSecondRow[index].paragraph_fr
+              ele.innerHTML = mainCmsDataSubArraysSecondRow[index][selectedLanPara]
             })
         }
 
         if(counter === 12){
 
           window.onscroll = (ev) =>  {
-
-            console.log(ev, "here");
-
               if ((window.innerHeight + window.scrollY)
               >= document.body.offsetHeight - 800) {
                 this.setState({
@@ -127,20 +132,34 @@ class Desktop extends React.Component {
           let mainCmsDataSubArraysThirdRow = mainCmsDataSubArrays[2];
 
           divTextH1.map((ele, index) => {
-            ele.innerHTML = mainCmsDataSubArraysThirdRow[index].headlines_fr
+            ele.innerHTML = mainCmsDataSubArraysThirdRow[index][selectedLanHeadlines]
           })
           divTextP.map((ele, index) => {
-            ele.innerHTML = mainCmsDataSubArraysThirdRow[index].paragraph_fr
+            ele.innerHTML = mainCmsDataSubArraysThirdRow[index][selectedLanPara]
           })
         }
       }
     }
 
-  triggerEN = () => {
+
+  toggleEN = () => {
     this.setState({
-      isEnglishDisplayed: true
+      toggleEN: !this.state.toggleEN,
+      dataToDivs: null
     }, () => {
-      alert(this.state.isEnglishDisplayed)
+      if(this.state.toggleEN){
+        this.setState({
+          selectedlan: "en"
+        }, () => {
+          this.renderDataToDivs(this.state.selectedlan)
+        })
+      }else{
+        this.setState({
+          selectedlan: "fr"
+        }, () => {
+          this.renderDataToDivs(this.state.selectedlan)
+        })
+      }
     })
   }
 
@@ -170,16 +189,20 @@ class Desktop extends React.Component {
   }
 
 
-  renderDataToDivs = () => {
+  renderDataToDivs = (selectedlan) => {
 
     let mockData = this.state.mockData;
     let mainCmsDataSubArraysFirstRow = this.state.mainCmsDataSubArrays[0];
+
+    console.log(selectedlan);
 
 
     let dataToDivs = mockData.entriesImgDesktop.map((ele, index) => {
 
       let divID = `container_div_${index}`;
 
+      let selectedLanHeadlines = `headlines_${selectedlan}`;
+      let selectedLanPara = `paragraph_${selectedlan}`;
 
       return (
         <div className="main_vertical_container_inner">
@@ -192,10 +215,10 @@ class Desktop extends React.Component {
             </div>
             <div className="text_container">
               <h1 className="div_text_h1">
-                  {mainCmsDataSubArraysFirstRow[index].headlines_fr}
+                  {mainCmsDataSubArraysFirstRow[index][selectedLanHeadlines]}
               </h1>
               <p className="div_text_p">
-                {mainCmsDataSubArraysFirstRow[index].paragraph_fr}
+                {mainCmsDataSubArraysFirstRow[index][selectedLanPara]}
               </p>
             </div>
         </div>
@@ -459,19 +482,10 @@ class Desktop extends React.Component {
           this.handleAnimation(counter, 2, "up", true);
         })
     }
-
-
   };
 
 
-
-
-
-
   handleAnimation = (counter, selectedDivId, animDirection, all) => {
-
-    // to optimze;
-    // this.handleDivTextChange(counter)
 
     let divID = `container_div_${selectedDivId}`;
     let imgContainer = document.querySelector(`#${divID}`);
@@ -718,14 +732,24 @@ class Desktop extends React.Component {
           style={this.infoCTAStyle()}>
             <img src="https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1612842534/paprika%20-%20very%20interesting/Croix.svg" />
        </div>
-       <div className="en_cta">
-          <span onClick={this.triggerEN}>
-            EN
+       <div
+        onClick={this.toggleEN}
+        className="en_cta">
+          <span>
+            {this.toggleENText()}
           </span>
        </div>
        </div>
      )
    };
+
+   toggleENText = () => {
+     if(this.state.toggleEN){
+       return "FR"
+     }else{
+       return "EN"
+     }
+   }
 
 
    triggerInfoContent = () => {
@@ -827,6 +851,12 @@ class Desktop extends React.Component {
 
 
   render() {
+    if(!this.state.dataToDivs){
+      <div className="loading_screen">
+        <h1>LOADING</h1>
+      </div>
+    }
+
     return (
       <div className="main_vertical_container">
         {this.renderInfo()}

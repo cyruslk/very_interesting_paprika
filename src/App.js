@@ -11,7 +11,10 @@ class App extends React.Component {
     super(props);
     this.state = {
       viewportWidth: null,
-      cmsData: null
+      cmsData: null,
+      toggleEN: false,
+      mainCmsDataFR: null,
+      mainCmsDataEN: null
     };
   }
 
@@ -27,6 +30,33 @@ class App extends React.Component {
       callback: googleData => {
         this.setState({
           cmsData: googleData
+        }, () => {
+
+          let {cmsData} = this.state;
+
+          let mainCmsDataFR = cmsData
+          .slice(0, 9)
+          .map((ele, index) => {
+            return {
+              headlines: ele.headlines_fr,
+              paragraph: ele.paragraph_fr
+            }
+          })
+
+          let mainCmsDataEN = cmsData
+          .slice(0, 9)
+          .map((ele, index) => {
+            return {
+              headlines: ele.headlines_en,
+              paragraph: ele.paragraph_en
+            }
+          })
+
+          this.setState({
+            mainCmsDataFR,
+            mainCmsDataEN
+          })
+
         })
       },
       simpleSheet: true
@@ -51,6 +81,13 @@ class App extends React.Component {
 
   }
 
+  toggleEN = () => {
+    alert("here")
+    this.setState({
+      toggleEN: !this.state.toggleEN
+    })
+  }
+
   render() {
 
     let {viewportWidth, cmsData} = this.state;
@@ -66,13 +103,17 @@ class App extends React.Component {
     if(viewportWidth > 600){
       return (
         <div>
-          <Desktop {...this.state}/>
+          <Desktop
+            toggleEN={this.toggleEN}
+            {...this.state}/>
         </div>
       );
     }else{
       return (
         <div>
-          <Mobile {...this.state}/>
+          <Mobile
+            toggleEN={this.toggleEN}
+            {...this.state}/>
         </div>
       );
     }
