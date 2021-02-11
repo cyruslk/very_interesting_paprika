@@ -10,6 +10,7 @@ class Desktop extends React.Component {
     this.state = {
       toggleOnHoverCallCTA: false,
       toggleEN: false,
+      isClosedInfoPanel: true,
       selectedlan: "fr",
       loaded: false,
       counter: 0,
@@ -550,7 +551,6 @@ class Desktop extends React.Component {
             // 570 = hauteur premier div;
             // 593 = hauteur deuxième div;
             let coeffScalDivId1 = (translateYPorcentageUp * 570/593)
-            // console.log(x, "here");
             img.style.transform = `scaleY(${coeffScalDivId1})`;
             let newImgContainerHeight = img.getBoundingClientRect().height;
             imgContainer.style.height = newImgContainerHeight + "px";
@@ -680,6 +680,9 @@ class Desktop extends React.Component {
 
 
    renderInfo = () => {
+     if(!this.state.infoCmsData){
+       return null;
+     }
      return (
        <div
          className="info_main_container">
@@ -722,12 +725,12 @@ class Desktop extends React.Component {
 
    triggerInfoContent = () => {
      this.setState({
-       isTriggeredInfoContent: !this.state.isTriggeredInfoContent
+       isClosedInfoPanel: !this.state.isClosedInfoPanel
      })
    }
 
    infoCTAStyle = () => {
-     if(!this.state.isTriggeredInfoContent){
+     if(this.state.isClosedInfoPanel){
        return {
          transform: "rotate(0deg)",
          transitionTimingFunction: "ease-in-out",
@@ -748,15 +751,13 @@ class Desktop extends React.Component {
      let {infoCmsData} = this.state;
      let {selectedlan} = this.state;
 
-     if(!this.state.isTriggeredInfoContent){
-       return null;
-     }
-
      let selectedLanHeadlines = `headlines_${selectedlan}`;
      let selectedLanPara = `paragraph_${selectedlan}`;
 
      return (
-       <SlideDown className={'my-dropdown-slidedown'}>
+       <SlideDown
+          closed={this.state.isClosedInfoPanel}
+          className={'my-dropdown-slidedown'}>
          <div
             id="info_body_container"
             className="info_body_container">
