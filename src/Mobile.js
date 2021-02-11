@@ -1,4 +1,6 @@
 import React from "react";
+import {SlideDown} from 'react-slidedown';
+import 'react-slidedown/lib/slidedown.css';
 import ReactHtmlParser from 'react-html-parser';
 import ScrollDirection from '@anakinyuen/scroll-direction';
 import mockData from "./mock_data.js";
@@ -10,6 +12,8 @@ class Mobile extends React.Component {
     super(props);
     this.state = {
       loaded: false,
+      toggleEN: false,
+      selectedlan: "fr",
       animDirection: null,
       isTriggeredInfoContent: false,
       numberOfPixelScrolled: 0,
@@ -23,12 +27,13 @@ class Mobile extends React.Component {
       viewportWidth: null,
       mockData: null,
       dataToDivs: null,
-      mockDataTextSubArrays: null,
+      mainCmsDataSubArrays: null,
       originalImageHeight: null,
       originalImageStretch: null,
       originalImageStretchArray: [],
       originalImageHeightArray: [],
       textDivSizeArray: [],
+      screenHeightValuesArray: [],
       scalingCoeffStart: 482/471,
       scalingCoeffEnd: 1.15,
       divsLastFold: null,
@@ -44,6 +49,9 @@ class Mobile extends React.Component {
 
      let viewportHeight = window.innerHeight;
      let viewportWidth = window.innerWidth;
+     let {cmsData} = this.props;
+     let mainCmsData = cmsData.slice(0, 9);
+     let infoCmsData = cmsData.slice(9, 14);
 
      // Init the state here;
      let updatedHeightOfPage = viewportHeight*12.05;
@@ -55,27 +63,26 @@ class Mobile extends React.Component {
        viewportHeight,
        viewportWidth,
        mockData,
+       mainCmsData,
+       infoCmsData
      }, () => {
 
-      // Getting the data from the mockData;
       let mockDataText = this.state.mockData.entriesText;
+      let {mainCmsData} = this.state;
 
-       let mockDataTextSubArrays = [
-           mockDataText.slice(0, 2),
-           mockDataText.slice(2, 4),
-           mockDataText.slice(4, 9),
+       let mainCmsDataSubArrays = [
+           mainCmsData.slice(0, 2),
+           mainCmsData.slice(2, 4),
+           mainCmsData.slice(4, 9),
        ];
 
-       console.log(mockDataTextSubArrays);
-
        this.setState({
-         mockDataTextSubArrays
+         mainCmsDataSubArrays
        }, () => {
-         this.renderDataToDivs();
+         this.renderDataToDivs(this.state.selectedlan);
        })
      })
   };
-
 
 
   componentDidUpdate(prevProps, prevState) {
@@ -85,6 +92,17 @@ class Mobile extends React.Component {
     let selectedDivId = this.state.selectedDivId;
     let counter = this.state.counter;
     let resetTextDivs = this.state.resetTextDivs;
+    let selectedlan = this.state.selectedlan;
+    let infoCmsData = this.state.infoCmsData;
+    let selectedLanHeadlines = `headlines_${selectedlan}`;
+    let selectedLanPara = `paragraph_${selectedlan}`;
+
+    if(selectedlan !== prevState.selectedlan){
+      window.scrollTo(0, 0);
+      setTimeout(() => {
+        this.resizeHandler();
+      }, 50);
+    };
 
     // Updating these divs;
     let imgMobileContainer = [...document.getElementsByClassName('img_mobile_container')];
@@ -92,7 +110,7 @@ class Mobile extends React.Component {
     let divTextH1 = [...document.getElementsByClassName('div_text_h1')];
     let divTextP = [...document.getElementsByClassName('div_text_p')];
 
-    let mockDataTextSubArrays = this.state.mockDataTextSubArrays;
+    let mainCmsDataSubArrays = this.state.mainCmsDataSubArrays;
 
     // updating the data;
     if (counter !== prevState.counter) {
@@ -102,12 +120,12 @@ class Mobile extends React.Component {
           resetTextDivs: false
         })
 
-        let textSubArray = mockDataTextSubArrays[0]
+        let textSubArray = mainCmsDataSubArrays[0]
         divTextH1.map((ele, index) => {
-         ele.innerHTML = textSubArray[index].headlines
+         ele.innerHTML = textSubArray[index][selectedLanHeadlines]
         })
          divTextP.map((ele, index) => {
-           ele.innerHTML = textSubArray[index].description
+           ele.innerHTML = textSubArray[index][selectedLanPara]
          })
       }
       if(counter >= 4 && counter < 8){
@@ -117,16 +135,15 @@ class Mobile extends React.Component {
         })
 
 
-        let verticalContentArray =  mockDataTextSubArrays[2];
-
+        let verticalContentArray =  mainCmsDataSubArrays[2];
         let divsLastFold = verticalContentArray.map((ele, index) => {
 
           let id = `vertical_text_content_${index}`
           return (
             <div id={id}
                 className="vertical_text_content">
-              <h1>{ReactHtmlParser(ele.headlines)}</h1>
-              <p>{ReactHtmlParser(ele.description)}</p>
+              <h1>{ReactHtmlParser(ele[selectedLanHeadlines])}</h1>
+              <p>{ReactHtmlParser(ele[selectedLanPara])}</p>
             </div>
           )
         })
@@ -148,15 +165,38 @@ class Mobile extends React.Component {
                {divsLastFold}
                <div className="vertical_text_content footer_mobile">
 
-                 <h1>Intéressé(e)?</h1>
-                 <span>APPELEZ</span>
-                 <span>ÉCRIVEZ</span>
-                 <span>REGARDEZ</span>
+                <h1>{infoCmsData[4][selectedLanHeadlines]}</h1>
+
+                <a
+                  href={"tel:" + infoCmsData[1][selectedLanPara]}
+                  rel="noopener"
+                  target="_blank">
+                <span>
+                  {infoCmsData[1][selectedLanHeadlines]}
+                </span>
+                </a>
+
+                 <a
+                   href={"mailto:" + infoCmsData[2][selectedLanPara]}
+                   rel="noopener"
+                   target="_blank">
+                 <span>
+                   {infoCmsData[2][selectedLanHeadlines]}
+                 </span>
+                 </a>
+
+                 <a
+                   href={infoCmsData[3][selectedLanPara]}
+                   rel="noopener"
+                   target="_blank">
+                 <span>
+                   {infoCmsData[3][selectedLanHeadlines]}
+                 </span>
+                 </a>
 
                   <div className="footer_mobile_cta">
                     <p>« Very Interesting » ©2021</p>
                  </div>
-
                </div>
             </div>
           )
@@ -167,12 +207,12 @@ class Mobile extends React.Component {
         })
 
 
-        let textSubArray = mockDataTextSubArrays[1]
+        let textSubArray = mainCmsDataSubArrays[1]
         divTextH1.map((ele, index) => {
-         ele.innerHTML = textSubArray[index].headlines
+          ele.innerHTML = textSubArray[index][selectedLanHeadlines]
         })
          divTextP.map((ele, index) => {
-           ele.innerHTML = textSubArray[index].description
+           ele.innerHTML = textSubArray[index][selectedLanPara]
          })
       }
 
@@ -186,8 +226,6 @@ class Mobile extends React.Component {
 
     // resizing the divs here;
     if(selectedDivId !== prevState.selectedDivId){
-
-      console.log(this.state.animDirection);
 
       let animDirection = this.state.animDirection
       let textDivSize = this.state.textDivSizeArray[1];
@@ -218,8 +256,6 @@ class Mobile extends React.Component {
           let imgContainer = document.querySelector(`#${divID}`);
           let img = document.querySelector(`#${divID} img`);
           let divText = document.querySelector(`#${divIDText}`);
-
-          console.log(imgScale*0.9, "for zero ");
 
 
           divText.style.left = `-${textDivSize}px`
@@ -262,12 +298,38 @@ class Mobile extends React.Component {
   };
 
 
+  toggleEN = () => {
+    this.setState({
+      toggleEN: !this.state.toggleEN,
+      dataToDivs: null
+    }, () => {
+      if(this.state.toggleEN){
+        this.setState({
+          selectedlan: "en"
+        }, () => {
+          this.renderDataToDivs(this.state.selectedlan)
+        })
+      }else{
+        this.setState({
+          selectedlan: "fr"
+        }, () => {
+          this.renderDataToDivs(this.state.selectedlan)
+        })
+      }
+    })
+  }
+
+
    // Render the data to divs;
    renderDataToDivs = () => {
 
      // Mapping through the mockData; to be changed;
       let mockData = this.state.mockData;
-      let mockDataTextSubArraysFirstRow = this.state.mockDataTextSubArrays[0];
+      let mainCmsDataSubArraysFirstRow = this.state.mainCmsDataSubArrays[0];
+
+      let selectedLanHeadlines = `headlines_${this.state.selectedlan}`;
+      let selectedLanPara = `paragraph_${this.state.selectedlan}`;
+
       let dataToDivs = mockData.entriesMobile.map((ele, index) => {
 
         let divID = `container_mobile_div_${index}`;
@@ -284,10 +346,10 @@ class Mobile extends React.Component {
                   id={divIDText}
                   className="mobile_text_content">
                     <h1 className="div_text_h1">
-                      {ReactHtmlParser(mockDataTextSubArraysFirstRow[index].headlines)}
+                      {ReactHtmlParser(mainCmsDataSubArraysFirstRow[index].headlines)}
                     </h1>
                     <p className="div_text_p">
-                      {ReactHtmlParser(mockDataTextSubArraysFirstRow[index].description)}
+                      {ReactHtmlParser(mainCmsDataSubArraysFirstRow[index].description)}
                     </p>
               </div>
                 {this.renderImg(ele, divID, divIDText, index)}
@@ -336,9 +398,11 @@ class Mobile extends React.Component {
 
 
   resizeHandler = () => {
+
       let imgMobileContainer = [...document.getElementsByClassName('img_mobile_container')];
       let imgMobile = [...document.getElementsByClassName("img_mobile")];
       let viewportHeight = window.innerHeight;
+
 
       imgMobileContainer.map((ele, index) => {
         ele.style.height = `${viewportHeight/2}px`;
@@ -776,18 +840,26 @@ class Mobile extends React.Component {
          className="info_cta_container"
          onClick={this.triggerInfoContent}
          style={this.infoCTAStyle()}>
-         <span>
-           +
-         </span>
+           <img src="https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1612842534/paprika%20-%20very%20interesting/Croix.svg" />
       </div>
-      <div className="en_cta">
+      <div
+       onClick={this.toggleEN}
+       className="en_cta">
          <span>
-           EN
+           {this.toggleENText()}
          </span>
       </div>
       </div>
     )
   };
+
+  toggleENText = () => {
+    if(this.state.toggleEN){
+      return "FR"
+    }else{
+      return "EN"
+    }
+  }
 
 
   triggerInfoContent = () => {
@@ -800,40 +872,71 @@ class Mobile extends React.Component {
     if(!this.state.isTriggeredInfoContent){
       return {
         transform: "rotate(0deg)",
-        transition: "0.1s"
+        transitionTimingFunction: "ease-in-out",
+        transition: "0.4s"
       }
     }else{
       return {
-        transform: "rotate(45deg)",
-        transition: "0.1s"
+        transform: "rotate(135deg)",
+        transitionTimingFunction: "ease-in-out",
+        transition: "0.4s"
       }
     }
-  }
+  };
 
   renderBodyCTA = () => {
+
+    let {infoCmsData} = this.state;
+    let {selectedlan} = this.state;
+
+    let selectedLanHeadlines = `headlines_${selectedlan}`;
+    let selectedLanPara = `paragraph_${selectedlan}`;
+
     if(!this.state.isTriggeredInfoContent){
       return null;
     }
+
     return (
+      <SlideDown className={'my-dropdown-slidedown'}>
       <div className="info_body_container">
          <div className="info_body_container_headline">
-           <h1>« Very Interesting » rend ses clients plus intéressants, plus remarqués, plus sollicités</h1>
+           <h1>{infoCmsData[0][selectedLanHeadlines]}</h1>
          </div>
          <div className="info_body_container_ctas">
-           <h1>Devenir une Cie <br /> « Very interesting » ?</h1>
+           <h1>{infoCmsData[0][selectedLanPara]}</h1>
            <div className="info_body_container_ctas_spans">
-               <span>
-                 APPELEZ
+               <a
+                 href={"tel:" + infoCmsData[1][selectedLanPara]}
+                 rel="noopener"
+                 target="_blank">
+               <span id="body">
+                 {infoCmsData[1][selectedLanHeadlines]}
                </span>
+               </a>
+               <a
+                 href={"mailto:" + infoCmsData[2][selectedLanPara]}
+                 rel="noopener"
+                 target="_blank">
                <span>
-                 ÉCRIVEZ
+                 {infoCmsData[2][selectedLanHeadlines]}
                </span>
+               </a>
+               <a
+                 href={infoCmsData[3][selectedLanPara]}
+                 rel="noopener"
+                 target="_blank">
                <span>
-                 REGARDEZ
+                 {infoCmsData[3][selectedLanHeadlines]}
                </span>
+               </a>
            </div>
          </div>
+         <div
+           onClick={this.triggerInfoContent}
+           className="body_cta_background_close">
+         </div>
       </div>
+      </SlideDown>
     )
   };
 

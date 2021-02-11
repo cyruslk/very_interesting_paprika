@@ -1,4 +1,6 @@
 import React from "react";
+import {SlideDown} from 'react-slidedown';
+import 'react-slidedown/lib/slidedown.css';
 import mockData from "./mock_data.js";
 import "./App.css";
 
@@ -76,7 +78,6 @@ class Desktop extends React.Component {
       if(selectedlan !== prevState.selectedlan){
         window.scrollTo(0, 0)
       }
-
 
       if (counter !== prevState.counter) {
         if(counter >= 0 && counter < 6){
@@ -680,7 +681,8 @@ class Desktop extends React.Component {
 
    renderInfo = () => {
      return (
-       <div className="info_main_container">
+       <div
+         className="info_main_container">
           {this.renderInfoCTA()}
           {this.renderBodyCTA()}
        </div>
@@ -690,7 +692,8 @@ class Desktop extends React.Component {
 
    renderInfoCTA = () => {
      return (
-       <div className="cta_desktop_container">
+       <div
+        className="cta_desktop_container">
        <div
           className="info_cta_container"
           onClick={this.triggerInfoContent}
@@ -732,58 +735,67 @@ class Desktop extends React.Component {
        }
      }else{
        return {
-         transform: "rotate(270deg)",
+         transform: "rotate(135deg)",
          transitionTimingFunction: "ease-in-out",
          transition: "0.4s"
        }
      }
    }
 
+
    renderBodyCTA = () => {
 
      let {infoCmsData} = this.state;
      let {selectedlan} = this.state;
 
-     let selectedLanHeadlines = `headlines_${selectedlan}`;
-     let selectedLanPara = `paragraph_${selectedlan}`;
-
      if(!this.state.isTriggeredInfoContent){
        return null;
      }
 
+     let selectedLanHeadlines = `headlines_${selectedlan}`;
+     let selectedLanPara = `paragraph_${selectedlan}`;
+
      return (
-       <div className="info_body_container">
-          <div className="info_body_container_headline">
-            <h1>{infoCmsData[0][selectedLanHeadlines]}</h1>
-          </div>
-          <div className="info_body_container_ctas">
-            <h1>{infoCmsData[0][selectedLanPara]}</h1>
-            <div className="info_body_container_ctas_spans">
-                <span
-                  id="body"
-                  onMouseEnter={() => this.toggleOnHoverCallCTA("body")}
-                  onMouseLeave={() => this.toggleOnHoverCallCTA("body")}>
-                    {infoCmsData[1][selectedLanHeadlines]}
-                </span>
-                <a
-                  href={"mailto:" + infoCmsData[2][selectedLanPara]}
-                  rel="noopener"
-                  target="_blank">
-                <span>
-                  {infoCmsData[2][selectedLanHeadlines]}
-                </span>
-                </a>
-                <a
-                  href={infoCmsData[3][selectedLanPara]}
-                  rel="noopener"
-                  target="_blank">
-                <span>
-                  {infoCmsData[3][selectedLanHeadlines]}
-                </span>
-                </a>
+       <SlideDown className={'my-dropdown-slidedown'}>
+         <div
+            id="info_body_container"
+            className="info_body_container">
+            <div className="info_body_container_headline">
+              <h1>{infoCmsData[0][selectedLanHeadlines]}</h1>
             </div>
-          </div>
-       </div>
+            <div className="info_body_container_ctas">
+              <h1>{infoCmsData[0][selectedLanPara]}</h1>
+              <div className="info_body_container_ctas_spans">
+                  <span
+                    id="body"
+                    onMouseEnter={() => this.toggleOnHoverCallCTA("body")}
+                    onMouseLeave={() => this.toggleOnHoverCallCTA("body")}>
+                      {infoCmsData[1][selectedLanHeadlines]}
+                  </span>
+                  <a
+                    href={"mailto:" + infoCmsData[2][selectedLanPara]}
+                    rel="noopener"
+                    target="_blank">
+                  <span>
+                    {infoCmsData[2][selectedLanHeadlines]}
+                  </span>
+                  </a>
+                  <a
+                    href={infoCmsData[3][selectedLanPara]}
+                    rel="noopener"
+                    target="_blank">
+                  <span>
+                    {infoCmsData[3][selectedLanHeadlines]}
+                  </span>
+                  </a>
+              </div>
+            </div>
+            <div
+              onClick={this.triggerInfoContent}
+              className="body_cta_background_close">
+            </div>
+         </div>
+         </SlideDown>
      )
    };
 
@@ -799,11 +811,14 @@ class Desktop extends React.Component {
      this.setState({
        toggleOnHoverCallCTA: !this.state.toggleOnHoverCallCTA
      }, () => {
+
        let selectedSpan = document.getElementById(id);
+       console.log(selectedSpan, "heere");
+
        if(this.state.toggleOnHoverCallCTA){
-         selectedSpan.innerText = "(514) 577 1553"
+         selectedSpan.innerHTML = "<p>(514) 577 1553</p>"
        }else{
-         selectedSpan.innerText = infoCmsData[1][selectedLanHeadlines]
+         selectedSpan.innerHTML = infoCmsData[1][selectedLanHeadlines]
        }
      })
    }
@@ -827,27 +842,29 @@ class Desktop extends React.Component {
             <h1>{infoCmsData[4][selectedLanHeadlines]}</h1>
           </div>
             <div className="footer_cta">
-            <span
-              id="footer"
-              onMouseEnter={() => this.toggleOnHoverCallCTA("footer")}
-              onMouseLeave={() => this.toggleOnHoverCallCTA("footer")}>
-                {infoCmsData[1][selectedLanHeadlines]}
-            </span>
-            <a
-              href={"mailto:" + infoCmsData[2][selectedLanPara]}
-              rel="noopener"
-              target="_blank">
-            <span>
-              {infoCmsData[2][selectedLanHeadlines]}
-            </span>
-            </a>
+              <a>
+              <div
+                id="footer"
+                onMouseEnter={() => this.toggleOnHoverCallCTA("footer")}
+                onMouseLeave={() => this.toggleOnHoverCallCTA("footer")}>
+                  {infoCmsData[1][selectedLanHeadlines]}
+              </div>
+              </a>
+              <a
+                href={"mailto:" + infoCmsData[2][selectedLanPara]}
+                rel="noopener"
+                target="_blank">
+              <div>
+                {infoCmsData[2][selectedLanHeadlines]}
+              </div>
+              </a>
             <a
               href={infoCmsData[3][selectedLanPara]}
               rel="noopener"
               target="_blank">
-            <span>
+            <div>
               {infoCmsData[3][selectedLanHeadlines]}
-            </span>
+            </div>
             </a>
           </div>
           <span className="copyright">

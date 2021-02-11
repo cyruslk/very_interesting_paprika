@@ -8,6 +8,9 @@
 	src: url('fonts/NHaasGroteskDSPro-75Bd.otf'); /* IE9 Compat Modes */
 }
 
+html, body {
+  overflow-x: hidden;
+}
 
 
 * {
@@ -111,6 +114,12 @@
 	justify-content: center;
 }
 
+.react-slidedown {
+    transition-duration: .5s;
+    transition-timing-function: ease-in-out;
+}
+
+
 
 .info_body_container{
 	width: 36vw;
@@ -150,6 +159,13 @@
 	margin-top: 3vw;
 }
 
+#footer p,
+#body p{
+	font-size: 16px;
+	margin-top: 2.5px;
+	margin-bottom: 2.5px;
+}
+
 .info_body_container_ctas_spans span,
 .info_body_container_ctas_spans  a{
 	padding: 1vw;
@@ -163,26 +179,42 @@
 	cursor: pointer;
 	padding-top: 0.8vw;
 	padding-bottom: 0.8vw;
-	font-size: 16px;
+	font-size: 20px;
 	text-decoration: none;
+	letter-spacing: 1px;
+}
+
+.footer_cta{
+	display: flex;
+	align-items: center;
+	position: fixed;
+	bottom: 10px;
+}
+
+.footer_cta a div{
+	background-color: black;
+	width: 155px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 18px;
 }
 
 .footer_cta span,
 .footer_cta a{
-	padding: 1vw;
 	background-color: black;
 	border-radius: 18px;
 	color: white;
 	font-family: NHaasGroteskDSProMedium;
-	width: 155px;
 	margin-top: 0;
 	margin-bottom: 1vw;
 	cursor: pointer;
 	padding-top: 0.8vw;
 	padding-bottom: 0.8vw;
-	font-size: 16px;
-	margin-right: 1vw;
+	font-size: 20px;
 	text-decoration: none;
+	margin-right: 1vw;
+	letter-spacing: 1px;
 }
 
 .copyright{
@@ -203,8 +235,18 @@
 	width: 100%;
 }
 
+.body_cta_background_close{
+	width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
 .footer_desktop_first{
-	margin-bottom: 30px;
+	margin-bottom: 50px;
 }
 
 .footer_desktop_first h1{
@@ -294,10 +336,11 @@ ul{
 		padding-top: 6vw;
 	}
 
-	.info_body_container_ctas_spans span{
+	.info_body_container_ctas_spans span,
+	.info_body_container_ctas_spans a{
 		font-size: 20px;
-		padding: 2.5vw;
 		margin-bottom: 20px;
+		padding: 10px;
 	}
 
 	.info_body_container_ctas_spans{
@@ -433,8 +476,16 @@ ul{
 		justify-content: center;
 	}
 
+	.vertical_text_content a{
+		text-decoration: none;
+	}
+
 	.vertical_text_content span{
 		font-family: NHaasGroteskDSProBold;
+	}
+
+	.info_cta_container img{
+  	height: 50%;
 	}
 
 
