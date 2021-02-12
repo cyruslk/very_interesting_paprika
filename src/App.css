@@ -187,8 +187,15 @@ html, body {
 .footer_cta{
 	display: flex;
 	align-items: center;
-	position: fixed;
-	bottom: 10px;
+}
+
+.footer_cta_outer{
+	display: flex;
+  align-items: flex-end;
+}
+
+.footer_cta_outer div{
+	width: 50%;
 }
 
 .footer_cta a div{
@@ -207,7 +214,6 @@ html, body {
 	color: white;
 	font-family: NHaasGroteskDSProMedium;
 	margin-top: 0;
-	margin-bottom: 1vw;
 	cursor: pointer;
 	padding-top: 0.8vw;
 	padding-bottom: 0.8vw;
@@ -217,11 +223,12 @@ html, body {
 	letter-spacing: 1px;
 }
 
+.footer_copyright{
+	text-align: right;
+}
+
 .copyright{
-	position: absolute;
 	font-family: NHaasGroteskDSProMedium;
-	bottom: -1vw;
-	right: 68px;
 }
 
 .info_body_container_ctas_spans span:hover{
@@ -232,7 +239,8 @@ html, body {
 	position: fixed;
 	bottom: 0;
 	margin: 34px;
-	width: 100%;
+	width: calc(100% - 68px);
+	animation: 0.3s slideUp;
 }
 
 .body_cta_background_close{
@@ -493,5 +501,14 @@ ul{
 	#container_mobile_div_1{
 		bottom: 0;
 	}
+}
 
+@keyframes slideUp {
+	from {
+	bottom: -23vh;
+ }
+
+ to {
+	 bottom: 0;
+ }
 }

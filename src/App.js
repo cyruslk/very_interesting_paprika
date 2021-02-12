@@ -33,7 +33,6 @@ class App extends React.Component {
         }, () => {
 
           let {cmsData} = this.state;
-
           let mainCmsDataFR = cmsData
           .slice(0, 9)
           .map((ele, index) => {

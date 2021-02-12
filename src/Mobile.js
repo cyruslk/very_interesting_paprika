@@ -277,7 +277,8 @@ class Mobile extends React.Component {
           let divText = document.querySelector(`#${divIDText}`);
 
           divText.style.left = `-${textDivSize}px`
-          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(9)`;
+          //  Adjusting the width here;
+          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(8)`;
 
         }
         if(selectedDivId === 1){
@@ -420,24 +421,19 @@ class Mobile extends React.Component {
     }, () => {
 
       let viewportWidth = this.state.viewportWidth;
-      // console.log(viewportWidth);
-
-      // div for img; could put these in the state;
       let imgContainer = document.querySelector(`#${divID}`);
       let img = document.querySelector(`#${divID} img`);
       let divText = document.querySelector(`#${divIDText}`);
-
       let originalImageHeight = img.getBoundingClientRect().width;
-
       let originalImageStretch = viewportWidth/originalImageHeight;
       let textDivSize = viewportWidth-originalImageHeight;
 
       this.setState({
-      originalImageHeight,
-      originalImageStretch,
-      textDivSizeArray: [...this.state.textDivSizeArray, textDivSize],
-      originalImageHeightArray: [...this.state.originalImageHeightArray, originalImageHeight],
-      originalImageStretchArray: [...this.state.originalImageStretchArray, originalImageStretch]
+        originalImageHeight,
+        originalImageStretch,
+        textDivSizeArray: [...this.state.textDivSizeArray, textDivSize],
+        originalImageHeightArray: [...this.state.originalImageHeightArray, originalImageHeight],
+        originalImageStretchArray: [...this.state.originalImageStretchArray, originalImageStretch]
      }, () => {
 
        divText.style.width = `${textDivSize - 40}px`;

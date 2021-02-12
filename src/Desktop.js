@@ -25,15 +25,22 @@ class Desktop extends React.Component {
       originalImageStretch: null,
       isTriggeredInfoContent: false,
       mainCmsData: null,
-      infoCmsData: null
+      infoCmsData: null,
+      scroll: 0
     };
   }
 
   componentDidMount(){
 
+    setTimeout(() => {
+       this.setState({
+         loaded: true
+       })
+     }, 2000);
+
+
     document.addEventListener("wheel", this.scrollHandler);
     window.addEventListener("resize", this.resizeHandler);
-
     let {cmsData} = this.props;
     let mainCmsData = cmsData.slice(0, 9);
     let infoCmsData = cmsData.slice(9, 14);
@@ -79,6 +86,8 @@ class Desktop extends React.Component {
       if(selectedlan !== prevState.selectedlan){
         window.scrollTo(0, 0)
       }
+
+
 
       if (counter !== prevState.counter) {
         if(counter >= 0 && counter < 6){
@@ -166,35 +175,27 @@ class Desktop extends React.Component {
 
 
   handleImageLoaded = (divID) => {
+
+    let viewportHeight = this.state.viewportHeight;
+    let imgContainer = document.querySelector(`#${divID}`);
+    let img = document.querySelector(`#${divID} img`);
+
+    let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
+    let originalImageHeight = img.getBoundingClientRect().height;
+    let originalImageStretch = (viewportHeight + 1.4*aligningThirdDiv)/originalImageHeight;
+
+    imgContainer.style.height = viewportHeight + "px";
+    img.style.transform = `scaleY(${originalImageStretch})`;
+
     this.setState({
-      loaded: true
-    }, () => {
-
-      let viewportHeight = this.state.viewportHeight;
-      let imgContainer = document.querySelector(`#${divID}`);
-      let img = document.querySelector(`#${divID} img`);
-
-      let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
-      let originalImageHeight = img.getBoundingClientRect().height;
-      let originalImageStretch = (viewportHeight + 1.4*aligningThirdDiv)/originalImageHeight;
-
-
-      imgContainer.style.height = viewportHeight + "px";
-      img.style.transform = `scaleY(${originalImageStretch})`;
-
-      this.setState({
-        originalImageHeight,
-        originalImageStretch
-      })
+      originalImageHeight,
+      originalImageStretch
     })
   }
-
 
   renderDataToDivs = (selectedlan) => {
 
     let mainCmsDataSubArraysFirstRow = this.state.mainCmsDataSubArrays[0];
-
-    // get these images here;
     let dataToDivs = mockData.entriesImgDesktop.map((ele, index) => {
 
       let divID = `container_div_${index}`;
@@ -203,8 +204,11 @@ class Desktop extends React.Component {
 
       return (
         <div className="main_vertical_container_inner">
-          <div id={divID}>
+          <div
+            id={divID}
+            className="svgs_containers">
               <img
+                className="svgs"
                 onLoad={() => {this.handleImageLoaded(divID)}}
                 src={ele.img}
                 alt={ele.img}
@@ -229,14 +233,49 @@ class Desktop extends React.Component {
   resizeHandler = () => {
 
     let viewportHeight = window.innerHeight;
+
     this.setState({
       viewportHeight
+    }, () => {
+
+      let svgs = [...document.getElementsByClassName("svgs")];
+      let svgContainers= [...document.getElementsByClassName("svgs_containers")];
+
+      svgs.map((ele, index) => {
+
+        if(index === this.state.selectedDivId){
+          let heightSvg = ele.getBoundingClientRect().height;
+          svgContainers[index].style.height = `${heightSvg}px`;
+        }else{
+          let divID = `container_div_${index}`;
+          return this.handleResize(divID)
+        }
+      })
     });
+  };
+
+  handleResize = (divID) => {
+
+    console.log("not active, to change", divID);
+    console.log(this.state.viewportHeight);
+    // how many 1 can go here;
+
+    // let viewportHeight = this.state.viewportHeight;
+    // let imgContainer = document.querySelector(`#${divID}`);
+    // let img = document.querySelector(`#${divID} img`);
+    //
+    //
+    // console.log("happening here");
+
   }
 
 
   // scrollHandler here;
   scrollHandler = (event) => {
+
+    let numberOfPixelScrolled = window.scrollY;
+    let viewportHeight = this.state.viewportHeight;
+
 
     if(!this.state.originalImageStretch){
       return null;
@@ -253,9 +292,10 @@ class Desktop extends React.Component {
       })
     }
 
-    let numberOfPixelScrolled = window.scrollY;
-    let viewportHeight = this.state.viewportHeight;
-
+    // to force block divs;
+    this.setState({
+      scroll: numberOfPixelScrolled
+    })
 
     if (numberOfPixelScrolled > 0
       && numberOfPixelScrolled < viewportHeight) {
@@ -269,8 +309,6 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "up");
         })
-
-
     }
 
     if (numberOfPixelScrolled > viewportHeight
@@ -329,12 +367,10 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "up");
         })
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*5
       && numberOfPixelScrolled < viewportHeight*6) {
-
         this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
         this.setState({
           counter: 5,
@@ -348,7 +384,6 @@ class Desktop extends React.Component {
 
     if (numberOfPixelScrolled > viewportHeight*6
       && numberOfPixelScrolled < viewportHeight*7) {
-
         this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
         this.setState({
           counter: 6,
@@ -358,7 +393,6 @@ class Desktop extends React.Component {
           let selectedDivId = this.state.selectedDivId;
           this.handleAnimation(counter, selectedDivId, "up");
         })
-
     }
 
     if (numberOfPixelScrolled > viewportHeight*7
@@ -839,49 +873,62 @@ class Desktop extends React.Component {
      }
      return (
        <footer className="footer_desktop">
-          <div className="footer_desktop_first">
-            <h1>{infoCmsData[4][selectedLanHeadlines]}</h1>
-          </div>
-            <div className="footer_cta">
-              <a>
-              <div
-                id="footer"
-                onMouseEnter={() => this.toggleOnHoverCallCTA("footer")}
-                onMouseLeave={() => this.toggleOnHoverCallCTA("footer")}>
-                  {infoCmsData[1][selectedLanHeadlines]}
-              </div>
-              </a>
+            <div className="footer_desktop_first">
+              <h1>{infoCmsData[4][selectedLanHeadlines]}</h1>
+            </div>
+            <div className="footer_cta_outer">
+              <div className="footer_cta">
+                <a>
+                <div
+                  id="footer"
+                  onMouseEnter={() => this.toggleOnHoverCallCTA("footer")}
+                  onMouseLeave={() => this.toggleOnHoverCallCTA("footer")}>
+                    {infoCmsData[1][selectedLanHeadlines]}
+                </div>
+                </a>
+                <a
+                  href={"mailto:" + infoCmsData[2][selectedLanPara]}
+                  rel="noopener"
+                  target="_blank">
+                <div>
+                  {infoCmsData[2][selectedLanHeadlines]}
+                </div>
+                </a>
               <a
-                href={"mailto:" + infoCmsData[2][selectedLanPara]}
+                href={infoCmsData[3][selectedLanPara]}
                 rel="noopener"
                 target="_blank">
               <div>
-                {infoCmsData[2][selectedLanHeadlines]}
+                {infoCmsData[3][selectedLanHeadlines]}
               </div>
               </a>
-            <a
-              href={infoCmsData[3][selectedLanPara]}
-              rel="noopener"
-              target="_blank">
-            <div>
-              {infoCmsData[3][selectedLanHeadlines]}
             </div>
-            </a>
+            <div className="footer_copyright">
+            <span className="copyright">
+                « Very Interesting » ©2021
+            </span>
+            </div>
           </div>
-          <span className="copyright">
-              « Very Interesting » ©2021
-          </span>
        </footer>
+     )
+   };
+
+   renderLoading = () => {
+     return (
+       <h1>
+          LOADING
+       </h1>
      )
    }
 
 
-
   render() {
-    if(!this.state.dataToDivs){
-      <div className="loading_screen">
-        <h1>LOADING</h1>
-      </div>
+    if(!this.state.loaded){
+      return (
+        <div className="loading_screen">
+          {this.renderLoading()}
+        </div>
+      )
     }
 
     return (
