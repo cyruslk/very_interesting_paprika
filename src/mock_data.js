@@ -8,6 +8,9 @@ const mock_data = module.exports = {
     {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1612818874/paprika%20-%20very%20interesting/M01VERYINTE_v3.svg"},
     {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1610211325/paprika%20-%20very%20interesting/M02RESTING.svg"},
   ],
+  loadingImg: [
+    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1613099393/paprika%20-%20very%20interesting/CHARGEMENT.svg"}
+  ],
   entriesText: [
     {
       headlines: "Dans une économie de l’attention, il faut se démarquer.",
