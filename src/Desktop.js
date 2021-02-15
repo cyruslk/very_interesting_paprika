@@ -37,7 +37,7 @@ class Desktop extends React.Component {
       this.setState({
         loaded: true
       });
-    }, 200);
+    }, 1000);
 
     document.addEventListener("wheel", this.scrollHandler);
     window.addEventListener("resize", this.resizeHandler);
@@ -209,19 +209,17 @@ class Desktop extends React.Component {
 
     let viewportHeight = this.state.viewportHeight;
     let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
-    console.log(aligningThirdDiv);
-    // check if the viewportHeight is here;
-
     let loadingImg = document.getElementById("loading_img");
     let loadingImgInitialHeight = loadingImg.getBoundingClientRect().height;
+
     let loadingImgStrech = (viewportHeight + 1.4 * aligningThirdDiv)/loadingImgInitialHeight;
 
     loadingImg.animate(
       [
-        { transform: `scaleY(1)` },
         { transform: `scaleY(${loadingImgStrech})` },
+        { transform: `scaleY(1)` },
       ], {
-        duration: 200,
+        duration: 1000,
       }
     );
 
@@ -289,24 +287,27 @@ class Desktop extends React.Component {
   };
 
   handleResize = divID => {
-    const {viewportHeight, originalImageHeight} = this.state;
-    console.log("not active, to change", divID);
 
-    console.log(viewportHeight / originalImageHeight);
+    const {
+      viewportHeight,
+      originalImageHeight,
+      originalImageWidth
+    } = this.state;
 
-    // si la nouvelle largeur de la page est de x,
-    // et donc que la largeur du div parent est de x,
-    // alors la hauteur de l'image est de xx
-    // then, faire le nouveau resize;
+    let ratio = originalImageWidth/originalImageHeight;
+    let newWidth = document.getElementById(divID).getBoundingClientRect().width;
+    let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
+    let newHeight = newWidth/originalImageWidth*originalImageHeight;
 
-    // how many 1 can go here;
+    let newImgStretch = (viewportHeight + 1.4 * aligningThirdDiv) / newHeight;
 
-    // let viewportHeight = this.state.viewportHeight;
-    // let imgContainer = document.querySelector(`#${divID}`);
-    // let img = document.querySelector(`#${divID} img`);
-    //
-    //
-    // console.log("happening here");
+    let imgContainer = document.querySelector(`#${divID}`);
+    let img = document.querySelector(`#${divID} img`);
+    img.style.transform = `scaleY(${newImgStretch})`;
+
+    let imgHeighPx = img.getBoundingClientRect().height;
+    document.getElementById(divID).style.height = `${imgHeighPx}px`;
+
   };
 
   // scrollHandler here;
@@ -654,8 +655,6 @@ class Desktop extends React.Component {
         imgContainer.style.height = newImgContainerHeight + "px";
 
         if (selectedDivId === 1) {
-          // 570 = hauteur premier div;
-          // 593 = hauteur deuxième div;
           let coeffScalDivId1 = (translateYPorcentageUp * 570) / 593;
           img.style.transform = `scaleY(${coeffScalDivId1})`;
           let newImgContainerHeight = img.getBoundingClientRect().height;
@@ -754,7 +753,7 @@ class Desktop extends React.Component {
   };
 
   defineValueFromPorcentage = (percentage, total) => {
-    let value = (percentage * total) / 100;
+    let value = (percentage / 100) * total
     return value;
   };
 

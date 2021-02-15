@@ -11,6 +11,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       viewportWidth: null,
+      mockData: mock_data,
+      loaded: false,
       cmsData: null,
       toggleEN: false,
       mainCmsDataFR: null,
@@ -18,8 +20,13 @@ class App extends React.Component {
     };
   }
 
-
   componentDidMount(){
+
+    setTimeout(() => {
+      this.setState({
+        loaded: true
+      });
+    });
 
     document.addEventListener('gesturestart', function (e) {
         e.preventDefault();
@@ -77,11 +84,34 @@ class App extends React.Component {
     this.setState({
       viewportWidth
     });
-
   }
 
+  handleImageLoadedLoadingScreen = () => {
+
+    let viewportHeight = window.innerHeight;
+
+    let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
+    let loadingImg = document.getElementById("loading_img");
+    let loadingImgInitialHeight = loadingImg.getBoundingClientRect().height;
+    let loadingImgStrech = (viewportHeight + 1.4 * aligningThirdDiv)/loadingImgInitialHeight;
+    loadingImg.style.transform = `scaleY(${loadingImgStrech})`;
+
+    // loadingImg.animate(
+    //   [
+    //     { transform: `scaleY(1)` },
+    //     { transform: `scaleY(${loadingImgStrech})` },
+    //   ], {
+    //     duration: 500,
+    //   }
+    // );
+  }
+
+  defineValueFromPorcentage = (percentage, total) => {
+    let value = (percentage * total) / 100;
+    return value;
+  };
+
   toggleEN = () => {
-    alert("here")
     this.setState({
       toggleEN: !this.state.toggleEN
     })
@@ -89,12 +119,15 @@ class App extends React.Component {
 
   render() {
 
-    let {viewportWidth, cmsData} = this.state;
+    let {mockData, viewportWidth, cmsData} = this.state;
 
-    if(!viewportWidth || !cmsData){
+    if(!cmsData || !this.state.loaded){
       return (
         <div className="loading_screen">
-          <h1>LOADING</h1>
+          <img
+            id="loading_img"
+            onLoad={this.handleImageLoadedLoadingScreen}
+            src={mockData.loadingImg[0].img} />
         </div>
       )
     }

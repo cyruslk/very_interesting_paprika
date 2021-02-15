@@ -20,9 +20,14 @@ html, body {
 	font-weight: 100;
 }
 
+.loading_screen{
+	height: 100vh;
+}
+
 .loading_screen img{
 	width: 100vw;
 	transform-origin: top;
+	transition-timing-function: ease-in-out;
 }
 
 .loading_screen h1{
