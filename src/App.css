@@ -27,7 +27,6 @@ html, body {
 .loading_screen img{
 	width: 100vw;
 	transform-origin: top;
-	transition-timing-function: ease-in-out;
 }
 
 .loading_screen h1{

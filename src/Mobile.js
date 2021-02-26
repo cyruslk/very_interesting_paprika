@@ -120,7 +120,8 @@ class Mobile extends React.Component {
           resetTextDivs: false
         })
 
-        let textSubArray = mainCmsDataSubArrays[0]
+        let textSubArray = mainCmsDataSubArrays[0];
+
         divTextH1.map((ele, index) => {
          ele.innerHTML = textSubArray[index][selectedLanHeadlines]
         })
@@ -134,10 +135,8 @@ class Mobile extends React.Component {
           resetTextDivs: false
         })
 
-
         let verticalContentArray =  mainCmsDataSubArrays[2];
         let divsLastFold = verticalContentArray.map((ele, index) => {
-
           let id = `vertical_text_content_${index}`
           return (
             <div id={id}
@@ -146,6 +145,8 @@ class Mobile extends React.Component {
               <p>{ReactHtmlParser(ele[selectedLanPara])}</p>
             </div>
           )
+
+
         })
 
         let textWidth = document
@@ -209,7 +210,11 @@ class Mobile extends React.Component {
 
         let textSubArray = mainCmsDataSubArrays[1]
         divTextH1.map((ele, index) => {
-          ele.innerHTML = textSubArray[index][selectedLanHeadlines]
+          if(index === 0){
+            ele.innerHTML = "<br /><br />" + textSubArray[index][selectedLanHeadlines];
+          }else{
+            ele.innerHTML = textSubArray[index][selectedLanHeadlines]
+          }
         })
          divTextP.map((ele, index) => {
            ele.innerHTML = textSubArray[index][selectedLanPara]
