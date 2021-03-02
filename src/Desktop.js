@@ -958,7 +958,7 @@ class Desktop extends React.Component {
             </a>
           </div>
           <div className="footer_copyright">
-            <span className="copyright">« Very Interesting » ©2021</span>
+            <span className="copyright">« VERY INTERESTING » ©2021</span>
           </div>
         </div>
       </footer>
