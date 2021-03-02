@@ -87,8 +87,21 @@ class Mobile extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
 
+    let firstImg = document.querySelector(`#container_mobile_text_0 img`);
+    let firstContainer = document.getElementById("container_mobile_text_0");
+
+    const {originalImageStretch, viewportHeight} = this.state;
+
+
+    if(!window.pageYOffset
+      && firstImg
+      && originalImageStretch
+      && viewportHeight){
+        firstImg.style.transform = `scaleY(${originalImageStretch})`;
+        firstContainer.style.height = `${this.state.viewportHeight}px`;
+    }
+
     //updating th view based on the viewPort;
-    let viewportHeight = this.state.viewportHeight;
     let selectedDivId = this.state.selectedDivId;
     let counter = this.state.counter;
     let resetTextDivs = this.state.resetTextDivs;

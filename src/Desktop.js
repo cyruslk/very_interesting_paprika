@@ -12,7 +12,7 @@ class Desktop extends React.Component {
       toggleEN: false,
       isClosedInfoPanel: true,
       selectedlan: "fr",
-      loaded: false,
+      loaded: true,
       counter: 0,
       selectedDivId: 0,
       scrollDirection: null,
@@ -45,7 +45,7 @@ class Desktop extends React.Component {
     let mainCmsData = cmsData.slice(0, 9);
     let infoCmsData = cmsData.slice(9, 14);
     let viewportHeight = window.innerHeight;
-    let updatedHeightOfPage = viewportHeight * 15;
+    let updatedHeightOfPage = viewportHeight * 8.5;
     document.body.style.height = `${updatedHeightOfPage}px`;
 
     this.setState(
@@ -78,6 +78,21 @@ class Desktop extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+
+
+    let firstImg = document.querySelector(`#container_div_0 img`);
+    let firstContainer = document.getElementById("container_div_0");
+
+    const {originalImageStretch, viewportHeight} = this.state;
+
+    if(!window.pageYOffset
+      && firstImg
+      && originalImageStretch
+      && viewportHeight){
+        firstImg.style.transform = `scaleY(${originalImageStretch})`;
+        firstContainer.style.height = `${this.state.viewportHeight}px`;
+    }
+
     let counter = this.state.counter;
     let divTextH1 = [...document.getElementsByClassName("div_text_h1")];
     let divTextP = [...document.getElementsByClassName("div_text_p")];
@@ -93,7 +108,7 @@ class Desktop extends React.Component {
 
 
     if (counter !== prevState.counter) {
-      if (counter >= 0 && counter < 6) {
+      if (counter >= 0 && counter < 3.5) {
         this.setState({
           isDisplayFooter: false
         });
@@ -109,7 +124,7 @@ class Desktop extends React.Component {
         });
       }
 
-      if (counter >= 6 && counter < 12) {
+      if (counter >= 3.5 && counter < 7) {
         this.setState({
           isDisplayFooter: false
         });
@@ -125,11 +140,11 @@ class Desktop extends React.Component {
         });
       }
 
-      if (counter === 12) {
+      if (counter === 7) {
         window.onscroll = ev => {
           if (
             window.innerHeight + window.scrollY >=
-            document.body.offsetHeight - 800
+            document.body.offsetHeight - 500
           ) {
             this.setState({
               isDisplayFooter: true
@@ -231,6 +246,7 @@ class Desktop extends React.Component {
       let divID = `container_div_${index}`;
       let selectedLanHeadlines = `headlines_${selectedlan}`;
       let selectedLanPara = `paragraph_${selectedlan}`;
+      let imgID = `svg_${index}`;
 
       return (
         <div className="main_vertical_container_inner">
@@ -240,6 +256,7 @@ class Desktop extends React.Component {
               onLoad={() => {
                 this.handleImageLoaded(divID);
               }}
+              id={imgID}
               src={ele.img}
               alt={ele.img}
             />
@@ -335,7 +352,7 @@ class Desktop extends React.Component {
       scroll: numberOfPixelScrolled
     });
 
-    if (numberOfPixelScrolled > 0 && numberOfPixelScrolled < viewportHeight) {
+    if (numberOfPixelScrolled > 0 && numberOfPixelScrolled < viewportHeight*0.5) {
       this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
       this.setState(
         {
@@ -351,8 +368,8 @@ class Desktop extends React.Component {
     }
 
     if (
-      numberOfPixelScrolled > viewportHeight &&
-      numberOfPixelScrolled < viewportHeight * 2
+      numberOfPixelScrolled > viewportHeight*0.5 &&
+      numberOfPixelScrolled < viewportHeight *1
     ) {
       this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
       this.setState(
@@ -369,8 +386,8 @@ class Desktop extends React.Component {
     }
 
     if (
-      numberOfPixelScrolled > viewportHeight * 2 &&
-      numberOfPixelScrolled < viewportHeight * 3
+      numberOfPixelScrolled > viewportHeight * 1 &&
+      numberOfPixelScrolled < viewportHeight * 1.5
     ) {
       this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
       this.setState(
@@ -387,8 +404,8 @@ class Desktop extends React.Component {
     }
 
     if (
-      numberOfPixelScrolled > viewportHeight * 3 &&
-      numberOfPixelScrolled < viewportHeight * 4
+      numberOfPixelScrolled > viewportHeight * 1.5 &&
+      numberOfPixelScrolled < viewportHeight * 2
     ) {
       this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
       this.setState(
@@ -405,8 +422,8 @@ class Desktop extends React.Component {
     }
 
     if (
-      numberOfPixelScrolled > viewportHeight * 4 &&
-      numberOfPixelScrolled < viewportHeight * 5
+      numberOfPixelScrolled > viewportHeight * 2 &&
+      numberOfPixelScrolled < viewportHeight * 2.5
     ) {
       this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
       this.setState(
@@ -423,8 +440,8 @@ class Desktop extends React.Component {
     }
 
     if (
-      numberOfPixelScrolled > viewportHeight * 5 &&
-      numberOfPixelScrolled < viewportHeight * 6
+      numberOfPixelScrolled > viewportHeight * 2.5 &&
+      numberOfPixelScrolled < viewportHeight * 3
     ) {
       this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
       this.setState(
@@ -441,8 +458,8 @@ class Desktop extends React.Component {
     }
 
     if (
-      numberOfPixelScrolled > viewportHeight * 6 &&
-      numberOfPixelScrolled < viewportHeight * 7
+      numberOfPixelScrolled > viewportHeight * 3 &&
+      numberOfPixelScrolled < viewportHeight * 3.5
     ) {
       this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
       this.setState(
@@ -459,8 +476,8 @@ class Desktop extends React.Component {
     }
 
     if (
-      numberOfPixelScrolled > viewportHeight * 7 &&
-      numberOfPixelScrolled < viewportHeight * 8
+      numberOfPixelScrolled > viewportHeight * 3.5 &&
+      numberOfPixelScrolled < viewportHeight * 4
     ) {
       this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
       this.setState(
@@ -477,8 +494,8 @@ class Desktop extends React.Component {
     }
 
     if (
-      numberOfPixelScrolled > viewportHeight * 8 &&
-      numberOfPixelScrolled < viewportHeight * 9
+      numberOfPixelScrolled > viewportHeight * 4 &&
+      numberOfPixelScrolled < viewportHeight * 4.5
     ) {
       this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
       this.setState(
@@ -495,8 +512,8 @@ class Desktop extends React.Component {
     }
 
     if (
-      numberOfPixelScrolled > viewportHeight * 9 &&
-      numberOfPixelScrolled < viewportHeight * 10
+      numberOfPixelScrolled > viewportHeight * 4.5 &&
+      numberOfPixelScrolled < viewportHeight * 5
     ) {
       this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
       this.setState(
@@ -513,8 +530,8 @@ class Desktop extends React.Component {
     }
 
     if (
-      numberOfPixelScrolled > viewportHeight * 10 &&
-      numberOfPixelScrolled < viewportHeight * 11
+      numberOfPixelScrolled > viewportHeight * 5 &&
+      numberOfPixelScrolled < viewportHeight * 5.5
     ) {
       this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
       this.setState(
@@ -531,8 +548,8 @@ class Desktop extends React.Component {
     }
 
     if (
-      numberOfPixelScrolled > viewportHeight * 11 &&
-      numberOfPixelScrolled < viewportHeight * 12
+      numberOfPixelScrolled > viewportHeight * 5.5 &&
+      numberOfPixelScrolled < viewportHeight * 6
     ) {
       this.handleResetPreviousDivHeightUp(this.state.selectedDivId);
       this.setState(
@@ -549,8 +566,8 @@ class Desktop extends React.Component {
     }
 
     if (
-      numberOfPixelScrolled > viewportHeight * 12 &&
-      numberOfPixelScrolled < viewportHeight * 13
+      numberOfPixelScrolled > viewportHeight * 6 &&
+      numberOfPixelScrolled < viewportHeight * 6.5
     ) {
       this.handleResetPreviousDivHeightDown(this.state.selectedDivId);
       this.setState(
@@ -574,7 +591,7 @@ class Desktop extends React.Component {
     let imgContainer = document.querySelector(`#${divID}`);
     let img = document.querySelector(`#${divID} img`);
     let numberOfPixelScrolled = window.scrollY;
-    let viewportHeight = this.state.viewportHeight;
+    let viewportHeight = this.state.viewportHeight/2;
     let originalImageStretch = this.state.originalImageStretch;
 
     if (!all) {
