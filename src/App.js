@@ -123,11 +123,9 @@ class App extends React.Component {
 
     if(!cmsData || !this.state.loaded){
       return (
-        <div className="loading_screen">
-          <img
-            id="loading_img"
-            onLoad={this.handleImageLoadedLoadingScreen}
-            src={mockData.loadingImg[0].img} />
+        <div
+          style={{backgroundColor: "#EBFF00"}}
+          className="loading_screen">
         </div>
       )
     }

@@ -11,7 +11,7 @@ class Mobile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loaded: false,
+      loaded: true,
       toggleEN: false,
       selectedlan: "fr",
       animDirection: null,
@@ -43,6 +43,15 @@ class Mobile extends React.Component {
 
 
   componentDidMount(){
+
+
+    // removing for now;
+    // setTimeout(() => {
+    //   this.setState({
+    //     loaded: true
+    //   });
+    // }, 60000);
+
 
      document.addEventListener("scroll", this.scrollHandler);
      window.addEventListener("resize", this.resizeHandler);
@@ -90,7 +99,7 @@ class Mobile extends React.Component {
     let firstImg = document.querySelector(`#container_mobile_text_0 img`);
     let firstContainer = document.getElementById("container_mobile_text_0");
 
-    const {originalImageStretch, viewportHeight} = this.state;
+    const {originalImageStretch, viewportHeight, loaded} = this.state;
 
 
     if(!window.pageYOffset
@@ -209,7 +218,7 @@ class Mobile extends React.Component {
                  </a>
 
                   <div className="footer_mobile_cta">
-                    <p>« Very Interesting » ©2021</p>
+                    <p>« VERY INTERESTING » ©2021</p>
                  </div>
                </div>
             </div>
@@ -336,6 +345,28 @@ class Mobile extends React.Component {
         })
       }
     })
+  }
+
+
+  handleImageLoadedLoadingScreen = () => {
+
+    let viewportHeight = this.state.viewportHeight;
+    let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
+    let loadingImg = document.getElementsByClassName("loading_img");
+    let loadingImgInitialHeight = loadingImg[0].getBoundingClientRect().height;
+
+    let loadingImgStrech = (viewportHeight + 1.4 * aligningThirdDiv)/loadingImgInitialHeight;
+
+    // loadingImg.animate(
+    //   [
+    //     { transform: `scaleY(1)` },
+    //     { transform: `scaleY(${loadingImgStrech})` },
+    //     { transform: `scaleY(1)` },
+    //   ], {
+    //     duration: 1500,
+    //   }
+    // );
+
   }
 
 
@@ -959,6 +990,22 @@ class Mobile extends React.Component {
     if(!this.state.dataToDivs){
       return null;
     };
+
+    if (!this.state.loaded) {
+      return (
+        <div className="loading_content">
+          <img
+            className="loading_img"
+            onLoad={this.handleImageLoadedLoadingScreen}
+            src={mockData.entriesMobile[0].img} />
+            <img
+              className="loading_img"
+              onLoad={this.handleImageLoadedLoadingScreen}
+              src={mockData.entriesMobile[1].img} />
+        </div>
+      )
+    }
+
     return (
       <div className="main_vertical_container_mobile">
           {this.state.dataToDivs}

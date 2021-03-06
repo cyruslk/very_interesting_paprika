@@ -190,6 +190,10 @@ html, body {
 	letter-spacing: 1px;
 }
 
+.info_body_container_ctas_spans span{
+	padding: 0;
+}
+
 .footer_cta{
 	display: flex;
 	align-items: center;
@@ -331,6 +335,15 @@ ul{
 }
 
 @media screen and (max-width:600px){
+
+
+
+	.loading_img{
+		width: 100vw;
+		transform-origin: right top;
+		position: absolute;
+		transform: rotateZ(90deg) translate(100%) scaleY(1);
+	}
 
 
 	.info_main_container{

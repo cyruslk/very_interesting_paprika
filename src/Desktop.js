@@ -12,7 +12,7 @@ class Desktop extends React.Component {
       toggleEN: false,
       isClosedInfoPanel: true,
       selectedlan: "fr",
-      loaded: true,
+      loaded: false,
       counter: 0,
       selectedDivId: 0,
       scrollDirection: null,
@@ -27,17 +27,19 @@ class Desktop extends React.Component {
       isTriggeredInfoContent: false,
       mainCmsData: null,
       infoCmsData: null,
-      scroll: 0
+      scroll: 0,
+      originalImageStretchArray: []
     };
   }
 
   componentDidMount() {
 
+    // removing for now;
     setTimeout(() => {
       this.setState({
         loaded: true
       });
-    }, 1000);
+    }, 1500);
 
     document.addEventListener("wheel", this.scrollHandler);
     window.addEventListener("resize", this.resizeHandler);
@@ -83,7 +85,8 @@ class Desktop extends React.Component {
     let firstImg = document.querySelector(`#container_div_0 img`);
     let firstContainer = document.getElementById("container_div_0");
 
-    const {originalImageStretch, viewportHeight} = this.state;
+    const {originalImageStretch, viewportHeight, loaded} = this.state;
+
 
     if(!window.pageYOffset
       && firstImg
@@ -204,11 +207,13 @@ class Desktop extends React.Component {
     let imgContainer = document.querySelector(`#${divID}`);
     let img = document.querySelector(`#${divID} img`);
 
-    let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
+    let aligningThirdDiv = this.defineValueFromPorcentage(2.2, viewportHeight);
     let originalImageHeight = img.getBoundingClientRect().height;
     let originalImageWidth = img.getBoundingClientRect().width;
     let originalImageStretch =
       (viewportHeight + 1.4 * aligningThirdDiv) / originalImageHeight;
+
+      console.log(originalImageStretch);
 
     imgContainer.style.height = viewportHeight + "px";
     img.style.transform = `scaleY(${originalImageStretch})`;
@@ -216,9 +221,14 @@ class Desktop extends React.Component {
     this.setState({
       originalImageHeight,
       originalImageStretch,
-      originalImageWidth
+      originalImageWidth,
+      originalImageStretchArray : [
+          ...this.state.originalImageStretchArray,
+          originalImageStretch
+      ]
     });
   };
+
 
   handleImageLoadedLoadingScreen = () => {
 
@@ -231,10 +241,10 @@ class Desktop extends React.Component {
 
     loadingImg.animate(
       [
-        { transform: `scaleY(${loadingImgStrech})` },
         { transform: `scaleY(1)` },
+        { transform: `scaleY(${loadingImgStrech})` },
       ], {
-        duration: 1000,
+        duration: 1500,
       }
     );
 
@@ -332,7 +342,9 @@ class Desktop extends React.Component {
     let numberOfPixelScrolled = window.scrollY;
     let viewportHeight = this.state.viewportHeight;
 
-    if (!this.state.originalImageStretch) {
+
+    if (!this.state.originalImageStretch
+      || !this.state.loaded) {
       return null;
     }
 
@@ -595,6 +607,7 @@ class Desktop extends React.Component {
     let originalImageStretch = this.state.originalImageStretch;
 
     if (!all) {
+
       let scrolledPorcentage = this.definePorcentage(
         numberOfPixelScrolled - this.state.counter * viewportHeight,
         viewportHeight
@@ -613,6 +626,7 @@ class Desktop extends React.Component {
         img.style.transform = `scaleY(${translateYPorcentageUp})`;
         let newImgContainerHeight = img.getBoundingClientRect().height;
         imgContainer.style.height = newImgContainerHeight + "px";
+
 
         if (translateYPorcentageUp < 1) {
           if (selectedDivId === 0) {
@@ -635,6 +649,7 @@ class Desktop extends React.Component {
         let newImgContainerHeight = img.getBoundingClientRect().height;
         imgContainer.style.height = newImgContainerHeight + "px";
 
+
         if (translateYPorcentageDown < 1) {
           if (selectedDivId === 0) {
             img.style.transform = `scaleY(1.035)`;
@@ -650,6 +665,10 @@ class Desktop extends React.Component {
         }
       }
     } else {
+
+
+      // HERE;
+
       let scrolledPorcentage = this.definePorcentage(
         numberOfPixelScrolled - this.state.counter * viewportHeight,
         viewportHeight
@@ -664,16 +683,24 @@ class Desktop extends React.Component {
         originalImageStretch
       );
 
-      if (animDirection === "up") {
-        console.log(translateYPorcentageUp, selectedDivId, "heres");
 
+      if (animDirection === "up") {
         img.style.transform = `scaleY(${translateYPorcentageUp})`;
         let newImgContainerHeight = img.getBoundingClientRect().height;
         imgContainer.style.height = newImgContainerHeight + "px";
 
         if (selectedDivId === 1) {
-          let coeffScalDivId1 = (translateYPorcentageUp * 570) / 593;
+          let coeffScalDivId1 = (translateYPorcentageUp * 102) / 106;
           img.style.transform = `scaleY(${coeffScalDivId1})`;
+          let newImgContainerHeight = img.getBoundingClientRect().height;
+          imgContainer.style.height = newImgContainerHeight + "px";
+        }
+
+        // 552 / 539 = rapport de la hauteur entre le S et le T
+        if (selectedDivId === 2) {
+          let coeffScalDivId2 = (translateYPorcentageUp * 552) / 539;
+          const {originalImageStretchArray} = this.state;
+          img.style.transform = `scaleY(${coeffScalDivId2})`;
           let newImgContainerHeight = img.getBoundingClientRect().height;
           imgContainer.style.height = newImgContainerHeight + "px";
         }
@@ -695,19 +722,11 @@ class Desktop extends React.Component {
       }
 
       if (animDirection === "down") {
-        // APPLY THE CHANGE HERE;
 
         img.style.transform = `scaleY(${translateYPorcentageDown})`;
         let newImgContainerHeight = img.getBoundingClientRect().height;
         imgContainer.style.height = newImgContainerHeight + "px";
 
-        if (selectedDivId === 1) {
-          console.log(translateYPorcentageDown);
-
-          img.style.transform = `scaleY(${translateYPorcentageDown})`;
-          let newImgContainerHeight = img.getBoundingClientRect().height;
-          imgContainer.style.height = newImgContainerHeight + "px";
-        }
 
         if (translateYPorcentageDown < 1) {
           if (selectedDivId === 0) {
@@ -735,11 +754,13 @@ class Desktop extends React.Component {
 
       let imgContainer = document.querySelector(`#${divID}`);
       let img = document.querySelector(`#${divID} img`);
-      let originalImageStretch = this.state.originalImageStretch;
+      let originalImageStretch = this.state.originalImageStretchArray[previousDivId];
 
       img.style.transform = `scaleY(${originalImageStretch})`;
       let newImgContainerHeight = img.getBoundingClientRect().height;
       imgContainer.style.height = newImgContainerHeight + "px";
+
+
     } else {
       return null;
     }
@@ -751,12 +772,14 @@ class Desktop extends React.Component {
     if (scrollDirection === "down") {
       return null;
     } else {
+
+
       let previousDivId = id;
       let divID = `container_div_${previousDivId}`;
 
       let imgContainer = document.querySelector(`#${divID}`);
       let img = document.querySelector(`#${divID} img`);
-      let originalImageStretch = this.state.originalImageStretch;
+      let originalImageStretch = this.state.originalImageStretchArray[previousDivId];
 
       img.style.transform = `scaleY(${originalImageStretch})`;
       let newImgContainerHeight = img.getBoundingClientRect().height;
@@ -860,6 +883,7 @@ class Desktop extends React.Component {
           <div className="info_body_container_ctas">
             <h1>{infoCmsData[0][selectedLanPara]}</h1>
             <div className="info_body_container_ctas_spans">
+            <a>
               <span
                 id="body"
                 onMouseEnter={() => this.toggleOnHoverCallCTA("body")}
@@ -867,6 +891,7 @@ class Desktop extends React.Component {
               >
                 {infoCmsData[1][selectedLanHeadlines]}
               </span>
+              </a>
               <a
                 href={"mailto:" + infoCmsData[2][selectedLanPara]}
                 rel="noopener"
@@ -905,7 +930,6 @@ class Desktop extends React.Component {
       },
       () => {
         let selectedSpan = document.getElementById(id);
-        console.log(selectedSpan, "heere");
 
         if (this.state.toggleOnHoverCallCTA) {
           selectedSpan.innerHTML = "<p>(514) 577 1553</p>";
