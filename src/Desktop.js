@@ -698,7 +698,7 @@ class Desktop extends React.Component {
 
         // 552 / 539 = rapport de la hauteur entre le S et le T
         if (selectedDivId === 2) {
-          let coeffScalDivId2 = (translateYPorcentageUp * 552) / 539;
+          let coeffScalDivId2 = (translateYPorcentageUp * 548) / 539;
           const {originalImageStretchArray} = this.state;
           img.style.transform = `scaleY(${coeffScalDivId2})`;
           let newImgContainerHeight = img.getBoundingClientRect().height;

@@ -1,8 +1,8 @@
 const mock_data = module.exports = {
   entriesImgDesktop: [
-    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1608683762/paprika%20-%20very%20interesting/01VERYI.svg"},
-    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1608683811/paprika%20-%20very%20interesting/02NTERE.svg"},
-    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1608683839/paprika%20-%20very%20interesting/03STING.svg"},
+    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1615218410/paprika%20-%20very%20interesting/VF_01VERYI_1.svg"},
+    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1615218437/paprika%20-%20very%20interesting/VF_02NTERE.svg"},
+    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1615218410/paprika%20-%20very%20interesting/VF_03STING.svg"},
   ],
   entriesMobile: [
     {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1612818874/paprika%20-%20very%20interesting/M01VERYINTE_v3.svg"},
