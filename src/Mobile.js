@@ -11,7 +11,7 @@ class Mobile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loaded: true,
+      loaded: false,
       toggleEN: false,
       selectedlan: "fr",
       animDirection: null,
@@ -44,14 +44,11 @@ class Mobile extends React.Component {
 
   componentDidMount(){
 
-
-    // removing for now;
-    // setTimeout(() => {
-    //   this.setState({
-    //     loaded: true
-    //   });
-    // }, 60000);
-
+    setTimeout(() => {
+      this.setState({
+        loaded: true
+      });
+    }, 1500);
 
      document.addEventListener("scroll", this.scrollHandler);
      window.addEventListener("resize", this.resizeHandler);
@@ -63,7 +60,7 @@ class Mobile extends React.Component {
      let infoCmsData = cmsData.slice(9, 14);
 
      // Init the state here;
-     let updatedHeightOfPage = viewportHeight*12.05;
+     let updatedHeightOfPage = viewportHeight*12.10;
      document.body.style.height = `${updatedHeightOfPage}px`;
 
 
@@ -348,26 +345,27 @@ class Mobile extends React.Component {
   }
 
 
-  handleImageLoadedLoadingScreen = () => {
+  handleImageLoadedLoadingScreen = (imgID, index) => {
 
-    let viewportHeight = this.state.viewportHeight;
-    let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
-    let loadingImg = document.getElementsByClassName("loading_img");
-    let loadingImgInitialHeight = loadingImg[0].getBoundingClientRect().height;
+    const {originalImageStretch, originalImageStretchArray, viewportWidth} = this.state;
+    let img = document.getElementById(imgID);
 
-    let loadingImgStrech = (viewportHeight + 1.4 * aligningThirdDiv)/loadingImgInitialHeight;
+    let originalImageHeight = img.getBoundingClientRect().width;
+    let loadingImgStrech = (viewportWidth/originalImageHeight)*1.02
 
-    // loadingImg.animate(
-    //   [
-    //     { transform: `scaleY(1)` },
-    //     { transform: `scaleY(${loadingImgStrech})` },
-    //     { transform: `scaleY(1)` },
-    //   ], {
-    //     duration: 1500,
-    //   }
-    // );
+    img.animate(
+      [
+        { transform: `rotateZ(90deg) translate(100%) scaleY(1)` },
+        { transform: `rotateZ(90deg) translate(100%) scaleY(${loadingImgStrech})` },
+      ], {
+        duration: 1500,
+        easing: "ease",
+      }
+    );
 
   }
+
+
 
 
    // Render the data to divs;
@@ -411,6 +409,7 @@ class Mobile extends React.Component {
       })
   };
 
+
   // optimize;
   renderImg = (ele, divID, divIDText, index) => {
     if(index === 0){
@@ -447,6 +446,7 @@ class Mobile extends React.Component {
   }
 
 
+
   resizeHandler = () => {
 
       let imgMobileContainer = [...document.getElementsByClassName('img_mobile_container')];
@@ -465,9 +465,6 @@ class Mobile extends React.Component {
 
   handleImageLoaded = (divID, divIDText, index) => {
 
-    this.setState({
-      loaded: true
-    }, () => {
 
       let viewportWidth = this.state.viewportWidth;
       let imgContainer = document.querySelector(`#${divID}`);
@@ -506,8 +503,6 @@ class Mobile extends React.Component {
            scaleY(${originalImageStretchArray[1]*scalingCoeffStart})
          `;
        }
-
-     })
    })
   }
 
@@ -985,34 +980,48 @@ class Mobile extends React.Component {
     )
   };
 
+  renderDataToDivsLoading = () => {
+    let styleContainer = {
+      height: `${this.state.viewportHeight}px`
+    };
+    let styleImg1 = {
+      transform: `rotateZ(90deg) translate(100%) scaleY(1)`,
+      width: `${this.state.viewportHeight}px`
+    };
+
+    if (!this.state.loaded
+      && this.state.originalImageStretchArray.length > 0) {
+      return (
+        <div className="loader_vertical_container_mobile">
+          <div
+            style={styleContainer}>
+              <img
+                id="loading_img_1"
+                onLoad={() => this.handleImageLoadedLoadingScreen("loading_img_1", 0)}
+                className="loading_img"
+                style={styleImg1}
+                src={mockData.loadingImg[0].img}
+              />
+          </div>
+        </div>
+      )
+    }
+  }
+
 
   render() {
     if(!this.state.dataToDivs){
       return null;
     };
 
-    if (!this.state.loaded) {
-      return (
-        <div className="loading_content">
-          <img
-            className="loading_img"
-            onLoad={this.handleImageLoadedLoadingScreen}
-            src={mockData.entriesMobile[0].img} />
-            <img
-              className="loading_img"
-              onLoad={this.handleImageLoadedLoadingScreen}
-              src={mockData.entriesMobile[1].img} />
-        </div>
-      )
-    }
-
     return (
-      <div className="main_vertical_container_mobile">
-          {this.state.dataToDivs}
-          {this.renderVerticalAnimation()}
-          {this.renderInfo()}
-      </div>
-    );
+        <div className="main_vertical_container_mobile">
+            {this.renderDataToDivsLoading()}
+            {this.state.dataToDivs}
+            {this.renderVerticalAnimation()}
+            {this.renderInfo()}
+        </div>
+      );
   }
 }
 

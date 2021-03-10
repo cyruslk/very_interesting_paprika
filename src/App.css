@@ -12,6 +12,13 @@ html, body {
   overflow-x: hidden;
 }
 
+#loading_img{
+	transition-timing-function: ease;
+}
+
+.loading_content{
+	display: block;
+}
 
 * {
   box-sizing: border-box;
@@ -22,6 +29,10 @@ html, body {
 
 .loading_screen{
 	height: 100vh;
+	position: absolute;
+	width: 100vw;
+	background-color: white;
+	z-index: 1000;
 }
 
 .loading_screen img{
@@ -398,6 +409,10 @@ ul{
 	.main_vertical_container_mobile{
 		display: block;
 		position: fixed;
+		height: 100vh;
+		width: 100vw;
+		background-color: white;
+		z-index: 100;
 	}
 
 
@@ -442,6 +457,20 @@ ul{
     width: 100vw;
     background-color: white;
 		height: 100vh;
+	}
+
+	.loader_vertical_container_mobile{
+		position: fixed;
+		width: 100vw;
+		background-color: white;
+		height: 100vh;
+		z-index: 1000;
+	}
+
+	.loader_vertical_container_mobile div img{
+		position: absolute;
+		transform-origin: right top;
+		right: 0px;
 	}
 
 	.mobile_text_content h1,

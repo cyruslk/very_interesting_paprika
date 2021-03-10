@@ -18,6 +18,7 @@ class Desktop extends React.Component {
       scrollDirection: null,
       updatedHeightOfPage: null,
       viewportHeight: null,
+      viewportWidth: null,
       mockData: null,
       mainCmsDataSubArrays: null,
       dataToDivs: null,
@@ -46,7 +47,10 @@ class Desktop extends React.Component {
     let {cmsData} = this.props;
     let mainCmsData = cmsData.slice(0, 9);
     let infoCmsData = cmsData.slice(9, 14);
+
     let viewportHeight = window.innerHeight;
+    let viewportWidth = this.props.viewportWidth;
+
     let updatedHeightOfPage = viewportHeight * 8.5;
     document.body.style.height = `${updatedHeightOfPage}px`;
 
@@ -54,6 +58,7 @@ class Desktop extends React.Component {
       {
         updatedHeightOfPage,
         viewportHeight,
+        viewportWidth,
         mockData,
         mainCmsData,
         infoCmsData
@@ -85,14 +90,15 @@ class Desktop extends React.Component {
     let firstImg = document.querySelector(`#container_div_0 img`);
     let firstContainer = document.getElementById("container_div_0");
 
-    const {originalImageStretch, viewportHeight, loaded} = this.state;
+    const {originalImageStretchArray, viewportHeight, loaded} = this.state;
 
 
     if(!window.pageYOffset
       && firstImg
-      && originalImageStretch
+      && originalImageStretchArray
       && viewportHeight){
-        firstImg.style.transform = `scaleY(${originalImageStretch})`;
+
+        firstImg.style.transform = `scaleY(${originalImageStretchArray[0]})`;
         firstContainer.style.height = `${this.state.viewportHeight}px`;
     }
 
@@ -202,7 +208,7 @@ class Desktop extends React.Component {
     );
   };
 
-  handleImageLoaded = divID => {
+  handleImageLoaded = (divID, index) => {
     let viewportHeight = this.state.viewportHeight;
     let imgContainer = document.querySelector(`#${divID}`);
     let img = document.querySelector(`#${divID} img`);
@@ -210,13 +216,10 @@ class Desktop extends React.Component {
     let aligningThirdDiv = this.defineValueFromPorcentage(2.2, viewportHeight);
     let originalImageHeight = img.getBoundingClientRect().height;
     let originalImageWidth = img.getBoundingClientRect().width;
+
     let originalImageStretch =
       (viewportHeight + 1.4 * aligningThirdDiv) / originalImageHeight;
 
-      console.log(originalImageStretch);
-
-    imgContainer.style.height = viewportHeight + "px";
-    img.style.transform = `scaleY(${originalImageStretch})`;
 
     this.setState({
       originalImageHeight,
@@ -226,6 +229,13 @@ class Desktop extends React.Component {
           ...this.state.originalImageStretchArray,
           originalImageStretch
       ]
+    }, () => {
+
+
+      let imgStretch = this.state.originalImageStretchArray[index];
+      imgContainer.style.height = viewportHeight + "px";
+      img.style.transform = `scaleY(${imgStretch})`;
+
     });
   };
 
@@ -245,6 +255,7 @@ class Desktop extends React.Component {
         { transform: `scaleY(${loadingImgStrech})` },
       ], {
         duration: 1500,
+        easing: "ease",
       }
     );
 
@@ -264,7 +275,7 @@ class Desktop extends React.Component {
             <img
               className="svgs"
               onLoad={() => {
-                this.handleImageLoaded(divID);
+                this.handleImageLoaded(divID, index);
               }}
               id={imgID}
               src={ele.img}
@@ -698,6 +709,13 @@ class Desktop extends React.Component {
 
         // 552 / 539 = rapport de la hauteur entre le S et le T
         if (selectedDivId === 2) {
+
+
+          const {viewportWidth, viewportHeight} = this.state;
+
+          // console.log(viewportWidth, viewportHeight);
+
+
           let coeffScalDivId2 = (translateYPorcentageUp * 548) / 539;
           const {originalImageStretchArray} = this.state;
           img.style.transform = `scaleY(${coeffScalDivId2})`;
@@ -989,7 +1007,7 @@ class Desktop extends React.Component {
     );
   };
 
-  render() {
+  displayLoadingScreen = () => {
     if (!this.state.loaded) {
       return (
         <div className="loading_screen">
@@ -999,14 +1017,20 @@ class Desktop extends React.Component {
             src={mockData.loadingImg[0].img} />
         </div>
       )
+    }else{
+      return null;
     }
+  }
+
+  render() {
 
     return (
-      <div className="main_vertical_container">
-        {this.renderInfo()}
-        {this.renderDivsToDom()}
-        {this.renderFooter()}
-      </div>
+        <div className="main_vertical_container">
+          {this.displayLoadingScreen()}
+          {this.renderInfo()}
+          {this.renderDivsToDom()}
+          {this.renderFooter()}
+        </div>
     );
   }
 }
