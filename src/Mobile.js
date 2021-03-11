@@ -468,7 +468,7 @@ class Mobile extends React.Component {
           let img = document.querySelector(`#${divID} img`);
 
           if(windowHeight === 635){
-            img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.99})`;
+            img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*1.05})`;
           }else{
             img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.91})`;
           }
@@ -481,7 +481,7 @@ class Mobile extends React.Component {
           let img = document.querySelector(`#${divID} img`);
 
           if(windowHeight === 635){
-            img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.99})`;
+            img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*1})`;
           }else{
             img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.90})`;
           }
