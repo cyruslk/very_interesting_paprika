@@ -41,7 +41,6 @@ class Mobile extends React.Component {
     };
   }
 
-
   componentDidMount(){
 
     setTimeout(() => {
@@ -62,7 +61,6 @@ class Mobile extends React.Component {
      // Init the state here;
      let updatedHeightOfPage = viewportHeight*12.10;
      document.body.style.height = `${updatedHeightOfPage}px`;
-
 
      this.setState({
        updatedHeightOfPage,
@@ -131,6 +129,7 @@ class Mobile extends React.Component {
 
     let mainCmsDataSubArrays = this.state.mainCmsDataSubArrays;
 
+
     // updating the data;
     if (counter !== prevState.counter) {
       if(counter >= 0 && counter < 4){
@@ -164,7 +163,6 @@ class Mobile extends React.Component {
               <p>{ReactHtmlParser(ele[selectedLanPara])}</p>
             </div>
           )
-
 
         })
 
@@ -258,7 +256,6 @@ class Mobile extends React.Component {
       if(animDirection === "down"){
         if(selectedDivId === 0){
 
-
           let divID = `container_mobile_div_${1}`;
           let divIDText = `container_mobile_text_${1}`;
           let imgScale = originalImageStretchArray[1];
@@ -270,9 +267,7 @@ class Mobile extends React.Component {
           divText.style.left = `-${textDivSize}px`
           img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.9})`;
 
-
-        }
-        if(selectedDivId === 1){
+        }if(selectedDivId === 1){
 
           let divID = `container_mobile_div_${0}`;
           let divIDText = `container_mobile_text_${0}`;
@@ -301,7 +296,6 @@ class Mobile extends React.Component {
           let divText = document.querySelector(`#${divIDText}`);
 
           divText.style.left = `-${textDivSize}px`
-          //  Adjusting the width here;
           img.style.transform = `rotateZ(90deg) translate(100%) scaleY(8)`;
 
         }
@@ -362,7 +356,6 @@ class Mobile extends React.Component {
         easing: "ease",
       }
     );
-
   }
 
 
@@ -449,10 +442,12 @@ class Mobile extends React.Component {
 
   resizeHandler = () => {
 
+
+      const {selectedDivId, originalImageStretchArray, counter, viewportWidth} = this.state;
+
       let imgMobileContainer = [...document.getElementsByClassName('img_mobile_container')];
       let imgMobile = [...document.getElementsByClassName("img_mobile")];
       let viewportHeight = window.innerHeight;
-
 
       imgMobileContainer.map((ele, index) => {
         ele.style.height = `${viewportHeight/2}px`;
@@ -460,6 +455,39 @@ class Mobile extends React.Component {
       imgMobile.map((ele, index) => {
         ele.style.width = `${viewportHeight/2}px`;
       })
+
+      if(counter < 8){
+
+        let windowHeight = window.innerHeight;
+
+        if(selectedDivId === 0){
+          let divID = `container_mobile_div_${1}`;
+          let divIDText = `container_mobile_text_${1}`;
+          let imgScale = originalImageStretchArray[1];
+          let imgContainer = document.querySelector(`#${divID}`);
+          let img = document.querySelector(`#${divID} img`);
+
+          if(windowHeight === 635){
+            img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.99})`;
+          }else{
+            img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.91})`;
+          }
+
+        }else{
+          let divID = `container_mobile_div_${0}`;
+          let divIDText = `container_mobile_text_${0}`;
+          let imgScale = originalImageStretchArray[0];
+          let imgContainer = document.querySelector(`#${divID}`);
+          let img = document.querySelector(`#${divID} img`);
+
+          if(windowHeight === 635){
+            img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.99})`;
+          }else{
+            img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.90})`;
+          }
+
+        }
+      }
     }
 
 
@@ -509,7 +537,6 @@ class Mobile extends React.Component {
 
   scrollHandler = (event) => {
 
-
     if(!this.state.originalImageStretch){
       return null;
     }
@@ -520,7 +547,7 @@ class Mobile extends React.Component {
     let viewportHeight = this.state.viewportHeight;
 
     if (numberOfPixelScrolled > 0
-      && numberOfPixelScrolled < viewportHeight) {
+      && numberOfPixelScrolled < viewportHeight*2) {
 
 
         this.setState({
@@ -685,14 +712,19 @@ class Mobile extends React.Component {
     let divText = document.querySelector(`#${divTextID}`);
 
 
+
     let numberOfPixelScrolled = window.scrollY;
     let viewportHeight = this.state.viewportHeight;
     let originalImageStretch = this.state.originalImageStretch;
+
+
+
 
     let scrolledPorcentage = this.definePorcentage(
      (numberOfPixelScrolled - this.state.counter * viewportHeight),
      viewportHeight)
    ;
+
 
    let remainingScrollPorcentage = 100-scrolledPorcentage;
 

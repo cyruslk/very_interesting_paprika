@@ -208,6 +208,8 @@ class Desktop extends React.Component {
     );
   };
 
+
+
   handleImageLoaded = (divID, index) => {
     let viewportHeight = this.state.viewportHeight;
     let imgContainer = document.querySelector(`#${divID}`);
@@ -332,7 +334,7 @@ class Desktop extends React.Component {
       originalImageWidth
     } = this.state;
 
-    let ratio = originalImageWidth/originalImageHeight;
+
     let newWidth = document.getElementById(divID).getBoundingClientRect().width;
     let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
     let newHeight = newWidth/originalImageWidth*originalImageHeight;
@@ -677,9 +679,6 @@ class Desktop extends React.Component {
       }
     } else {
 
-
-      // HERE;
-
       let scrolledPorcentage = this.definePorcentage(
         numberOfPixelScrolled - this.state.counter * viewportHeight,
         viewportHeight
@@ -710,13 +709,9 @@ class Desktop extends React.Component {
         // 552 / 539 = rapport de la hauteur entre le S et le T
         if (selectedDivId === 2) {
 
-
           const {viewportWidth, viewportHeight} = this.state;
-
-          // console.log(viewportWidth, viewportHeight);
-
-
           let coeffScalDivId2 = (translateYPorcentageUp * 548) / 539;
+
           const {originalImageStretchArray} = this.state;
           img.style.transform = `scaleY(${coeffScalDivId2})`;
           let newImgContainerHeight = img.getBoundingClientRect().height;
