@@ -29,7 +29,7 @@ html, body {
 
 .loading_screen{
 	height: 100vh;
-	position: absolute;
+	position: fixed;
 	width: 100vw;
 	background-color: white;
 	z-index: 1000;

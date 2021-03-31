@@ -95,15 +95,7 @@ class App extends React.Component {
     let loadingImgInitialHeight = loadingImg.getBoundingClientRect().height;
     let loadingImgStrech = (viewportHeight + 1.4 * aligningThirdDiv)/loadingImgInitialHeight;
     loadingImg.style.transform = `scaleY(${loadingImgStrech})`;
-
-    // loadingImg.animate(
-    //   [
-    //     { transform: `scaleY(1)` },
-    //     { transform: `scaleY(${loadingImgStrech})` },
-    //   ], {
-    //     duration: 500,
-    //   }
-    // );
+    
   }
 
   defineValueFromPorcentage = (percentage, total) => {

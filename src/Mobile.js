@@ -711,13 +711,10 @@ class Mobile extends React.Component {
     let divTextID = `container_mobile_text_${selectedDivId}`;
     let divText = document.querySelector(`#${divTextID}`);
 
-
-
     let numberOfPixelScrolled = window.scrollY;
     let viewportHeight = this.state.viewportHeight;
+    let updatedViewportHeight = this.state.viewportHeight;
     let originalImageStretch = this.state.originalImageStretch;
-
-
 
 
     let scrolledPorcentage = this.definePorcentage(
@@ -727,11 +724,11 @@ class Mobile extends React.Component {
 
 
    let remainingScrollPorcentage = 100-scrolledPorcentage;
-
    let translateYPorcentageUp = this.defineValueFromPorcentage(
        remainingScrollPorcentage,
        originalImageStretch
    );
+
 
    let translateYPorcentageDown = this.defineValueFromPorcentage(
        scrolledPorcentage,

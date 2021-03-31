@@ -35,7 +35,6 @@ class Desktop extends React.Component {
 
   componentDidMount() {
 
-    // removing for now;
     setTimeout(() => {
       this.setState({
         loaded: true
@@ -90,6 +89,13 @@ class Desktop extends React.Component {
     let firstImg = document.querySelector(`#container_div_0 img`);
     let firstContainer = document.getElementById("container_div_0");
 
+    let secondImg = document.querySelector(`#container_div_1 img`);
+    let secondContainer = document.getElementById("container_div_1");
+
+    let thirdImg = document.querySelector(`#container_div_2 img`);
+    let thirdContainer = document.getElementById("container_div_2");
+
+
     const {originalImageStretchArray, viewportHeight, loaded} = this.state;
 
 
@@ -98,8 +104,15 @@ class Desktop extends React.Component {
       && originalImageStretchArray
       && viewportHeight){
 
+        // optimize;
         firstImg.style.transform = `scaleY(${originalImageStretchArray[0]})`;
         firstContainer.style.height = `${this.state.viewportHeight}px`;
+
+        secondImg.style.transform = `scaleY(${originalImageStretchArray[1]})`;
+        secondContainer.style.height = `${this.state.viewportHeight}px`;
+
+        thirdImg.style.transform = `scaleY(${originalImageStretchArray[2]})`;
+        thirdContainer.style.height = `${this.state.viewportHeight}px`;
     }
 
     let counter = this.state.counter;
@@ -117,7 +130,7 @@ class Desktop extends React.Component {
 
 
     if (counter !== prevState.counter) {
-      if (counter >= 0 && counter < 3.5) {
+      if (counter >= 0 && counter < 6) {
         this.setState({
           isDisplayFooter: false
         });
@@ -133,7 +146,7 @@ class Desktop extends React.Component {
         });
       }
 
-      if (counter >= 3.5 && counter < 7) {
+      if (counter >= 6 && counter < 12) {
         this.setState({
           isDisplayFooter: false
         });
@@ -149,11 +162,12 @@ class Desktop extends React.Component {
         });
       }
 
-      if (counter === 7) {
+
+      if (counter === 12) {
         window.onscroll = ev => {
           if (
             window.innerHeight + window.scrollY >=
-            document.body.offsetHeight - 500
+            document.body.offsetHeight - 900
           ) {
             this.setState({
               isDisplayFooter: true
@@ -182,7 +196,6 @@ class Desktop extends React.Component {
     this.setState(
       {
         toggleEN: !this.state.toggleEN,
-        dataToDivs: null
       },
       () => {
         if (this.state.toggleEN) {
@@ -207,7 +220,6 @@ class Desktop extends React.Component {
       }
     );
   };
-
 
 
   handleImageLoaded = (divID, index) => {
@@ -236,32 +248,21 @@ class Desktop extends React.Component {
 
       let imgStretch = this.state.originalImageStretchArray[index];
       imgContainer.style.height = viewportHeight + "px";
-      img.style.transform = `scaleY(${imgStretch})`;
+      // img.style.transform = `scaleY(${imgStretch})`;
+
+      img.animate(
+        [
+          { transform: `scaleY(1)` },
+          { transform: `scaleY(${imgStretch})` },
+        ], {
+          duration: 1500,
+          easing: "ease",
+        }
+      );
 
     });
   };
 
-
-  handleImageLoadedLoadingScreen = () => {
-
-    let viewportHeight = this.state.viewportHeight;
-    let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
-    let loadingImg = document.getElementById("loading_img");
-    let loadingImgInitialHeight = loadingImg.getBoundingClientRect().height;
-
-    let loadingImgStrech = (viewportHeight + 1.4 * aligningThirdDiv)/loadingImgInitialHeight;
-
-    loadingImg.animate(
-      [
-        { transform: `scaleY(1)` },
-        { transform: `scaleY(${loadingImgStrech})` },
-      ], {
-        duration: 1500,
-        easing: "ease",
-      }
-    );
-
-  }
 
   renderDataToDivs = selectedlan => {
     let mainCmsDataSubArraysFirstRow = this.state.mainCmsDataSubArrays[0];
@@ -786,7 +787,6 @@ class Desktop extends React.Component {
       return null;
     } else {
 
-
       let previousDivId = id;
       let divID = `container_div_${previousDivId}`;
 
@@ -866,13 +866,13 @@ class Desktop extends React.Component {
       return {
         transform: "rotate(0deg)",
         transitionTimingFunction: "ease-in-out",
-        transition: "0.4s"
+        transition: "0.5s"
       };
     } else {
       return {
         transform: "rotate(135deg)",
         transitionTimingFunction: "ease-in-out",
-        transition: "0.4s"
+        transition: "0.5s"
       };
     }
   };
@@ -900,8 +900,7 @@ class Desktop extends React.Component {
               <span
                 id="body"
                 onMouseEnter={() => this.toggleOnHoverCallCTA("body")}
-                onMouseLeave={() => this.toggleOnHoverCallCTA("body")}
-              >
+                onMouseLeave={() => this.toggleOnHoverCallCTA("body")}>
                 {infoCmsData[1][selectedLanHeadlines]}
               </span>
               </a>
@@ -945,7 +944,7 @@ class Desktop extends React.Component {
         let selectedSpan = document.getElementById(id);
 
         if (this.state.toggleOnHoverCallCTA) {
-          selectedSpan.innerHTML = "<p>(514) 577 1553</p>";
+          selectedSpan.innerHTML = "<p>514 839-1839</p>";
         } else {
           selectedSpan.innerHTML = infoCmsData[1][selectedLanHeadlines];
         }
@@ -1002,26 +1001,11 @@ class Desktop extends React.Component {
     );
   };
 
-  displayLoadingScreen = () => {
-    if (!this.state.loaded) {
-      return (
-        <div className="loading_screen">
-          <img
-            id="loading_img"
-            onLoad={this.handleImageLoadedLoadingScreen}
-            src={mockData.loadingImg[0].img} />
-        </div>
-      )
-    }else{
-      return null;
-    }
-  }
 
   render() {
 
     return (
         <div className="main_vertical_container">
-          {this.displayLoadingScreen()}
           {this.renderInfo()}
           {this.renderDivsToDom()}
           {this.renderFooter()}
