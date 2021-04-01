@@ -644,13 +644,13 @@ class Desktop extends React.Component {
 
         if (translateYPorcentageUp < 1) {
           if (selectedDivId === 0) {
-            img.style.transform = `scaleY(1.035)`;
+            img.style.transform = `scaleY(1)`;
           }
           if (selectedDivId === 1) {
             img.style.transform = `scaleY(1)`;
           }
           if (selectedDivId === 2) {
-            img.style.transform = `scaleY(1.04)`;
+            img.style.transform = `scaleY(1)`;
           }
 
           let newImgContainerHeight = img.getBoundingClientRect().height;
@@ -701,7 +701,7 @@ class Desktop extends React.Component {
         imgContainer.style.height = newImgContainerHeight + "px";
 
         if (selectedDivId === 1) {
-          let coeffScalDivId1 = (translateYPorcentageUp * 102) / 106;
+          let coeffScalDivId1 = (translateYPorcentageUp * 100) / 100;
           img.style.transform = `scaleY(${coeffScalDivId1})`;
           let newImgContainerHeight = img.getBoundingClientRect().height;
           imgContainer.style.height = newImgContainerHeight + "px";
@@ -711,7 +711,7 @@ class Desktop extends React.Component {
         if (selectedDivId === 2) {
 
           const {viewportWidth, viewportHeight} = this.state;
-          let coeffScalDivId2 = (translateYPorcentageUp * 548) / 539;
+          let coeffScalDivId2 = (translateYPorcentageUp * 100) / 100;
 
           const {originalImageStretchArray} = this.state;
           img.style.transform = `scaleY(${coeffScalDivId2})`;

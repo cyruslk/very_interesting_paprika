@@ -34,10 +34,11 @@ class Mobile extends React.Component {
       originalImageHeightArray: [],
       textDivSizeArray: [],
       screenHeightValuesArray: [],
-      scalingCoeffStart: 482/471,
-      scalingCoeffEnd: 1.15,
+      scalingCoeffStart: 1,
+      scalingCoeffEnd: 1,
       divsLastFold: null,
-      resetTextDivs: false
+      resetTextDivs: false,
+      valueResetY: 8
     };
   }
 
@@ -128,7 +129,6 @@ class Mobile extends React.Component {
     let divTextP = [...document.getElementsByClassName('div_text_p')];
 
     let mainCmsDataSubArrays = this.state.mainCmsDataSubArrays;
-
 
     // updating the data;
     if (counter !== prevState.counter) {
@@ -238,7 +238,21 @@ class Mobile extends React.Component {
          })
       }
 
-      if(counter >= 8 && counter < 12.05){
+      if(counter >= 8 && counter < 12.10){
+
+
+        let textSubArray = mainCmsDataSubArrays[1]
+        divTextH1.map((ele, index) => {
+          if(index === 0){
+            ele.innerHTML = "";
+          }else{
+            ele.innerHTML = "";
+          }
+        })
+         divTextP.map((ele, index) => {
+           ele.innerHTML = "";
+         })
+
         this.setState({
           vertical: true,
           resetTextDivs: true
@@ -265,7 +279,7 @@ class Mobile extends React.Component {
           let divText = document.querySelector(`#${divIDText}`);
 
           divText.style.left = `-${textDivSize}px`
-          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.9})`;
+          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${this.state.valueResetY})`;
 
         }if(selectedDivId === 1){
 
@@ -278,7 +292,7 @@ class Mobile extends React.Component {
 
 
           divText.style.left = `-${textDivSize}px`
-          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.9})`;
+          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${this.state.valueResetY})`;
 
         }
       }
@@ -296,7 +310,7 @@ class Mobile extends React.Component {
           let divText = document.querySelector(`#${divIDText}`);
 
           divText.style.left = `-${textDivSize}px`
-          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(8)`;
+          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${this.state.valueResetY})`;
 
         }
         if(selectedDivId === 1){
@@ -309,7 +323,7 @@ class Mobile extends React.Component {
           let divText = document.querySelector(`#${divIDText}`);
 
           divText.style.left = `-${textDivSize}px`
-          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(9)`;
+          img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${this.state.valueResetY})`;
 
         }
       }
@@ -443,11 +457,31 @@ class Mobile extends React.Component {
   resizeHandler = () => {
 
 
-      const {selectedDivId, originalImageStretchArray, counter, viewportWidth} = this.state;
+    // scale
+
+    // ScaleY(pour 7) = 7 * Rapport Largeur/Hauteur 
+
+    let viewportHeight = window.innerHeight;
+
+
+
+      const {
+        selectedDivId,
+        valueResetY,
+        originalImageStretchArray,
+        counter,
+        viewportWidth} = this.state;
+
+
+      let newScaleY = this.state.valueResetY * (viewportWidth/viewportHeight);
+      // alert(newScaleY)
+
+      this.setState({
+        newScaleY
+      })
 
       let imgMobileContainer = [...document.getElementsByClassName('img_mobile_container')];
       let imgMobile = [...document.getElementsByClassName("img_mobile")];
-      let viewportHeight = window.innerHeight;
 
       imgMobileContainer.map((ele, index) => {
         ele.style.height = `${viewportHeight/2}px`;
@@ -467,24 +501,12 @@ class Mobile extends React.Component {
           let imgContainer = document.querySelector(`#${divID}`);
           let img = document.querySelector(`#${divID} img`);
 
-          if(windowHeight === 635){
-            img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*1.05})`;
-          }else{
-            img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.91})`;
-          }
-
         }else{
           let divID = `container_mobile_div_${0}`;
           let divIDText = `container_mobile_text_${0}`;
           let imgScale = originalImageStretchArray[0];
           let imgContainer = document.querySelector(`#${divID}`);
           let img = document.querySelector(`#${divID} img`);
-
-          if(windowHeight === 635){
-            img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*1})`;
-          }else{
-            img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgScale*0.90})`;
-          }
 
         }
       }
