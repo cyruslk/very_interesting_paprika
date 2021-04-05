@@ -425,7 +425,7 @@ ul{
 		position: absolute;
     transform-origin: right top;
     transform: rotateZ(90deg) translate(100%) scaleY(1);
-		right: 0;
+		right: -1px;
 	}
 
 
