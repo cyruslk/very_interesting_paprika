@@ -90,11 +90,9 @@ class Mobile extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
 
-    let firstImg = document.querySelector(`#container_mobile_text_0 img`);
-    let firstContainer = document.getElementById("container_mobile_text_0");
-
     const {
       originalImageStretch,
+      numberOfPixelScrolled,
       viewportHeight,
       loaded,
       selectedDivId,
@@ -103,18 +101,24 @@ class Mobile extends React.Component {
       selectedlan,
       infoCmsData,
       mainCmsDataSubArrays,
+      originalImageStretchArray,
+      originalImageHeightArray,
+      originalImageRatioArray,
+      viewportWidth,
+      scalingCoeffStart,
+      imageWidth,
+      animDirection
     } = this.state;
 
-    if(!window.pageYOffset
-      && firstImg
-      && originalImageStretch
-      && viewportHeight){
-        firstImg.style.transform = `scaleY(${originalImageStretch})`;
-        firstContainer.style.height = `${this.state.viewportHeight}px`;
-    }
 
     let selectedLanHeadlines = `headlines_${selectedlan}`;
     let selectedLanPara = `paragraph_${selectedlan}`;
+    let firstSvg = document.getElementById("img_mobile_0")
+    let imgMobileContainer = [...document.getElementsByClassName('img_mobile_container')];
+    let imgMobile = [...document.getElementsByClassName("img_mobile")];
+    let divTextH1 = [...document.getElementsByClassName('div_text_h1')];
+    let divTextP = [...document.getElementsByClassName('div_text_p')];
+
 
     if(selectedlan !== prevState.selectedlan){
       window.scrollTo(0, 0);
@@ -123,10 +127,13 @@ class Mobile extends React.Component {
       }, 50);
     };
 
-    let imgMobileContainer = [...document.getElementsByClassName('img_mobile_container')];
-    let imgMobile = [...document.getElementsByClassName("img_mobile")];
-    let divTextH1 = [...document.getElementsByClassName('div_text_h1')];
-    let divTextP = [...document.getElementsByClassName('div_text_p')];
+    if(numberOfPixelScrolled < 10
+      && originalImageStretchArray
+      && firstSvg){
+
+      firstSvg.style.transform = `rotateZ(90deg) translate(100%) scaleY(${originalImageStretchArray[0]})`;
+      
+    }
 
 
     // updating the data;
@@ -247,13 +254,6 @@ class Mobile extends React.Component {
       }
     };
 
-    const {
-      originalImageStretchArray,
-      originalImageHeightArray,
-      originalImageRatioArray,
-      viewportWidth,
-      imageWidth
-    } = this.state;
 
     if(imageWidth !== prevState.imageWidth
       && originalImageHeightArray.length > 0){
@@ -278,7 +278,11 @@ class Mobile extends React.Component {
 
         let newImgStretchArray = newImgHeightArray
         .map((ele, index) => {
-          return viewportWidth/ele
+          if(index === 1){
+            return (viewportWidth/ele)*scalingCoeffStart
+          }else{
+            return viewportWidth/ele
+          }
         })
 
         this.setState({
@@ -535,6 +539,10 @@ class Mobile extends React.Component {
 
     let numberOfPixelScrolled = window.scrollY;
     let viewportHeight = this.state.viewportHeight;
+
+    this.setState({
+      numberOfPixelScrolled
+    })
 
     if (numberOfPixelScrolled > 0
       && numberOfPixelScrolled < viewportHeight*2) {
