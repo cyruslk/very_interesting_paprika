@@ -59,7 +59,7 @@ class Mobile extends React.Component {
      let infoCmsData = cmsData.slice(9, 14);
 
      // Init the state here;
-     let updatedHeightOfPage = viewportHeight*12.20;
+     let updatedHeightOfPage = viewportHeight*12.10;
      document.body.style.height = `${updatedHeightOfPage}px`;
 
      this.setState({
@@ -106,7 +106,7 @@ class Mobile extends React.Component {
       originalImageRatioArray,
       viewportWidth,
       scalingCoeffStart,
-      imageWidth,
+      originalImageWidth,
       animDirection
     } = this.state;
 
@@ -132,7 +132,6 @@ class Mobile extends React.Component {
       && firstSvg){
 
       firstSvg.style.transform = `rotateZ(90deg) translate(100%) scaleY(${originalImageStretchArray[0]})`;
-      
     }
 
 
@@ -238,7 +237,7 @@ class Mobile extends React.Component {
          })
       }
 
-      if(counter >= 8 && counter < 12.05){
+      if(counter >= 8 && counter < 13){
 
         divTextH1.map((ele, index) => {
          ele.innerHTML = ""
@@ -252,10 +251,19 @@ class Mobile extends React.Component {
           resetTextDivs: true
         })
       }
+      //
+      // if(counter > 8){
+      //   document.getElementById("img_mobile_0").style.display = "none";
+      //   document.getElementById("img_mobile_1").style.display = "none";
+      // }else{
+      //   document.getElementById("img_mobile_0").style.display = "block";
+      //   document.getElementById("img_mobile_1").style.display = "block";
+      // }
+
     };
 
 
-    if(imageWidth !== prevState.imageWidth
+    if(originalImageWidth !== prevState.originalImageWidth
       && originalImageHeightArray.length > 0){
 
         // get the new width first;
@@ -268,12 +276,12 @@ class Mobile extends React.Component {
         // Multiply the quotient by the preferred width, e.g. 0.75 * 300 = 225
         // The resulting figure is your new height given in pixels.
 
-        let newWidth = imageWidth;
+        let newWidth = originalImageWidth;
         let newWidthToString =  Number(newWidth);
 
         let newImgHeightArray = originalImageHeightArray
         .map((ele, index) => {
-          return originalImageRatioArray[index] * imageWidth
+          return originalImageRatioArray[index] * originalImageWidth
         });
 
         let newImgStretchArray = newImgHeightArray
@@ -482,7 +490,7 @@ class Mobile extends React.Component {
       if(window.innerHeight !== this.state.viewportHeight){
         this.setState({
           viewportHeight: viewportHeight,
-          imageWidth: viewportHeight/2
+          originalImageWidth: viewportHeight/2
         })
       }
 
@@ -827,6 +835,7 @@ class Mobile extends React.Component {
 
   handleVerticalHanimation = (counter, slideDirection, distanceToScroll, counterToMakeTranslation) => {
 
+     //
      let verticalDiv = document.getElementById("vertical_div_main_container");
      let verticalDivHeight = verticalDiv.getBoundingClientRect().height;
 
@@ -842,6 +851,7 @@ class Mobile extends React.Component {
 
        let remainingScrollPorcentage = 100-scrolledPorcentage;
 
+
        let textLeftUp = this.defineValueFromPorcentage(
            remainingScrollPorcentage,
            this.state.textDivSizeArray[1]
@@ -854,7 +864,7 @@ class Mobile extends React.Component {
        // 2.8?
        let scrolledPorcentageVertical = this.definePorcentage(
           (numberOfPixelScrolled - 9 * viewportHeight),
-          viewportHeight*2.8)
+          viewportHeight*2)
         ;
 
       verticalDiv.style.left = "0px";
@@ -1025,40 +1035,42 @@ class Mobile extends React.Component {
 
 
   render() {
-    if(!this.state.dataToDivs){
-      return null;
-    };
+  if(!this.state.dataToDivs){
+    return null;
+  };
 
-    let style = {
-      position: "fixed",
-      bottom: 0,
-      backgroundColor: "yellow"
-    }
-
-    const {
-      imageWidth,
-      originalImageHeightArray,
-      originalImageRatioArray,
-      originalImageStretchArray,
-      selectedDivId,
-      counter
-    } = this.state;
-
-    return (
-        <div className="main_vertical_container_mobile">
-            {this.renderDataToDivsLoading()}
-            {this.state.dataToDivs}
-            {this.renderVerticalAnimation()}
-            {this.renderInfo()}
-            <div style={style}>
-              {selectedDivId} -
-              {counter} -
-              {originalImageStretchArray[0]} -
-              {originalImageStretchArray[1]}
-            </div>
-        </div>
-      );
+  let style = {
+    position: "fixed",
+    bottom: 0,
+    backgroundColor: "yellow",
+    display: "none"
   }
+
+  const {
+    originalImageWidth,
+    originalImageHeightArray,
+    originalImageRatioArray,
+    originalImageStretchArray,
+    numberOfPixelScrolled,
+    selectedDivId,
+    counter,
+  } = this.state;
+
+  return (
+      <div className="main_vertical_container_mobile">
+          {this.renderDataToDivsLoading()}
+          {this.state.dataToDivs}
+          {this.renderVerticalAnimation()}
+          {this.renderInfo()}
+          <div style={style}>
+            {numberOfPixelScrolled} -
+            {counter} -
+            {originalImageStretchArray[0]} -
+            {originalImageStretchArray[1]}
+          </div>
+      </div>
+    );
+}
 }
 
 export default Mobile;

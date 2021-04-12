@@ -43,7 +43,7 @@ html, body {
 .loading_screen h1{
 	margin-left: 10px;
 	margin-top: 30px;
-	font-size: 33px;
+	font-size: 2.3vw;
   font-weight: 100;
   width: 85%;
   font-family: NHaasGroteskDSProBold;
@@ -155,7 +155,7 @@ html, body {
 .info_body_container_headline h1,
 .info_body_container_ctas h1{
 	text-align: center;
-	font-size: 33px;
+	font-size: 2.3vw;
 	letter-spacing: 0.1px;
 	font-family: NHaasGroteskDSProBold;
 }
@@ -280,7 +280,7 @@ html, body {
 }
 
 .footer_desktop_first h1{
-	font-size: 33px;
+	font-size: 2.3vw;
 	font-family: NHaasGroteskDSProBold;
 }
 
@@ -326,7 +326,7 @@ ul{
 }
 
 .text_container h1{
-	font-size: 33px;
+	font-size: 2.3vw;
 	font-weight: 100;
 	width: 85%;
 	font-family: NHaasGroteskDSProBold;
@@ -335,7 +335,7 @@ ul{
 
 .text_container p{
 	margin-top: 20px;
-	font-size: 23px;
+	font-size: 1.6vw;
 	font-weight: 100;
 	font-family: NHaasGroteskDSProMedium;
 	width: 85%;
@@ -475,7 +475,7 @@ ul{
 
 	.mobile_text_content h1,
 	.vertical_text_content h1{
-		font-size: 24px;
+		font-size: 4.7vw;
 		font-family: NHaasGroteskDSProBold;
 	}
 
@@ -484,6 +484,7 @@ ul{
 		font-size: 16px;
 		margin-top: 10px;
 		font-family: NHaasGroteskDSProMedium;
+		margin-bottom: 10vw;
 	}
 
 	#vertical_div_main_container{
@@ -493,7 +494,7 @@ ul{
 
 
 	#vertical_text_content_1{
-		margin-bottom: 184px;
+		margin-bottom: 15vh;
 	}
 
 	#vertical_text_content_2,
