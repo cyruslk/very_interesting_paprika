@@ -1004,9 +1004,7 @@ class Mobile extends React.Component {
   };
 
   renderDataToDivsLoading = () => {
-    let styleContainer = {
-      height: `${this.state.viewportHeight}px`
-    };
+ 
     let styleImg1 = {
       transform: `rotateZ(90deg) translate(100%) scaleY(1)`,
       width: `${this.state.viewportHeight}px`
@@ -1014,8 +1012,7 @@ class Mobile extends React.Component {
 
     return (
       <div className="loader_vertical_container_mobile">
-        <div
-          style={styleContainer}>
+        <div>
             <img
               id="loading_img_1"
               onLoad={() => this.handleImageLoadedLoadingScreen("loading_img_1", 0)}

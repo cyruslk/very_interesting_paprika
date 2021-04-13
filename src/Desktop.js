@@ -35,13 +35,14 @@ class Desktop extends React.Component {
 
   componentDidMount() {
 
+    // set a time out that before the main design appears;
     setTimeout(() => {
       this.setState({
         loaded: true
       });
     }, 1500);
 
-    document.addEventListener("wheel", this.scrollHandler);
+    document.addEventListener("scroll", this.scrollHandler);
     window.addEventListener("resize", this.resizeHandler);
     let {cmsData} = this.props;
     let mainCmsData = cmsData.slice(0, 9);
@@ -63,6 +64,8 @@ class Desktop extends React.Component {
         infoCmsData
       },
       () => {
+
+        // Slicee the data in chops for panels;
         let {mainCmsData} = this.state;
 
         let mainCmsDataSubArrays = [
@@ -76,6 +79,7 @@ class Desktop extends React.Component {
             mainCmsDataSubArrays
           },
           () => {
+            // Once this chop is done, format these to divs;
             this.renderDataToDivs(this.state.selectedlan);
           }
         );
@@ -84,6 +88,10 @@ class Desktop extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+
+    // Get these images and their divs here; 
+    // or a hard block when the user reaches
+    // the bottom of the viewportHeight;
 
 
     let firstImg = document.querySelector(`#container_div_0 img`);
@@ -96,15 +104,17 @@ class Desktop extends React.Component {
     let thirdContainer = document.getElementById("container_div_2");
 
 
-    const {originalImageStretchArray, viewportHeight, loaded} = this.state;
-
+    const {
+      originalImageStretchArray, 
+      viewportHeight, 
+      viewportWidth,
+      loaded} = this.state;
 
     if(!window.pageYOffset
       && firstImg
       && originalImageStretchArray
       && viewportHeight){
 
-        // optimize;
         firstImg.style.transform = `scaleY(${originalImageStretchArray[0]})`;
         firstContainer.style.height = `${this.state.viewportHeight}px`;
 
@@ -234,7 +244,6 @@ class Desktop extends React.Component {
     let originalImageStretch =
       (viewportHeight + 1.4 * aligningThirdDiv) / originalImageHeight;
 
-
     this.setState({
       originalImageHeight,
       originalImageStretch,
@@ -244,11 +253,8 @@ class Desktop extends React.Component {
           originalImageStretch
       ]
     }, () => {
-
-
       let imgStretch = this.state.originalImageStretchArray[index];
       imgContainer.style.height = viewportHeight + "px";
-      // img.style.transform = `scaleY(${imgStretch})`;
 
       img.animate(
         [
@@ -343,6 +349,7 @@ class Desktop extends React.Component {
     let newImgStretch = (viewportHeight + 1.4 * aligningThirdDiv) / newHeight;
 
     let imgContainer = document.querySelector(`#${divID}`);
+    
     let img = document.querySelector(`#${divID} img`);
     img.style.transform = `scaleY(${newImgStretch})`;
 
@@ -768,6 +775,11 @@ class Desktop extends React.Component {
 
       let imgContainer = document.querySelector(`#${divID}`);
       let img = document.querySelector(`#${divID} img`);
+
+      if(img === null){
+        return null;
+      }
+
       let originalImageStretch = this.state.originalImageStretchArray[previousDivId];
 
       img.style.transform = `scaleY(${originalImageStretch})`;
@@ -792,6 +804,11 @@ class Desktop extends React.Component {
 
       let imgContainer = document.querySelector(`#${divID}`);
       let img = document.querySelector(`#${divID} img`);
+
+      if(img === null){
+        return null;
+      }
+
       let originalImageStretch = this.state.originalImageStretchArray[previousDivId];
 
       img.style.transform = `scaleY(${originalImageStretch})`;
@@ -1003,6 +1020,8 @@ class Desktop extends React.Component {
 
 
   render() {
+
+    const { originalImageStretchArray} = this.state;
 
     return (
         <div className="main_vertical_container">

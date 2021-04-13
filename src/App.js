@@ -122,7 +122,7 @@ class App extends React.Component {
       )
     }
 
-    if(viewportWidth > 600){
+    if(viewportWidth > 800){
       return (
         <div>
           <Desktop
