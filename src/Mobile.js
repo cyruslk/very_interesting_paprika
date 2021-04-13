@@ -47,7 +47,7 @@ class Mobile extends React.Component {
       this.setState({
         loaded: true
       });
-    }, 1500);
+    }, 1700);
 
      document.addEventListener("scroll", this.scrollHandler);
      window.addEventListener("resize", this.resizeHandler);
@@ -59,8 +59,7 @@ class Mobile extends React.Component {
      let infoCmsData = cmsData.slice(9, 14);
 
      // Init the state here;
-     let updatedHeightOfPage = viewportHeight*12.10;
-     document.body.style.height = `${updatedHeightOfPage}px`;
+     let updatedHeightOfPage = viewportHeight;
 
      this.setState({
        updatedHeightOfPage,
@@ -251,14 +250,6 @@ class Mobile extends React.Component {
           resetTextDivs: true
         })
       }
-      //
-      // if(counter > 8){
-      //   document.getElementById("img_mobile_0").style.display = "none";
-      //   document.getElementById("img_mobile_1").style.display = "none";
-      // }else{
-      //   document.getElementById("img_mobile_0").style.display = "block";
-      //   document.getElementById("img_mobile_1").style.display = "block";
-      // }
 
     };
 
@@ -371,22 +362,29 @@ class Mobile extends React.Component {
 
   handleImageLoadedLoadingScreen = (imgID, index) => {
 
-    const {originalImageStretch, originalImageStretchArray, viewportWidth} = this.state;
+    const {
+      originalImageStretch, 
+      originalImageStretchArray, 
+      viewportWidth
+    } = this.state;
+
+    
     let img = document.getElementById(imgID);
 
-
     let originalImageHeight = img.getBoundingClientRect().width;
-    let loadingImgStrech = (viewportWidth/originalImageHeight)*1.02
+    let loadingImgStrech = (viewportWidth/originalImageHeight)*1.02;
 
-    // img.animate(
-    //   [
-    //     { transform: `rotateZ(90deg) translate(100%) scaleY(1)` },
-    //     { transform: `rotateZ(90deg) translate(100%) scaleY(${loadingImgStrech})` },
-    //   ], {
-    //     duration: 1500,
-    //     easing: "ease",
-    //   }
-    // );
+    
+
+    img.animate(
+      [
+        { transform: `rotateZ(90deg) translate(100%) scaleY(${loadingImgStrech})` },
+        { transform: `rotateZ(90deg) translate(100%) scaleY(1)` },
+      ], {
+        duration: 1500,
+        easing: "ease",
+      }
+    );
   }
 
   renderDataToDivs = () => {
@@ -1014,37 +1012,100 @@ class Mobile extends React.Component {
       width: `${this.state.viewportHeight}px`
     };
 
-    if (!this.state.loaded
-      && this.state.originalImageStretchArray.length > 0) {
+    return (
+      <div className="loader_vertical_container_mobile">
+        <div
+          style={styleContainer}>
+            <img
+              id="loading_img_1"
+              onLoad={() => this.handleImageLoadedLoadingScreen("loading_img_1", 0)}
+              className="loading_img"
+              style={styleImg1}
+              src={mockData.loadingImg[0].img}
+            />
+        </div>
+      </div>
+    )
+      
+  }
+
+  renderTextSimplerVersion = () => {
+
+    const {
+      loaded, 
+      mainCmsData, 
+      selectedlan,
+      infoCmsData
+    } = this.state;
+
+    if(!mainCmsData 
+      || !loaded){
+      return null;
+    }
+
+    let selectedLanPara = `paragraph_${selectedlan}`;
+    let selectedLanHeadlines = `headlines_${selectedlan}`;
+
+    console.log(selectedLanPara, selectedLanHeadlines);
+
+    let simplerVersionCopy = mainCmsData.slice(5, 9);
+    console.log(simplerVersionCopy);
+
+    let simplerVersionCopyMaped = simplerVersionCopy
+    .map((ele, index) => {
+      let id = `vertical_text_content_${index}`
       return (
-        <div className="loader_vertical_container_mobile">
-          <div
-            style={styleContainer}>
-              <img
-                id="loading_img_1"
-                onLoad={() => this.handleImageLoadedLoadingScreen("loading_img_1", 0)}
-                className="loading_img"
-                style={styleImg1}
-                src={mockData.loadingImg[0].img}
-              />
-          </div>
+        <div id={id} className="vertical_text_content">
+          <h1>{ReactHtmlParser(ele[selectedLanHeadlines])}</h1>
+          <p>{ReactHtmlParser(ele[selectedLanPara])}</p>
         </div>
       )
-    }
+    })
+
+    console.log(simplerVersionCopyMaped);
+
+
+    return(
+      <main className="vertical_content_main">
+        {simplerVersionCopyMaped}
+        <footer>
+        <div className="vertical_text_content footer_mobile">
+          <h1>{infoCmsData[4][selectedLanHeadlines]}</h1>
+          <a
+            href={"tel:" + infoCmsData[1][selectedLanPara]}
+            rel="noopener"
+            target="_blank">
+          <span>
+            {infoCmsData[1][selectedLanHeadlines]}
+          </span>
+          </a>
+            <a
+              href={"mailto:" + infoCmsData[2][selectedLanPara]}
+              rel="noopener"
+              target="_blank">
+            <span>
+              {infoCmsData[2][selectedLanHeadlines]}
+            </span>
+            </a>
+            <a
+              href={infoCmsData[3][selectedLanPara]}
+              rel="noopener"
+              target="_blank">
+            <span>
+              {infoCmsData[3][selectedLanHeadlines]}
+            </span>
+            </a>
+            <div>
+              <p>« VERY INTERESTING » ©2021</p>
+            </div>
+              </div>
+        </footer>
+      </main>
+    )
   }
 
 
   render() {
-  if(!this.state.dataToDivs){
-    return null;
-  };
-
-  let style = {
-    position: "fixed",
-    bottom: 0,
-    backgroundColor: "yellow",
-    display: "none"
-  }
 
   const {
     originalImageWidth,
@@ -1059,15 +1120,8 @@ class Mobile extends React.Component {
   return (
       <div className="main_vertical_container_mobile">
           {this.renderDataToDivsLoading()}
-          {this.state.dataToDivs}
-          {this.renderVerticalAnimation()}
           {this.renderInfo()}
-          <div style={style}>
-            {numberOfPixelScrolled} -
-            {counter} -
-            {originalImageStretchArray[0]} -
-            {originalImageStretchArray[1]}
-          </div>
+          {this.renderTextSimplerVersion()}
       </div>
     );
 }
