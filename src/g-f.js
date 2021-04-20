@@ -106,15 +106,15 @@ class Desktop extends React.Component {
       loaded} = this.state;
 
 
-    if(originalImageStretchArray !== prevState.originalImageStretchArray){
-      if(originalImageStretchArray.length === 3){
-        setTimeout(() => {
-          this.handleImageLoaded("container_div_0", 0);
-          this.handleImageLoaded("container_div_0", 1);
-          this.handleImageLoaded("container_div_0", 2);
-        }, 100)
-      }
-    }
+    // if(originalImageStretchArray !== prevState.originalImageStretchArray){
+    //   if(originalImageStretchArray.length === 3){
+    //     setTimeout(() => {
+    //       this.handleImageLoaded("container_div_0", 0);
+    //       this.handleImageLoaded("container_div_0", 1);
+    //       this.handleImageLoaded("container_div_0", 2);
+    //     }, 100)
+    //   }
+    // }
 
 
     if(!window.pageYOffset
@@ -123,14 +123,51 @@ class Desktop extends React.Component {
       && viewportHeight){
 
 
-        firstImg.style.transform = `scaleY(${originalImageStretchArray[0]})`;
-        firstContainer.style.height = `${this.state.viewportHeight}px`;
+          // here?
+          setTimeout(() => {
 
-        secondImg.style.transform = `scaleY(${originalImageStretchArray[1]})`;
-        secondContainer.style.height = `${this.state.viewportHeight}px`;
+        
+            firstImg.animate(
+              [
+                { transform: `scaleY(1)` },
+                { transform: `scaleY(${originalImageStretchArray[0]})` },
+              ], {
+                duration: 300,
+                easing: "ease",
+              }
+            );
 
-        thirdImg.style.transform = `scaleY(${originalImageStretchArray[2]})`;
-        thirdContainer.style.height = `${this.state.viewportHeight}px`;
+            firstImg.style.transform = `scaleY(${originalImageStretchArray[0]})`
+            firstContainer.style.height = `${this.state.viewportHeight}px`;
+
+            secondImg.animate(
+              [
+                { transform: `scaleY(1)` },
+                { transform: `scaleY(${originalImageStretchArray[1]})` },
+              ], {
+                duration: 300,
+                easing: "ease",
+              }
+            );
+
+            secondImg.style.transform = `scaleY(${originalImageStretchArray[1]})`;
+            secondContainer.style.height = `${this.state.viewportHeight}px`;
+
+            thirdImg.animate(
+              [
+                { transform: `scaleY(1)` },
+                { transform: `scaleY(${originalImageStretchArray[2]})` },
+              ], {
+                duration: 300,
+                easing: "ease",
+              }
+            );
+    
+            thirdImg.style.transform = `scaleY(${originalImageStretchArray[2]})`;
+            thirdContainer.style.height = `${this.state.viewportHeight}px`;
+
+          }, 300)
+    
     }
 
     let counter = this.state.counter;
@@ -1076,8 +1113,8 @@ class Desktop extends React.Component {
       position: "fixed",
       top: 0,
       right: 0,
-      display: "none",
       backgroundColor: "yellow",
+      display: "none"
     }
     
     return (

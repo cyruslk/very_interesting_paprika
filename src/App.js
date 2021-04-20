@@ -6,13 +6,14 @@ import SvgSection from "./SvgSection.js"
 import mock_data from "./mock_data.js";
 import "./App.css";
 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       viewportWidth: null,
       mockData: mock_data,
-      loaded: false,
+      loaded: true,
       cmsData: null,
       toggleEN: false,
       mainCmsDataFR: null,
@@ -21,12 +22,6 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-
-    setTimeout(() => {
-      this.setState({
-        loaded: true
-      });
-    });
 
     document.addEventListener('gesturestart', function (e) {
         e.preventDefault();
@@ -122,7 +117,7 @@ class App extends React.Component {
       )
     }
 
-    if(viewportWidth > 800){
+    if(viewportWidth > 1224){
       return (
         <div>
           <Desktop

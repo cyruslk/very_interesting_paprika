@@ -1,5 +1,7 @@
 import React from "react";
+import { AnimateKeyframes }  from 'react-simple-animate';
 import {SlideDown} from 'react-slidedown';
+import ScrollSnap from 'scroll-snap'
 import 'react-slidedown/lib/slidedown.css';
 import ReactHtmlParser from 'react-html-parser';
 import ScrollDirection from '@anakinyuen/scroll-direction';
@@ -8,7 +10,7 @@ import "./App.css";
 
 
 class Mobile extends React.Component {
-  constructor(props) {
+    constructor(props) {
     super(props);
     this.state = {
       loaded: false,
@@ -34,309 +36,40 @@ class Mobile extends React.Component {
       originalImageRatioArray: [],
       textDivSizeArray: [],
       screenHeightValuesArray: [],
-      scalingCoeffStart: 482/471,
-      scalingCoeffEnd: 1.15,
       divsLastFold: null,
       resetTextDivs: false,
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
 
     setTimeout(() => {
       this.setState({
         loaded: true
       });
-    }, 1700);
+    }, 1200);
 
-     document.addEventListener("scroll", this.scrollHandler);
-     window.addEventListener("resize", this.resizeHandler);
+    // this.bindScrollSnap()
+    document.addEventListener("scroll", this.scrollHandler);
+    window.addEventListener("resize", this.resizeHandler);
 
-     let viewportHeight = window.innerHeight;
-     let viewportWidth = window.innerWidth;
-     let {cmsData} = this.props;
-     let mainCmsData = cmsData.slice(0, 9);
-     let infoCmsData = cmsData.slice(9, 14);
+    let viewportHeight = window.innerHeight;
+    let viewportWidth = window.innerWidth;
+    let {cmsData} = this.props;
+    let mainCmsData = cmsData.slice(0, 9);
+    let infoCmsData = cmsData.slice(9, 14);
 
-     // Init the state here;
-     let updatedHeightOfPage = viewportHeight;
+    // Init the state here;
+    let updatedHeightOfPage = viewportHeight;
 
-     this.setState({
-       updatedHeightOfPage,
-       viewportHeight,
-       viewportWidth,
-       mockData,
-       mainCmsData,
-       infoCmsData
-     }, () => {
-
-      let mockDataText = this.state.mockData.entriesText;
-      let {mainCmsData} = this.state;
-
-       let mainCmsDataSubArrays = [
-           mainCmsData.slice(0, 2),
-           mainCmsData.slice(2, 4),
-           mainCmsData.slice(4, 9),
-       ];
-
-       this.setState({
-         mainCmsDataSubArrays
-       }, () => {
-         this.renderDataToDivs(this.state.selectedlan);
-       })
-     })
-  };
-
-  componentDidUpdate(prevProps, prevState) {
-
-    const {
-      originalImageStretch,
-      numberOfPixelScrolled,
+    this.setState({
+      updatedHeightOfPage,
       viewportHeight,
-      loaded,
-      selectedDivId,
-      counter,
-      resetTextDivs,
-      selectedlan,
-      infoCmsData,
-      mainCmsDataSubArrays,
-      originalImageStretchArray,
-      originalImageHeightArray,
-      originalImageRatioArray,
       viewportWidth,
-      scalingCoeffStart,
-      originalImageWidth,
-      animDirection
-    } = this.state;
-
-
-    let selectedLanHeadlines = `headlines_${selectedlan}`;
-    let selectedLanPara = `paragraph_${selectedlan}`;
-    let firstSvg = document.getElementById("img_mobile_0")
-    let imgMobileContainer = [...document.getElementsByClassName('img_mobile_container')];
-    let imgMobile = [...document.getElementsByClassName("img_mobile")];
-    let divTextH1 = [...document.getElementsByClassName('div_text_h1')];
-    let divTextP = [...document.getElementsByClassName('div_text_p')];
-
-
-    if(selectedlan !== prevState.selectedlan){
-      window.scrollTo(0, 0);
-      setTimeout(() => {
-        this.resizeHandler();
-      }, 50);
-    };
-
-    if(numberOfPixelScrolled < 10
-      && originalImageStretchArray
-      && firstSvg){
-
-      firstSvg.style.transform = `rotateZ(90deg) translate(100%) scaleY(${originalImageStretchArray[0]})`;
-    }
-
-
-    // updating the data;
-    if (counter !== prevState.counter) {
-
-      if(counter >= 0 && counter < 4){
-
-      this.setState({
-        vertical: false,
-        resetTextDivs: false
-      })
-
-      let textSubArray = mainCmsDataSubArrays[0];
-        divTextH1.map((ele, index) => {
-         ele.innerHTML = textSubArray[index][selectedLanHeadlines]
-        })
-         divTextP.map((ele, index) => {
-           ele.innerHTML = textSubArray[index][selectedLanPara]
-         })
-      }
-
-      if(counter >= 4 && counter < 8){
-        this.setState({
-          vertical: false,
-          resetTextDivs: false
-        })
-
-        let verticalContentArray =  mainCmsDataSubArrays[2];
-        let divsLastFold = verticalContentArray.map((ele, index) => {
-          let id = `vertical_text_content_${index}`
-          return (
-            <div id={id}
-                className="vertical_text_content">
-              <h1>{ReactHtmlParser(ele[selectedLanHeadlines])}</h1>
-              <p>{ReactHtmlParser(ele[selectedLanPara])}</p>
-            </div>
-          )
-        })
-
-        let textWidth = document
-        .getElementById("container_mobile_text_0")
-        .getBoundingClientRect().width;
-
-        let renderVerticalAnimationDivContainer = () => {
-          let styling = {
-            width: `${textWidth}px`,
-            left: `-${textWidth}px`
-          }
-          return (
-            <div
-              style={styling}
-              id="vertical_div_main_container">
-               {divsLastFold}
-               <div className="vertical_text_content footer_mobile">
-                <h1>{infoCmsData[4][selectedLanHeadlines]}</h1>
-                <a
-                  href={"tel:" + infoCmsData[1][selectedLanPara]}
-                  rel="noopener"
-                  target="_blank">
-                <span>
-                  {infoCmsData[1][selectedLanHeadlines]}
-                </span>
-                </a>
-                 <a
-                   href={"mailto:" + infoCmsData[2][selectedLanPara]}
-                   rel="noopener"
-                   target="_blank">
-                 <span>
-                   {infoCmsData[2][selectedLanHeadlines]}
-                 </span>
-                 </a>
-                 <a
-                   href={infoCmsData[3][selectedLanPara]}
-                   rel="noopener"
-                   target="_blank">
-                 <span>
-                   {infoCmsData[3][selectedLanHeadlines]}
-                 </span>
-                 </a>
-                  <div className="footer_mobile_cta">
-                    <p>« VERY INTERESTING » ©2021</p>
-                 </div>
-               </div>
-            </div>
-          )
-        }
-
-        this.setState({
-          divsLastFold: renderVerticalAnimationDivContainer()
-        })
-
-        let textSubArray = mainCmsDataSubArrays[1]
-        divTextH1.map((ele, index) => {
-          if(index === 0){
-            ele.innerHTML = "<br /><br />" + textSubArray[index][selectedLanHeadlines];
-          }else{
-            ele.innerHTML = textSubArray[index][selectedLanHeadlines]
-          }
-        })
-         divTextP.map((ele, index) => {
-           ele.innerHTML = textSubArray[index][selectedLanPara]
-         })
-      }
-
-      if(counter >= 8 && counter < 13){
-
-        divTextH1.map((ele, index) => {
-         ele.innerHTML = ""
-        })
-         divTextP.map((ele, index) => {
-           ele.innerHTML = ""
-         })
-
-        this.setState({
-          vertical: true,
-          resetTextDivs: true
-        })
-      }
-
-    };
-
-
-    if(originalImageWidth !== prevState.originalImageWidth
-      && originalImageHeightArray.length > 0){
-
-        // get the new width first;
-        // then get the height
-        // then get the new scale value;
-
-        // Take your original height. In our example, it will be 1200 pixs
-        // Take your original width. Our image has a width of 1600 pixs
-        // Divide the height by the width, e.g. 1200 / 1600 = 0.75
-        // Multiply the quotient by the preferred width, e.g. 0.75 * 300 = 225
-        // The resulting figure is your new height given in pixels.
-
-        let newWidth = originalImageWidth;
-        let newWidthToString =  Number(newWidth);
-
-        let newImgHeightArray = originalImageHeightArray
-        .map((ele, index) => {
-          return originalImageRatioArray[index] * originalImageWidth
-        });
-
-        let newImgStretchArray = newImgHeightArray
-        .map((ele, index) => {
-          if(index === 1){
-            return (viewportWidth/ele)*scalingCoeffStart
-          }else{
-            return viewportWidth/ele
-          }
-        })
-
-        this.setState({
-          originalImageHeightArray: newImgHeightArray,
-          originalImageStretchArray: newImgStretchArray
-        })
-
-    }
-
-    if(selectedDivId !== prevState.selectedDivId
-      || originalImageStretchArray !== prevState.originalImageStretchArray){
-      return this.lockDivs(selectedDivId);
-    }
-  };
-
-  lockDivs = (selectedDivId) => {
-
-    const {
-      animDirection,
-      originalImageStretchArray,
-      counter
-    } = this.state;
-
-    let textDivSize = this.state.textDivSizeArray[1];
-
-    if(counter > 7){
-      return;
-    }
-
-    if(selectedDivId === 0){
-
-      let divID = `container_mobile_div_${1}`;
-      let divIDText = `container_mobile_text_${1}`;
-      let imgStretch = originalImageStretchArray[1];
-      let imgContainer = document.querySelector(`#${divID}`);
-      let img = document.querySelector(`#${divID} img`);
-      let divText = document.querySelector(`#${divIDText}`);
-
-      divText.style.left = `-${textDivSize}px`
-      img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgStretch})`;
-
-    }if(selectedDivId === 1){
-
-      let divID = `container_mobile_div_${0}`;
-      let divIDText = `container_mobile_text_${0}`;
-      let imgStretch = originalImageStretchArray[0];
-      let imgScale = originalImageStretchArray[0];
-      let imgContainer = document.querySelector(`#${divID}`);
-      let img = document.querySelector(`#${divID} img`);
-      let divText = document.querySelector(`#${divIDText}`);
-
-      divText.style.left = `-${textDivSize}px`
-      img.style.transform = `rotateZ(90deg) translate(100%) scaleY(${imgStretch})`;
-
-    }
+      mockData,
+      mainCmsData,
+      infoCmsData
+    })
   }
 
   toggleEN = () => {
@@ -347,14 +80,10 @@ class Mobile extends React.Component {
       if(this.state.toggleEN){
         this.setState({
           selectedlan: "en"
-        }, () => {
-          this.renderDataToDivs(this.state.selectedlan)
         })
       }else{
         this.setState({
           selectedlan: "fr"
-        }, () => {
-          this.renderDataToDivs(this.state.selectedlan)
         })
       }
     })
@@ -374,7 +103,6 @@ class Mobile extends React.Component {
     let originalImageHeight = img.getBoundingClientRect().width;
     let loadingImgStrech = (viewportWidth/originalImageHeight)*1.02;
 
-    
 
     img.animate(
       [
@@ -387,84 +115,7 @@ class Mobile extends React.Component {
     );
   }
 
-  renderDataToDivs = () => {
 
-     // Mapping through the mockData; to be changed;
-      let mockData = this.state.mockData;
-      let mainCmsDataSubArraysFirstRow = this.state.mainCmsDataSubArrays[0];
-
-      let selectedLanHeadlines = `headlines_${this.state.selectedlan}`;
-      let selectedLanPara = `paragraph_${this.state.selectedlan}`;
-
-      let dataToDivs = mockData.entriesMobile.map((ele, index) => {
-
-        let divID = `container_mobile_div_${index}`;
-        let divIDText = `container_mobile_text_${index}`;
-        let divIDH1 = `container_mobile_div_h1_${index}`;
-        let divIP = `container_mobile_div_p_${index}`;
-
-        return (
-          <div
-            id={divID}
-            style={{height: `${this.state.viewportHeight/2-this.state.margin}px`}}
-            className="img_mobile_container">
-              <div
-                  id={divIDText}
-                  className="mobile_text_content">
-                    <h1 className="div_text_h1">
-                      {ReactHtmlParser(mainCmsDataSubArraysFirstRow[index].headlines)}
-                    </h1>
-                    <p className="div_text_p">
-                      {ReactHtmlParser(mainCmsDataSubArraysFirstRow[index].description)}
-                    </p>
-              </div>
-                {this.renderImg(ele, divID, divIDText, index)}
-          </div>
-        )
-      })
-      this.setState({
-        dataToDivs
-      })
-  };
-
-  renderImg = (ele, divID, divIDText, index) => {
-    if(index === 0){
-      let style = {
-        width: `${this.state.viewportHeight/2}px`,
-        transform: `rotateZ(90deg) translate(100%) scaleY(1)`
-      }
-
-      let id = `img_mobile_${index}`;
-      return (
-        <img
-          id={id}
-          className="img_mobile"
-          style={style}
-          onLoad={() => {this.handleImageLoaded(divID, divIDText, index)}}
-          alt={ele.img}
-          src={ele.img}
-        />
-      )
-    }else{
-
-      let style = {
-        width: `${this.state.viewportHeight/2-this.state.margin}px`,
-        transform: `rotateZ(90deg) translate(100%) scaleY(1)`
-      }
-
-      let id = `img_mobile_${index}`;
-      return (
-        <img
-          id={id}
-          className="img_mobile"
-          style={style}
-          onLoad={() => {this.handleImageLoaded(divID, divIDText, index)}}
-          alt={ele.img}
-          src={ele.img}
-        />
-      )
-    }
-  }
 
   resizeHandler = () => {
 
@@ -494,400 +145,7 @@ class Mobile extends React.Component {
 
     }
 
-  handleImageLoaded = (divID, divIDText, index) => {
-
-      let viewportWidth = this.state.viewportWidth;
-      let imgContainer = document.querySelector(`#${divID}`);
-      let img = document.querySelector(`#${divID} img`);
-      let divText = document.querySelector(`#${divIDText}`);
-      let originalImageHeight = img.getBoundingClientRect().width;
-      let originalImageStretch = viewportWidth/originalImageHeight;
-      let imageRatio = img.getBoundingClientRect().width/img.getBoundingClientRect().height;
-
-      let textDivSize = viewportWidth-originalImageHeight;
-
-      this.setState({
-        originalImageHeight,
-        originalImageStretch,
-        textDivSizeArray: [...this.state.textDivSizeArray, textDivSize],
-        originalImageHeightArray: [...this.state.originalImageHeightArray, originalImageHeight],
-        originalImageStretchArray: [...this.state.originalImageStretchArray, originalImageStretch],
-        originalImageRatioArray: [...this.state.originalImageRatioArray, imageRatio]
-     }, () => {
-
-       divText.style.width = `${textDivSize - 40}px`;
-       divText.style.left = `-${textDivSize - this.state.margin}px`;
-
-       let originalImageStretchArray = this.state.originalImageStretchArray;
-
-       if(index === 0){
-         img.style.transform = `
-           rotateZ(90deg)
-           translate(100%)
-           scaleY(${originalImageStretchArray[index]})
-         `;
-       }else{
-         let scalingCoeffStart = this.state.scalingCoeffStart;
-         img.style.transform = `
-           rotateZ(90deg)
-           translate(100%)
-           scaleY(${originalImageStretchArray[1]*scalingCoeffStart})
-         `;
-       }
-   })
-  }
-
-  scrollHandler = (event) => {
-
-    if(!this.state.originalImageStretch){
-      return null;
-    }
-
-    let numberOfPixelScrolled = window.scrollY;
-    let viewportHeight = this.state.viewportHeight;
-
-    this.setState({
-      numberOfPixelScrolled
-    })
-
-    if (numberOfPixelScrolled > 0
-      && numberOfPixelScrolled < viewportHeight*2) {
-
-        this.setState({
-          counter: 0,
-          selectedDivId: 0,
-        }, () => {
-          let counter = this.state.counter;
-          let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "up");
-        })
-    }
-
-    if (numberOfPixelScrolled > viewportHeight
-      && numberOfPixelScrolled < viewportHeight*2) {
-
-
-        this.setState({
-          counter: 1,
-          selectedDivId: 0,
-        }, () => {
-          let counter = this.state.counter;
-          let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "down");
-        })
-    }
-
-    if (numberOfPixelScrolled > viewportHeight*2
-      && numberOfPixelScrolled < viewportHeight*3) {
-
-        this.setState({
-          counter: 2,
-          selectedDivId: 1,
-        }, () => {
-          let counter = this.state.counter;
-          let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "up");
-        })
-
-    }
-
-    if (numberOfPixelScrolled > viewportHeight*3
-      && numberOfPixelScrolled < viewportHeight*4) {
-
-        this.setState({
-          counter: 3,
-          selectedDivId: 1,
-        }, () => {
-          let counter = this.state.counter;
-          let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "down");
-        })
-    }
-
-    if (numberOfPixelScrolled > viewportHeight*4
-      && numberOfPixelScrolled < viewportHeight*5) {
-
-        this.setState({
-          counter: 4,
-          selectedDivId: 0,
-        }, () => {
-          let counter = this.state.counter;
-          let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "up");
-        })
-    }
-
-    if (numberOfPixelScrolled > viewportHeight*5
-      && numberOfPixelScrolled < viewportHeight*6) {
-
-        this.setState({
-          counter: 5,
-          selectedDivId: 0,
-        }, () => {
-          let counter = this.state.counter;
-          let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "down");
-        })
-    }
-
-    if (numberOfPixelScrolled > viewportHeight*6
-      && numberOfPixelScrolled < viewportHeight*7) {
-
-        this.setState({
-          counter: 6,
-          selectedDivId: 1,
-        }, () => {
-          let counter = this.state.counter;
-          let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "up");
-        })
-    }
-
-    if (numberOfPixelScrolled > viewportHeight*7
-      && numberOfPixelScrolled < viewportHeight*8) {
-
-        this.setState({
-          counter: 7,
-          selectedDivId: 1,
-        }, () => {
-          let counter = this.state.counter;
-          let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "down");
-        })
-    }
-
-    if (numberOfPixelScrolled > viewportHeight*8
-      && numberOfPixelScrolled < viewportHeight*9) {
-
-        this.setState({
-          counter: 8,
-          vertical: true,
-          selectedDivId: 0,
-        }, () => {
-
-          let counter = this.state.counter;
-          let selectedDivId = this.state.selectedDivId;
-
-          this.handleAnimation(counter, 0, "up");
-          this.handleAnimation(counter, 1, "up");
-          this.handleVerticalHanimation(counter, "horizontal");
-
-        })
-    }
-
-    if (numberOfPixelScrolled > viewportHeight*9
-      && numberOfPixelScrolled < viewportHeight*13) {
-
-
-        let distanceToScroll = (viewportHeight*13 - viewportHeight*9);
-
-        this.setState({
-          counter: 9,
-          selectedDivId: 0,
-          vertical: true,
-
-        }, () => {
-          let counter = this.state.counter;
-          let selectedDivId = this.state.selectedDivId;
-          this.handleVerticalHanimation(12, "vertical", distanceToScroll, [9, 12]);
-        })
-    }
-
-  };
-
-  handleAnimation = (counter, selectedDivId, animDirection, single) => {
-
-    this.setState({
-      animDirection
-    })
-
-    // div for img;
-    let divID = `container_mobile_div_${selectedDivId}`;
-    let imgContainer = document.querySelector(`#${divID}`);
-    let img = document.querySelector(`#${divID} img`);
-    // div for text;
-    let divTextID = `container_mobile_text_${selectedDivId}`;
-    let divText = document.querySelector(`#${divTextID}`);
-
-    let numberOfPixelScrolled = window.scrollY;
-    let viewportHeight = this.state.viewportHeight;
-    let updatedViewportHeight = this.state.viewportHeight;
-    let originalImageStretch = this.state.originalImageStretch;
-
-
-    let scrolledPorcentage = this.definePorcentage(
-     (numberOfPixelScrolled - this.state.counter * viewportHeight),
-     viewportHeight)
-   ;
-
-
-   let remainingScrollPorcentage = 100-scrolledPorcentage;
-   let translateYPorcentageUp = this.defineValueFromPorcentage(
-       remainingScrollPorcentage,
-       originalImageStretch
-   );
-
-
-   let translateYPorcentageDown = this.defineValueFromPorcentage(
-       scrolledPorcentage,
-       originalImageStretch
-   );
-
-   let textLeftUp = this.defineValueFromPorcentage(
-       remainingScrollPorcentage,
-       this.state.textDivSizeArray[1]
-   );
-
-   let textLeftDown = this.defineValueFromPorcentage(
-       scrolledPorcentage,
-       this.state.textDivSizeArray[1]
-   );
-
-    if(animDirection === "up"){
-
-      if(selectedDivId === 0){
-
-        let originalImageHeightArray = this.state.originalImageHeightArray;
-        let scalingCoeffEnd = this.state.scalingCoeffEnd;
-        let scalingCoeffEndFirstDiv = translateYPorcentageUp*scalingCoeffEnd;
-
-        img.style.transform = `
-         rotateZ(90deg)
-         translate(100%)
-         scaleY(${scalingCoeffEndFirstDiv})`;
-
-         if(!this.state.vertical){
-           divText.style.left = `-${textLeftUp}px`
-         }else{
-           divText.style.left = "-289.703px"
-         }
-
-          if(translateYPorcentageUp < 1){
-
-            img.style.transform = `
-                 rotateZ(90deg)
-                 translate(100%)
-                 scaleY(${1*scalingCoeffEnd})`;
-
-
-           if(!this.state.vertical){
-             divText.style.left = `0vw`;
-           }else{
-             divText.style.left = "-289.703px"
-           }
-
-        }
-      }
-
-      if(selectedDivId === 1){
-
-        img.style.transform = `
-         rotateZ(90deg)
-         translate(100%)
-         scaleY(${translateYPorcentageUp})`;
-
-
-         if(!this.state.vertical){
-           divText.style.left = `-${textLeftUp}px`
-         }else{
-           divText.style.left = "-289.703px"
-         }
-
-          if(translateYPorcentageUp < 1){
-
-            img.style.transform = `
-                 rotateZ(90deg)
-                 translate(100%)
-                 scaleY(1)`;
-
-
-           if(!this.state.vertical){
-             divText.style.left = `0vw`;
-           }else{
-             divText.style.left = "-289.703px"
-           }
-          }
-      }
-
-    }
-    if(animDirection === "down"){
-
-      img.style.transform = `
-           rotateZ(90deg)
-           translate(100%)
-           scaleY(${translateYPorcentageDown})
-       `;
-
-      divText.style.left = `-${textLeftDown}px`
-
-      if(translateYPorcentageDown < 1){
-        img.style.transform = `
-             rotateZ(90deg)
-             translate(100%)
-             scaleY(1)
-         `;
-         divText.style.left = `0vw`
-      }
-    }
-   }
-
-  handleVerticalHanimation = (counter, slideDirection, distanceToScroll, counterToMakeTranslation) => {
-
-     //
-     let verticalDiv = document.getElementById("vertical_div_main_container");
-     let verticalDivHeight = verticalDiv.getBoundingClientRect().height;
-
-     let numberOfPixelScrolled = window.scrollY;
-     let viewportHeight = this.state.viewportHeight;
-
-     if(slideDirection === "horizontal"){
-
-       let scrolledPorcentage = this.definePorcentage(
-         (numberOfPixelScrolled - this.state.counter * viewportHeight),
-         viewportHeight)
-       ;
-
-       let remainingScrollPorcentage = 100-scrolledPorcentage;
-
-
-       let textLeftUp = this.defineValueFromPorcentage(
-           remainingScrollPorcentage,
-           this.state.textDivSizeArray[1]
-       );
-
-       verticalDiv.style.left = `-${textLeftUp}px`;
-
-     }else{
-
-       // 2.8?
-       let scrolledPorcentageVertical = this.definePorcentage(
-          (numberOfPixelScrolled - 9 * viewportHeight),
-          viewportHeight*2)
-        ;
-
-      verticalDiv.style.left = "0px";
-      verticalDiv.style.transform = `translateY(-${scrolledPorcentageVertical}%)`
-
-     }
-   }
-
-  definePorcentage = (percent, total) => {
-      let porcentage = (percent/total)*100;
-      return porcentage
-   }
-
-  defineValueFromPorcentage = (percentage, total) => {
-    let value =  ((percentage * total)/100);
-    return value;
-  }
-
-  renderVerticalAnimation = () => {
-    if(!this.state.vertical){
-      return null;
-    }
-    return this.state.divsLastFold;
-  };
-
+  
   renderInfo = () => {
     return (
       <div className="info_main_container">
@@ -1013,13 +271,13 @@ class Mobile extends React.Component {
     return (
       <div className="loader_vertical_container_mobile">
         <div>
-            <img
-              id="loading_img_1"
-              onLoad={() => this.handleImageLoadedLoadingScreen("loading_img_1", 0)}
-              className="loading_img"
-              style={styleImg1}
-              src={mockData.loadingImg[0].img}
-            />
+          <img
+            id="loading_img_1"
+            className="loading_img"
+            style={styleImg1}
+            onLoad={() => this.handleImageLoadedLoadingScreen("loading_img_1", 0)}
+            src={mockData.loadingImg[0].img}
+          />
         </div>
       </div>
     )
@@ -1042,86 +300,96 @@ class Mobile extends React.Component {
 
     let selectedLanPara = `paragraph_${selectedlan}`;
     let selectedLanHeadlines = `headlines_${selectedlan}`;
-
-    console.log(selectedLanPara, selectedLanHeadlines);
-
-    let simplerVersionCopy = mainCmsData.slice(5, 9);
-    console.log(simplerVersionCopy);
-
+    let simplerVersionCopy = mainCmsData.slice(0, 9);
     let simplerVersionCopyMaped = simplerVersionCopy
     .map((ele, index) => {
-      let id = `vertical_text_content_${index}`
-      return (
-        <div id={id} className="vertical_text_content">
-          <h1>{ReactHtmlParser(ele[selectedLanHeadlines])}</h1>
-          <p>{ReactHtmlParser(ele[selectedLanPara])}</p>
-        </div>
-      )
+
+      let id = `vertical_text_content_${index}`;
+
+
+      if(index === 0){
+        return (
+          <section id={id} 
+          className="section vertical_text_content">
+            <div className="slideInUp">
+              <h1>{ReactHtmlParser(ele[selectedLanHeadlines])}</h1>
+              <p>{ReactHtmlParser(ele[selectedLanPara])}</p>
+            </div>
+          </section>
+        )
+      }else{
+        return (
+          <section id={id} className="section vertical_text_content">
+            <div>
+              <h1>{ReactHtmlParser(ele[selectedLanHeadlines])}</h1>
+              <p>{ReactHtmlParser(ele[selectedLanPara])}</p>
+            </div>
+          </section>
+        )
+      }
     })
-
-    console.log(simplerVersionCopyMaped);
-
 
     return(
       <main className="vertical_content_main">
-        {simplerVersionCopyMaped}
-        <footer>
-        <div className="vertical_text_content footer_mobile">
-          <h1>{infoCmsData[4][selectedLanHeadlines]}</h1>
-          <a
-            href={"tel:" + infoCmsData[1][selectedLanPara]}
-            rel="noopener"
-            target="_blank">
-          <span>
-            {infoCmsData[1][selectedLanHeadlines]}
-          </span>
-          </a>
-            <a
-              href={"mailto:" + infoCmsData[2][selectedLanPara]}
-              rel="noopener"
-              target="_blank">
-            <span>
-              {infoCmsData[2][selectedLanHeadlines]}
-            </span>
-            </a>
-            <a
-              href={infoCmsData[3][selectedLanPara]}
-              rel="noopener"
-              target="_blank">
-            <span>
-              {infoCmsData[3][selectedLanHeadlines]}
-            </span>
-            </a>
-            <div>
-              <p>« VERY INTERESTING » ©2021</p>
-            </div>
-              </div>
-        </footer>
+        <div className="snap_section">
+          {simplerVersionCopyMaped}
+          <footer className="section">
+            <div className="vertical_text_content footer_mobile">
+              <h1>{infoCmsData[4][selectedLanHeadlines]}</h1>
+              <a
+                href={"tel:" + infoCmsData[1][selectedLanPara]}
+                rel="noopener"
+                target="_blank">
+              <span>
+                {infoCmsData[1][selectedLanHeadlines]}
+              </span>
+              </a>
+                <a
+                  href={"mailto:" + infoCmsData[2][selectedLanPara]}
+                  rel="noopener"
+                  target="_blank">
+                <span>
+                  {infoCmsData[2][selectedLanHeadlines]}
+                </span>
+                </a>
+                <a
+                  href={infoCmsData[3][selectedLanPara]}
+                  rel="noopener"
+                  target="_blank">
+                <span>
+                  {infoCmsData[3][selectedLanHeadlines]}
+                </span>
+                </a>
+                <div className="copyright">
+                  <p>« VERY INTERESTING » ©2021</p>
+                </div>
+                  </div>
+            </footer>
+        </div> 
       </main>
     )
   }
 
-
+  
   render() {
 
-  const {
-    originalImageWidth,
-    originalImageHeightArray,
-    originalImageRatioArray,
-    originalImageStretchArray,
-    numberOfPixelScrolled,
-    selectedDivId,
-    counter,
-  } = this.state;
+    const {
+      mainCmsData
+    } = this.state;
 
-  return (
-      <div className="main_vertical_container_mobile">
-          {this.renderDataToDivsLoading()}
-          {this.renderInfo()}
-          {this.renderTextSimplerVersion()}
-      </div>
-    );
-}
+    if(!mainCmsData){
+      return null;
+    }
+
+    return (
+      <main>
+        {this.renderDataToDivsLoading()}
+        {this.renderInfo()}
+        {this.renderTextSimplerVersion()}
+    </main>
+      
+    )
+  }
 }
 
 export default Mobile;
