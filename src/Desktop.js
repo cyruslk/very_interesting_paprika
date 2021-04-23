@@ -7,7 +7,6 @@ import "./App.css";
 import very from './img/very.svg'; 
 import intere from './img/ntere.svg'; 
 import sting from './img/sting.svg'; 
-import all from './img/sting.svg';
 
 class Desktop extends React.Component {
   constructor(props) {
@@ -106,31 +105,23 @@ class Desktop extends React.Component {
       loaded} = this.state;
 
 
-    if(originalImageStretchArray !== prevState.originalImageStretchArray){
-      if(originalImageStretchArray.length === 3){
-        setTimeout(() => {
-          this.handleImageLoaded("container_div_0", 0);
-          this.handleImageLoaded("container_div_0", 1);
-          this.handleImageLoaded("container_div_0", 2);
-        }, 100)
-      }
-    }
-
-
     if(!window.pageYOffset
       && firstImg
       && originalImageStretchArray
       && viewportHeight){
 
-
-        firstImg.style.transform = `scaleY(${originalImageStretchArray[0]})`;
         firstContainer.style.height = `${this.state.viewportHeight}px`;
-
-        secondImg.style.transform = `scaleY(${originalImageStretchArray[1]})`;
         secondContainer.style.height = `${this.state.viewportHeight}px`;
-
-        thirdImg.style.transform = `scaleY(${originalImageStretchArray[2]})`;
         thirdContainer.style.height = `${this.state.viewportHeight}px`;
+
+          setTimeout(() => {
+
+            firstImg.style.transform = `scaleY(${originalImageStretchArray[0]})`
+            secondImg.style.transform = `scaleY(${originalImageStretchArray[1]})`;
+            thirdImg.style.transform = `scaleY(${originalImageStretchArray[2]})`;
+
+          }, 2000)
+    
     }
 
     let counter = this.state.counter;
@@ -145,7 +136,6 @@ class Desktop extends React.Component {
     if (selectedlan !== prevState.selectedlan) {
       window.scrollTo(0, 0);
     }
-
 
     if (counter !== prevState.counter) {
       if (counter >= 0 && counter < 6) {
@@ -312,6 +302,7 @@ class Desktop extends React.Component {
       let originalImageWidth = img.getBoundingClientRect().width;
   
       let originalImageStretch = (viewportHeight + 1.4 * aligningThirdDiv) / originalImageHeight;
+      console.log(originalImageStretch);
     
         this.setState({
           originalImageHeight,
@@ -338,50 +329,44 @@ class Desktop extends React.Component {
           let thirdImg = document.querySelector(`#container_div_2 img`);
           let thirdContainer = document.getElementById("container_div_2");
     
-          // firstImg.style.transform = `scaleY(${originalImageStretchArray[0]})`
-          // secondImg.style.transform = `scaleY(${originalImageStretchArray[1]})`
-          // thirdImg.style.transform = `scaleY(${originalImageStretchArray[2]})`
+          firstImg.style.transform = `scaleY(${originalImageStretchArray[0]})`
+          secondImg.style.transform = `scaleY(${originalImageStretchArray[1]})`
+          thirdImg.style.transform = `scaleY(${originalImageStretchArray[2]})`
+
+          firstContainer.style.height = `${this.state.viewportHeight}px`;
+          secondContainer.style.height = `${this.state.viewportHeight}px`;
+          thirdContainer.style.height = `${this.state.viewportHeight}px`;
+  
     
+          firstImg.animate(
+            [
+              { transform: `scaleY(1)` },
+              { transform: `scaleY(${originalImageStretchArray[0]})` },
+            ], {
+              duration: 300,
+              easing: "ease",
+            }
+          );
     
-          // // setTimeout(()=> { 
-          // //   secondImg.style.transform = `scaleY(${originalImageStretchArray[1]})`
-          // // }, 900);
+          secondImg.animate(
+            [
+              { transform: `scaleY(1)` },
+              { transform: `scaleY(${originalImageStretchArray[1]})` },
+            ], {
+              duration: 300,
+              easing: "ease",
+            }
+          );
     
-          // // setTimeout(()=> { 
-          // //   thirdImg.style.transform = `scaleY(${originalImageStretchArray[2]})`
-          // // }, 900);
-    
-    
-          // // this is a bug;
-          // firstImg.animate(
-          //   [
-          //     { transform: `scaleY(1)` },
-          //     { transform: `scaleY(${originalImageStretchArray[0]})` },
-          //   ], {
-          //     duration: 300,
-          //     easing: "ease",
-          //   }
-          // );
-    
-          // secondImg.animate(
-          //   [
-          //     { transform: `scaleY(1)` },
-          //     { transform: `scaleY(${originalImageStretchArray[1]})` },
-          //   ], {
-          //     duration: 300,
-          //     easing: "ease",
-          //   }
-          // );
-    
-          // thirdImg.animate(
-          //   [
-          //     { transform: `scaleY(1)` },
-          //     { transform: `scaleY(${originalImageStretchArray[2]})` },
-          //   ], {
-          //     duration: 300,
-          //     easing: "ease",
-          //   }
-          // );
+          thirdImg.animate(
+            [
+              { transform: `scaleY(1)` },
+              { transform: `scaleY(${originalImageStretchArray[2]})` },
+            ], {
+              duration: 300,
+              easing: "ease",
+            }
+          );
           }
         });
       }, 100);
@@ -432,55 +417,50 @@ class Desktop extends React.Component {
   };
 
   resizeHandler = () => {
+
+    const {
+      selectedDivId,
+      counter,
+      originalImageWidth,
+      originalImageHeight
+    } = this.state;
+
     let viewportHeight = window.innerHeight;
+    let viewportWidth = window.innerWidth;
 
     this.setState(
       {
-        viewportHeight
+        viewportHeight,
+        viewportWidth
       },
       () => {
         let svgs = [...document.getElementsByClassName("svgs")];
-        let svgContainers = [
-          ...document.getElementsByClassName("svgs_containers")
-        ];
+        let svgContainers = [...document.getElementsByClassName("svgs_containers")];
 
+        // here;
         svgs.map((ele, index) => {
-          if (index === this.state.selectedDivId) {
-            let heightSvg = ele.getBoundingClientRect().height;
-            svgContainers[index].style.height = `${heightSvg}px`;
-          } else {
+          if(
+            index === selectedDivId
+            || counter > 11){
+            return;
+          }else{
+
+
+            // here;
+            svgContainers[index].style.height = `${viewportHeight}px`;
             let divID = `container_div_${index}`;
-            return this.handleResize(divID);
+            let newWidth = document.getElementById(divID).getBoundingClientRect().width;
+            let aligningThirdDiv = this.defineValueFromPorcentage(2.2, viewportHeight);
+            let newHeight = newWidth/originalImageWidth*originalImageHeight;
+            let newImgStretch = (viewportHeight + 1.4 * aligningThirdDiv) / newHeight;
+            ele.style.transform = `scaleY(${newImgStretch})`;
+
           }
-        });
+        })
       }
     );
   };
 
-  handleResize = divID => {
-
-    const {
-      viewportHeight,
-      originalImageHeight,
-      originalImageWidth
-    } = this.state;
-
-
-    let newWidth = document.getElementById(divID).getBoundingClientRect().width;
-    let aligningThirdDiv = this.defineValueFromPorcentage(2, viewportHeight);
-    let newHeight = newWidth/originalImageWidth*originalImageHeight;
-
-    let newImgStretch = (viewportHeight + 1.4 * aligningThirdDiv) / newHeight;
-
-    let imgContainer = document.querySelector(`#${divID}`);
-    
-    let img = document.querySelector(`#${divID} img`);
-    img.style.transform = `scaleY(${newImgStretch})`;
-
-    let imgHeighPx = img.getBoundingClientRect().height;
-    document.getElementById(divID).style.height = `${imgHeighPx}px`;
-
-  };
 
   // scrollHandler here;
   scrollHandler = event => {
@@ -1069,15 +1049,17 @@ class Desktop extends React.Component {
 
     const { 
       originalImageStretchArray,
-      scrollDirection
+      scrollDirection,
+      selectedDivId,
+      viewportWidth,
     } = this.state;
 
     let style = {
       position: "fixed",
       top: 0,
       right: 0,
-      display: "none",
       backgroundColor: "yellow",
+      display: "none"
     }
     
     return (
@@ -1086,7 +1068,8 @@ class Desktop extends React.Component {
           {this.renderDivsToDom()}
           {this.renderFooter()}
           <div style={style}>
-            {scrollDirection} -
+            {selectedDivId} -
+            {viewportWidth} -
             {originalImageStretchArray[0]} - 
             {originalImageStretchArray[1]} - 
             {originalImageStretchArray[2]}
