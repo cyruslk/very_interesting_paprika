@@ -2,7 +2,7 @@
 const mock_data = module.exports = {
   entriesImgDesktop: [
     {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1618381696/paprika%20-%20very%20interesting/svg_6/very.svg"},
-    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1618381695/paprika%20-%20very%20interesting/svg_6/ntere.svg"},
+    {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1618381696/paprika%20-%20very%20interesting/svg_6/very.svg"},
     {img: "https://res.cloudinary.com/www-c-t-l-k-com/image/upload/v1618381695/paprika%20-%20very%20interesting/svg_6/sting.svg"},
   ],
   entriesMobile: [

@@ -114,13 +114,10 @@ class Desktop extends React.Component {
         secondContainer.style.height = `${this.state.viewportHeight}px`;
         thirdContainer.style.height = `${this.state.viewportHeight}px`;
 
-          setTimeout(() => {
 
             firstImg.style.transform = `scaleY(${originalImageStretchArray[0]})`
             secondImg.style.transform = `scaleY(${originalImageStretchArray[1]})`;
             thirdImg.style.transform = `scaleY(${originalImageStretchArray[2]})`;
-
-          }, 2000)
     
     }
 
@@ -289,103 +286,100 @@ class Desktop extends React.Component {
 
 
   handleImageLoaded = (divID, index) => {
+    let divId = `container_div_${index}`;
+    let imgContainer = document.querySelector(`#${divID}`);
+    let img = document.querySelector(`#${divID} img`);
 
+    let viewportHeight = this.state.viewportHeight;
+    let aligningThirdDiv = this.defineValueFromPorcentage(2.2, viewportHeight);
+    let originalImageHeight = img.getBoundingClientRect().height;
+    let originalImageWidth = img.getBoundingClientRect().width;
 
-    setTimeout(() => {
-      let divId = `container_div_${index}`;
-      let imgContainer = document.querySelector(`#${divID}`);
-      let img = document.querySelector(`#${divID} img`);
+    let originalImageStretch = (viewportHeight + 1.4 * aligningThirdDiv) / originalImageHeight;
+    console.log(originalImageStretch);
   
-      let viewportHeight = this.state.viewportHeight;
-      let aligningThirdDiv = this.defineValueFromPorcentage(2.2, viewportHeight);
-      let originalImageHeight = img.getBoundingClientRect().height;
-      let originalImageWidth = img.getBoundingClientRect().width;
+      this.setState({
+        originalImageHeight,
+        originalImageStretch,
+        originalImageWidth,
+        originalImageStretchArray : [
+            ...this.state.originalImageStretchArray,
+            originalImageStretch
+        ]
+      }, () => {
   
-      let originalImageStretch = (viewportHeight + 1.4 * aligningThirdDiv) / originalImageHeight;
-      console.log(originalImageStretch);
-    
-        this.setState({
-          originalImageHeight,
-          originalImageStretch,
-          originalImageWidth,
-          originalImageStretchArray : [
-              ...this.state.originalImageStretchArray,
-              originalImageStretch
-          ]
-        }, () => {
-    
-          const {
-            originalImageStretchArray
-          } = this.state;
-    
-          if(originalImageStretchArray.length === 3){
-            
-           let firstImg = document.querySelector(`#container_div_0 img`);
-          let firstContainer = document.getElementById("container_div_0");
-    
-          let secondImg = document.querySelector(`#container_div_1 img`);
-          let secondContainer = document.getElementById("container_div_1");
-    
-          let thirdImg = document.querySelector(`#container_div_2 img`);
-          let thirdContainer = document.getElementById("container_div_2");
-    
-          firstImg.style.transform = `scaleY(${originalImageStretchArray[0]})`
-          secondImg.style.transform = `scaleY(${originalImageStretchArray[1]})`
-          thirdImg.style.transform = `scaleY(${originalImageStretchArray[2]})`
+        const {
+          originalImageStretchArray
+        } = this.state;
+  
+        if(originalImageStretchArray.length === 3){
+          
+         let firstImg = document.querySelector(`#container_div_0 img`);
+        let firstContainer = document.getElementById("container_div_0");
+  
+        let secondImg = document.querySelector(`#container_div_1 img`);
+        let secondContainer = document.getElementById("container_div_1");
+  
+        let thirdImg = document.querySelector(`#container_div_2 img`);
+        let thirdContainer = document.getElementById("container_div_2");
+  
+        firstImg.style.transform = `scaleY(${originalImageStretchArray[0]})`
+        secondImg.style.transform = `scaleY(${originalImageStretchArray[1]})`
+        thirdImg.style.transform = `scaleY(${originalImageStretchArray[2]})`
 
-          firstContainer.style.height = `${this.state.viewportHeight}px`;
-          secondContainer.style.height = `${this.state.viewportHeight}px`;
-          thirdContainer.style.height = `${this.state.viewportHeight}px`;
+        firstContainer.style.height = `${this.state.viewportHeight}px`;
+        secondContainer.style.height = `${this.state.viewportHeight}px`;
+        thirdContainer.style.height = `${this.state.viewportHeight}px`;
+
   
-    
-          firstImg.animate(
-            [
-              { transform: `scaleY(1)` },
-              { transform: `scaleY(${originalImageStretchArray[0]})` },
-            ], {
-              duration: 300,
-              easing: "ease",
-            }
-          );
-    
-          secondImg.animate(
-            [
-              { transform: `scaleY(1)` },
-              { transform: `scaleY(${originalImageStretchArray[1]})` },
-            ], {
-              duration: 300,
-              easing: "ease",
-            }
-          );
-    
-          thirdImg.animate(
-            [
-              { transform: `scaleY(1)` },
-              { transform: `scaleY(${originalImageStretchArray[2]})` },
-            ], {
-              duration: 300,
-              easing: "ease",
-            }
-          );
+        firstImg.animate(
+          [
+            { transform: `scaleY(1)` },
+            { transform: `scaleY(${originalImageStretchArray[0]})` },
+          ], {
+            duration: 300,
+            easing: "ease",
           }
-        });
-      }, 100);
+        );
+  
+        secondImg.animate(
+          [
+            { transform: `scaleY(1)` },
+            { transform: `scaleY(${originalImageStretchArray[1]})` },
+          ], {
+            duration: 300,
+            easing: "ease",
+          }
+        );
+  
+        thirdImg.animate(
+          [
+            { transform: `scaleY(1)` },
+            { transform: `scaleY(${originalImageStretchArray[2]})` },
+          ], {
+            duration: 300,
+            easing: "ease",
+          }
+        );
+        }
+      });
   };
 
 
   renderDataToDivs = selectedlan => {
     let mainCmsDataSubArraysFirstRow = this.state.mainCmsDataSubArrays[0];
-    let dataToDivs = mockData.entriesImgDesktop.map((ele, index) => {
+
+    let imgArray = [
+      very,
+      intere,
+      sting
+  ]
+
+    let dataToDivs = imgArray.map((ele, index) => {
       let divID = `container_div_${index}`;
       let selectedLanHeadlines = `headlines_${selectedlan}`;
       let selectedLanPara = `paragraph_${selectedlan}`;
       let imgID = `svg_${index}`;
-
-      let imgArray = [
-          very,
-          intere,
-          sting
-      ]
 
       return (
         <div className="main_vertical_container_inner">
@@ -445,7 +439,6 @@ class Desktop extends React.Component {
             return;
           }else{
 
-
             // here;
             svgContainers[index].style.height = `${viewportHeight}px`;
             let divID = `container_div_${index}`;
@@ -472,7 +465,6 @@ class Desktop extends React.Component {
       || !this.state.loaded) {
       return null;
     }
-
 
     this.setState({
       scroll: numberOfPixelScrolled
@@ -1059,8 +1051,7 @@ class Desktop extends React.Component {
       top: 0,
       right: 0,
       backgroundColor: "yellow",
-      display: "none"
-    }
+        }
     
     return (
         <div className="main_vertical_container">
