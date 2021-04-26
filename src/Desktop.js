@@ -8,6 +8,9 @@ import very from './img/very.svg';
 import intere from './img/ntere.svg'; 
 import sting from './img/sting.svg'; 
 
+const parse = require('html-react-parser');
+
+
 class Desktop extends React.Component {
   constructor(props) {
     super(props);
@@ -324,43 +327,12 @@ class Desktop extends React.Component {
         let thirdContainer = document.getElementById("container_div_2");
   
         firstImg.style.transform = `scaleY(${originalImageStretchArray[0]})`
-        secondImg.style.transform = `scaleY(${originalImageStretchArray[1]})`
-        thirdImg.style.transform = `scaleY(${originalImageStretchArray[2]})`
 
         firstContainer.style.height = `${this.state.viewportHeight}px`;
         secondContainer.style.height = `${this.state.viewportHeight}px`;
         thirdContainer.style.height = `${this.state.viewportHeight}px`;
 
-  
-        firstImg.animate(
-          [
-            { transform: `scaleY(1)` },
-            { transform: `scaleY(${originalImageStretchArray[0]})` },
-          ], {
-            duration: 300,
-            easing: "ease",
-          }
-        );
-  
-        secondImg.animate(
-          [
-            { transform: `scaleY(1)` },
-            { transform: `scaleY(${originalImageStretchArray[1]})` },
-          ], {
-            duration: 300,
-            easing: "ease",
-          }
-        );
-  
-        thirdImg.animate(
-          [
-            { transform: `scaleY(1)` },
-            { transform: `scaleY(${originalImageStretchArray[2]})` },
-          ], {
-            duration: 300,
-            easing: "ease",
-          }
-        );
+
         }
       });
   };
