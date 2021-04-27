@@ -31,7 +31,6 @@ class Mobile extends React.Component {
       mainCmsDataSubArrays: null,
       originalImageHeight: null,
       originalImageStretch: null,
-      originalImageHeightArray: [],
       originalImageStretchArray: [],
       originalImageRatioArray: [],
       textDivSizeArray: [],
@@ -93,7 +92,6 @@ class Mobile extends React.Component {
 
     const {
       originalImageStretch, 
-      originalImageStretchArray, 
       viewportWidth
     } = this.state;
 
@@ -115,35 +113,6 @@ class Mobile extends React.Component {
     );
   }
 
-
-
-  resizeHandler = () => {
-
-    const {
-        selectedDivId,
-        originalImageStretchArray,
-        counter
-      } = this.state;
-
-      let imgMobileContainer = [...document.getElementsByClassName('img_mobile_container')];
-      let imgMobile = [...document.getElementsByClassName("img_mobile")];
-      let viewportHeight = window.innerHeight;
-
-      imgMobileContainer.map((ele, index) => {
-        ele.style.height = `${viewportHeight/2}px`;
-      })
-      imgMobile.map((ele, index) => {
-        ele.style.width = `${viewportHeight/2}px`;
-      })
-
-      if(window.innerHeight !== this.state.viewportHeight){
-        this.setState({
-          viewportHeight: viewportHeight,
-          originalImageWidth: viewportHeight/2
-        })
-      }
-
-    }
 
   
   renderInfo = () => {
