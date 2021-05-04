@@ -4,6 +4,7 @@ import parse from 'html-react-parser';
 import {SlideDown} from 'react-slidedown';
 import ScrollSnap from 'scroll-snap'
 import ReactHtmlParser from 'react-html-parser';
+import mockData from "./mock_data.js";
 import "./App.css";
 import 'react-slidedown/lib/slidedown.css';
 
@@ -16,6 +17,7 @@ class Desktop extends React.Component {
       isClosedInfoPanel: true,
       selectedlan: "fr",
       loaded: true,
+      enableScroll: false,
       counter: 0,
       selectedDivId: 0,
       scrollDirection: null,
@@ -245,6 +247,10 @@ class Desktop extends React.Component {
     }
   }
 
+  resizeHandler = () => {
+    // soon?
+  }
+
   toggleEN = () => {
     this.setState(
       {
@@ -352,8 +358,51 @@ class Desktop extends React.Component {
     });
     this.setState({
       dataToDivs
+    }, () => {
+      return this.triggerAnimDesktop();
     });
   };
+
+  triggerAnimDesktop = () => {
+
+    let firstImg = document.querySelector(`#container_div_0 svg`);
+    let secondImg = document.querySelector(`#container_div_1 svg`);
+    let thirdImg = document.querySelector(`#container_div_2 svg`);
+
+    firstImg.animate(
+      [
+        { height: "12vh" },
+        { height: "101vh" },
+      ], {
+        duration: 1000,
+        easing: "ease",
+      }
+    );
+
+    secondImg.animate(
+      [
+        { height: "12vh" },
+        { height: "101vh" },
+      ], {
+        duration: 1000,
+        easing: "ease",
+      }
+    );
+
+    thirdImg.animate(
+      [
+        { height: "12vh" },
+        { height: "103vh" },
+      ], {
+        duration: 1000,
+        easing: "ease",
+      }
+    );
+
+    this.setState({
+      enableScroll: true
+    })
+  }
 
 
   scrollHandler = event => {
@@ -375,7 +424,7 @@ class Desktop extends React.Component {
         () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "up");
+          this.handleAnimation(counter, selectedDivId, "up", 101, 92);
         }
       );
     }
@@ -392,7 +441,7 @@ class Desktop extends React.Component {
         () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "down");
+          this.handleAnimation(counter, selectedDivId, "down", 101, 92);
         }
       );
     }
@@ -409,7 +458,7 @@ class Desktop extends React.Component {
         () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "up");
+          this.handleAnimation(counter, selectedDivId, "up", 101, 92);;
         }
       );
     }
@@ -426,7 +475,7 @@ class Desktop extends React.Component {
         () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "down");
+          this.handleAnimation(counter, selectedDivId, "down", 101, 92);
         }
       );
     }
@@ -444,7 +493,7 @@ class Desktop extends React.Component {
         () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "up");
+          this.handleAnimation(counter, selectedDivId, "up", 101, 92);
         }
       );
     }
@@ -462,7 +511,7 @@ class Desktop extends React.Component {
         () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "down");
+          this.handleAnimation(counter, selectedDivId, "down", 101, 92);
         }
       );
     }
@@ -480,7 +529,7 @@ class Desktop extends React.Component {
         () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "up");
+          this.handleAnimation(counter, selectedDivId, "up", 101, 92);
         }
       );
     }
@@ -498,7 +547,7 @@ class Desktop extends React.Component {
         () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "down");
+          this.handleAnimation(counter, selectedDivId, "down", 101, 92);
         }
       );
     }
@@ -515,7 +564,7 @@ class Desktop extends React.Component {
         () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "up");
+          this.handleAnimation(counter, selectedDivId, "up", 101, 92);
         }
       );
     }
@@ -532,7 +581,7 @@ class Desktop extends React.Component {
         () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "down");
+          this.handleAnimation(counter, selectedDivId, "down", 101, 92);
         }
       );
     }
@@ -550,7 +599,7 @@ class Desktop extends React.Component {
         () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "up");
+          this.handleAnimation(counter, selectedDivId, "up", 101, 92);
         }
       );
     }
@@ -567,7 +616,7 @@ class Desktop extends React.Component {
         () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, selectedDivId, "down");
+          this.handleAnimation(counter, selectedDivId, "down", 101, 92);
         }
       );
     }
@@ -584,25 +633,28 @@ class Desktop extends React.Component {
         () => {
           let counter = this.state.counter;
           let selectedDivId = this.state.selectedDivId;
-          this.handleAnimation(counter, 0, "up", true);
-          this.handleAnimation(counter, 1, "up", true);
-          this.handleAnimation(counter, 2, "up", true);
+          this.handleAnimation(counter, 0, "up", 101, 92, true);
+          this.handleAnimation(counter, 1, "up", 101, 92, true);
+          this.handleAnimation(counter, 2, "up", 103, 94, true);
         }
       );
     }
   };
 
-  handleAnimation = (counter, selectedDivId, animDirection, all) => {
+  handleAnimation = (
+    counter, 
+    selectedDivId, 
+    animDirection, 
+    divMaxHeight,
+    divMaxLock, 
+    all) => {
 
     let divID = `container_div_${selectedDivId}`;
     let imgContainer = document.querySelector(`#${divID}`);
     let selectedSvg = document.querySelector(`#${divID} svg`);
     let numberOfPixelScrolled = window.scrollY;
     let halfViewportHeight = this.state.viewportHeight/2;
-
-    // to change;
-    let originalImageHeight = 101
-
+    let originalImageHeight = divMaxHeight;
 
     let scrolledPorcentage = this.definePorcentage(
       numberOfPixelScrolled - this.state.counter * halfViewportHeight,
@@ -627,10 +679,8 @@ class Desktop extends React.Component {
       let newImgContainerHeight = selectedSvg.getBoundingClientRect().height;
       imgContainer.style.height = newImgContainerHeight + "px";
 
-      console.log(svgHeightValueUp, "up");
-
-      if(svgHeightValueUp > 92){
-        selectedSvg.style.height = `101vh`
+      if(svgHeightValueUp > divMaxLock){
+        selectedSvg.style.height = `${divMaxHeight}vh`
         let newImgContainerHeight = selectedSvg.getBoundingClientRect().height;
         imgContainer.style.height = newImgContainerHeight + "px";
       }
@@ -651,8 +701,8 @@ class Desktop extends React.Component {
 
       console.log(svgHeightValueDown, "down");
 
-      if(svgHeightValueDown > 92){
-        selectedSvg.style.height = `101vh`
+      if(svgHeightValueDown > divMaxLock){
+        selectedSvg.style.height = `${divMaxHeight}vh`
         let newImgContainerHeight = selectedSvg.getBoundingClientRect().height;
         imgContainer.style.height = newImgContainerHeight + "px";
       }
@@ -867,6 +917,54 @@ class Desktop extends React.Component {
     );
   };
 
+  renderDataToDivsLoading = () => {
+ 
+    let styleImg1 = {
+      transform: `rotateZ(90deg) translate(100%) scaleY(1)`,
+      width: `${this.state.viewportHeight}px`
+    };
+
+    return (
+      <div className="loader_vertical_container_mobile">
+        <div>
+          <img
+            id="loading_img_1"
+            className="loading_img"
+            style={styleImg1}
+            onLoad={() => this.handleImageLoadedLoadingScreen("loading_img_1", 0)}
+            src={mockData.loadingImg[0].img}
+          />
+        </div>
+      </div>
+    )    
+  }
+
+  handleImageLoadedLoadingScreen = (imgID, index) => {
+
+    const {
+      originalImageStretch, 
+      viewportWidth
+    } = this.state;
+
+    
+    let img = document.getElementById(imgID);
+
+    let originalImageHeight = img.getBoundingClientRect().width;
+    let loadingImgStrech = (viewportWidth/originalImageHeight)*1.02;
+
+
+    img.animate(
+      [
+        { transform: `rotateZ(90deg) translate(100%) scaleY(${loadingImgStrech})` },
+        { transform: `rotateZ(90deg) translate(100%) scaleY(1)` },
+      ], {
+        duration: 1000,
+        easing: "ease",
+      }
+    );
+  }
+
+
   renderTextSimplerVersion = () => {
 
     const {
@@ -956,11 +1054,18 @@ class Desktop extends React.Component {
 
   render() {
     return (
-        <main className="main_vertical_container">
+      <div>
+        <main id="desktop">
           {this.renderInfoDesktop()}
           {this.renderDivsToDomDesktop()}
           {this.renderFooterDesktop()}
         </main>
+        <main id="mobile_ipad">
+          {this.renderDataToDivsLoading()}
+          {this.renderInfoDesktop()}
+          {this.renderTextSimplerVersion()}
+        </main>
+      </div>
     );
   }
 }

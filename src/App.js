@@ -117,23 +117,14 @@ class App extends React.Component {
       )
     }
 
-    if(viewportWidth > 1224){
-      return (
-        <div>
-          <Desktop
-            toggleEN={this.toggleEN}
-            {...this.state}/>
-        </div>
-      );
-    }else{
-      return (
-        <div>
-          <Mobile
-            toggleEN={this.toggleEN}
-            {...this.state}/>
-        </div>
-      );
-    }
+    return (
+      <div>
+        <Desktop
+          toggleEN={this.toggleEN}
+          {...this.state}/>
+      </div>
+    );
+  
   }
 }
 
